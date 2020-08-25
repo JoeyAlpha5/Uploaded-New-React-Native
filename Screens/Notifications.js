@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-const Notifications = () =>{
+import Header from '../components/Header';
+export const Notifications = () =>{
     return (
-        <View>
-            <Text>Notifications</Text>
+        <View style={{height:'100%', width:'100%',backgroundColor:'#000000'}}>
+           <Text>Notifications</Text>
         </View>
     )
 }
-export default Notifications

@@ -1,9 +1,9 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList} from 'react-native';
+import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Header from '../components/Header';
-const Feed = () =>{
+export const Feed = ({navigation}) =>{
     const [feed,setFeed] = useState([]);
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
@@ -13,9 +13,13 @@ const Feed = () =>{
           .catch((error) => console.error(error))
           .finally(() => setLoading(false));
       }, []);
+
+      const navigate = (page) =>{
+        navigation.navigate(page);
+      }
+
     return (
         <View style={styles.view}>
-            <Header header={'Uploaded'}/>
             {/* post content goes in here */}
             {isLoading ? <ActivityIndicator style={{color:'#ffffff'}}/> : (
             <FlatList style={{flexDirection:'column',width:'99%'}}
@@ -32,9 +36,11 @@ const Feed = () =>{
                             <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>
                         </View>
                     </View>
-                    <ImageBackground  style={{borderRadius:5,width:'100%',height:200,resizeMode:'cover',justifyContent:'flex-end'}} source={{uri:item.post_cover_url}}>
-                        <Text style={styles.postdesc}>{item.post_name}{"\n"}{item.artist_location}</Text>
-                    </ImageBackground>
+                    <TouchableOpacity onPress={()=>navigate('Player')} style={{width:'100%'}}>
+                        <ImageBackground style={{borderRadius:5,width:'100%',height:200,resizeMode:'cover',justifyContent:'flex-end'}} source={{uri:item.post_cover_url}}>
+                            <Text style={styles.postdesc}>{item.post_name}{"\n"}{item.artist_location}</Text>
+                        </ImageBackground>
+                    </TouchableOpacity>
                     <View style={{width:'98%',height:1,backgroundColor:'#000000',marginTop:10}}></View>
 
                     {/* <View style={styles.BottomPostContent}>
@@ -55,7 +61,7 @@ const Feed = () =>{
         </View>
     )
 }
-export default Feed
+
 styles = StyleSheet.create({
     postdesc:{
         fontSize:12,

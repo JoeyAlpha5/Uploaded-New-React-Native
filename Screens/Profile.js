@@ -1,10 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
-const Profile = () =>{
+import Header from '../components/Header';
+
+export const Profile = () =>{
     return (
-        <View>
+        <View style={{height:'100%', width:'100%',backgroundColor:'#000000'}}>
             <Text>Profile</Text>
         </View>
     )
 }
-export default Profile
