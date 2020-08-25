@@ -8,6 +8,8 @@ target 'uploaded' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'react-native-jw-media-player', :path => '../node_modules/react-native-jw-media-player'
+
   target 'uploadedTests' do
     inherit! :complete
     # Pods for testing
