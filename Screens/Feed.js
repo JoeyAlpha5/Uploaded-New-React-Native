@@ -14,8 +14,8 @@ export const Feed = ({navigation}) =>{
           .finally(() => setLoading(false));
       }, []);
 
-      const navigate = (page) =>{
-        navigation.navigate(page);
+      const navigate = (page, post) =>{
+        navigation.navigate(page, {data:post});
       }
 
     return (
@@ -36,7 +36,7 @@ export const Feed = ({navigation}) =>{
                             <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={()=>navigate('Player')} style={{width:'100%'}}>
+                    <TouchableOpacity onPress={()=>navigate('Player',item)} style={{width:'100%'}}>
                         <ImageBackground style={{borderRadius:5,width:'100%',height:200,resizeMode:'cover',justifyContent:'flex-end'}} source={{uri:item.post_cover_url}}>
                             <Text style={styles.postdesc}>{item.post_name}{"\n"}{item.artist_location}</Text>
                         </ImageBackground>
