@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Header from '../components/Header';
@@ -20,6 +20,7 @@ export const Feed = ({navigation}) =>{
 
     return (
         <View style={styles.view}>
+            <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             {/* post content goes in here */}
             {isLoading ? <ActivityIndicator style={{color:'#ffffff'}}/> : (
             <FlatList style={{flexDirection:'column',width:'99%'}}

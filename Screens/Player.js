@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import {View, Text, Dimensions, StatusBar} from 'react-native';
 import Video from 'react-native-video';
 const Player = ({navigation, route}) =>{
     const data = route.params.data;
@@ -9,6 +9,7 @@ const Player = ({navigation, route}) =>{
     });
     return (
         <View>
+            <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <Video source={{uri: data.post_source_url }} 
                 repeat={true}       
                 ignoreSilentSwitch={"obey"}                          

@@ -14,34 +14,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-const Login= ({navigation}) =>{
+const ResetPassword = () =>{
     const { colors } = useTheme();
     const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const handlePasswordChange = (pass)=>{
-        setPassword(pass)
-    };
     const handleEmailChange =(em) =>{
         setEmail(em);
-    };
-    const loginHandle = (em,pass)=>{
-        // console.log(em,pass);
-        fetch('http://185.237.96.39:3000/users/users?type=login&&email='+em+'&&password='+pass)
-        .then((response) => response.json())
-        // .then((json) => setFeed(json.Outcome))
-        .then((json) =>{
-            if(json.Outcome == 'Authentication test passed'){
-                navigation.navigate('Uploaded')
-            }
-        })
-        .catch((error) => console.error(error))
-        // .finally(() => navigation.navigate('Uploaded'));
     };
     return(
         <View style={styles.container}>
             <StatusBar backgroundColor='#ff9800' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Welcome!</Text>
+                <Text style={styles.text_header}>Reset Password</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
@@ -63,37 +46,11 @@ const Login= ({navigation}) =>{
                         value={email}
                         onChangeText={(val) => handleEmailChange(val)}
                     />
-
                 </View>
-                <Text style={[styles.text_footer, {
-                    color: colors.text,
-                    marginTop: 35
-                }]}>Password</Text>
-                <View style={styles.action}>
-                <Feather 
-                    name="lock"
-                    color={colors.text}
-                    size={20}
-                />
-                <TextInput 
-                    placeholder="Your Password"
-                    placeholderTextColor="#666666"
-                    secureTextEntry={true}
-                    style={[styles.textInput, {
-                        color: colors.text
-                    }]}
-                    autoCapitalize="none"
-                    value={password}
-                    onChangeText={(val) => handlePasswordChange(val)}
-                />
-                <TouchableOpacity onPress={()=>navigation.navigate('PasswordReset')}>
-                    <Text style={{color: '#000000', marginTop:15}}>Forgot password?</Text>
-                </TouchableOpacity>
-            </View>
             <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn}
-                        onPress={() => {loginHandle( email, password )}}
+                        onPress={() => {ResetHandle( password )}}
                     >
                     <LinearGradient
                         colors={['#ff9800', '#ff5722']}
@@ -101,7 +58,7 @@ const Login= ({navigation}) =>{
                     >
                         <Text style={[styles.textSign, {
                             color:'#000'
-                        }]}>Sign In</Text>
+                        }]}>Reset password</Text>
                     </LinearGradient>
                     </TouchableOpacity>
                 </View>
@@ -109,7 +66,7 @@ const Login= ({navigation}) =>{
         </View>
     )
 }
-export default Login
+export default ResetPassword
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
