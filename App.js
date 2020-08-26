@@ -9,9 +9,13 @@ const Stack = createStackNavigator();
 const App = ()=>{
   return(
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeTab}/>
-        <Stack.Screen name="Player" component={Player}/>
+      <Stack.Navigator >
+        <Stack.Screen name="Uploaded" component={HomeTab} options={{headerTintColor: '#ffffff',headerStyle: {
+            backgroundColor: '#131313',
+          }}}/>
+        <Stack.Screen name="Player" component={Player} options={{headerTintColor: '#ffffff',headerStyle: {
+            backgroundColor: '#131313',
+          }}}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
