@@ -9,18 +9,34 @@ import {
     Image
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 
-const Splash = ()=>{
+const Splash = ({navigation})=>{
     return (
         <View style={styles.container}>
+            <StatusBar backgroundColor='#ff9800' barStyle="light-content"/>
             <View style={styles.header}>
                 <Image source={require('../assets/logo.png')} resizeMode="stretch" style={styles.logo}/>
             </View>
 
             <View style={styles.footer}>
                 <Text style={styles.title}>Bringing you closer to the music.</Text>
-                <Text style={styles.text}>Get started</Text>
+                <Text style={styles.button}>
+                <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+                    <LinearGradient
+                        colors={['#ff9800', '#ff5722']}
+                        style={styles.signIn}
+                    >
+                        <Text style={styles.textSign}>Get Started</Text>
+                        <MaterialIcons 
+                            name="navigate-next"
+                            color="#fff"
+                            size={20}
+                        />
+                    </LinearGradient>
+                </TouchableOpacity>
+                </Text>
             </View>
         </View>
     )
@@ -73,7 +89,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row'
   },
   textSign: {
-      color: 'white',
+      color: 'black',
       fontWeight: 'bold'
   }
 });
