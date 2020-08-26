@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, Dimensions} from 'react-native';
 import Video from 'react-native-video';
-export const Player = ({navigation, route}) =>{
+const Player = ({navigation, route}) =>{
     const data = route.params.data;
     const {width, height} = Dimensions.get("screen");
     useEffect(() => {
@@ -17,3 +17,4 @@ export const Player = ({navigation, route}) =>{
         </View>
     )
 }
+export  default Player
