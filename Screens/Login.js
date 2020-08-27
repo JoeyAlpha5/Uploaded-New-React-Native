@@ -39,25 +39,25 @@ const Login= ({navigation}) =>{
     };
     return(
         <View style={styles.container}>
-            <StatusBar backgroundColor='#ff9800' barStyle="light-content"/>
+            <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Welcome!</Text>
+                <Text style={styles.text_header}>Sign in to Uploaded</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
-                    color: colors.text
+                    color: 'white'
                 }]}>Email</Text>
                 <View style={styles.action}>
                     <FontAwesome 
                         name="user-o"
-                        color={colors.text}
+                        color='#eb8d35'
                         size={20}
                     />
                     <TextInput 
-                        placeholder="Your Email"
-                        placeholderTextColor="#666666"
+                        // placeholder="Your Email"
+                        // placeholderTextColor="#666666"
                         style={[styles.textInput, {
-                            color: colors.text
+                            color: 'white'
                         }]}
                         autoCapitalize="none"
                         value={email}
@@ -66,28 +66,28 @@ const Login= ({navigation}) =>{
 
                 </View>
                 <Text style={[styles.text_footer, {
-                    color: colors.text,
+                    color: 'white',
                     marginTop: 35
                 }]}>Password</Text>
                 <View style={styles.action}>
                 <Feather 
                     name="lock"
-                    color={colors.text}
+                    color='#eb8d35'
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Your Password"
-                    placeholderTextColor="#666666"
+                    // placeholder="Your Password"
+                    // placeholderTextColor="#666666"
                     secureTextEntry={true}
                     style={[styles.textInput, {
-                        color: colors.text
+                        color: 'white'
                     }]}
                     autoCapitalize="none"
                     value={password}
                     onChangeText={(val) => handlePasswordChange(val)}
                 />
                 <TouchableOpacity onPress={()=>navigation.navigate('PasswordReset')}>
-                    <Text style={{color: '#000000', marginTop:15}}>Forgot password?</Text>
+                    <Text style={{color: '#eb8d35', marginTop:15}}>Forgot password?</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.button}>
@@ -96,7 +96,7 @@ const Login= ({navigation}) =>{
                         onPress={() => {loginHandle( email, password )}}
                     >
                     <LinearGradient
-                        colors={['#ff9800', '#ff5722']}
+                        colors={['#eb8d35', '#eb8d35']}
                         style={styles.signIn}
                     >
                         <Text style={[styles.textSign, {
@@ -113,7 +113,7 @@ export default Login
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: '#ff9800'
+      backgroundColor: '#000000'
     },
     header: {
         flex: 1,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     },
     footer: {
         flex: 3,
-        backgroundColor: '#fff',
+        backgroundColor: '#000000',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         paddingHorizontal: 20,
@@ -132,10 +132,10 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 20
     },
     text_footer: {
-        color: '#05375a',
+        color: '#fff',
         fontSize: 18
     },
     action: {

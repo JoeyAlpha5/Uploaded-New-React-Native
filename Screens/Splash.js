@@ -15,81 +15,84 @@ import { useTheme } from '@react-navigation/native';
 const Splash = ({navigation})=>{
     return (
         <View style={styles.container}>
-            <StatusBar backgroundColor='#ff9800' barStyle="light-content"/>
-            <View style={styles.header}>
-                <Image source={require('../assets/logo.png')} resizeMode="stretch" style={styles.logo}/>
-            </View>
 
-            <View style={styles.footer}>
+            <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
+                <Image source={require('../assets/logo.png')} resizeMode="stretch" style={styles.logo}/>
                 <Text style={styles.title}>Bringing you closer to the music.</Text>
-                <Text style={styles.button}>
-                <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
-                    <LinearGradient
-                        colors={['#ff9800', '#ff5722']}
-                        style={styles.signIn}
-                    >
-                        <Text style={styles.textSign}>Get Started</Text>
-                        <MaterialIcons 
-                            name="navigate-next"
-                            color="#fff"
-                            size={20}
-                        />
-                    </LinearGradient>
-                </TouchableOpacity>
-                </Text>
-            </View>
+                <View style={styles.button}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+                        <LinearGradient
+                            colors={['#eb8d35', '#eb8d35']}
+                            style={styles.signIn}
+                        >
+                            <Text style={styles.textSign}>Sign in</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate('Register')}>
+                        <LinearGradient
+                            colors={['#ffffff', '#ffffff']}
+                            style={styles.register}
+                        >
+                            <Text style={styles.textRegister}>Register</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
         </View>
     )
 }
 export default Splash
-const {height} = Dimensions.get("screen");
+const {height, width} = Dimensions.get("screen");
 const height_logo = height * 0.28;
+const button_width = width * 0.95;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: '#000000'
-  },
-  header: {
-      flex: 2,
-      justifyContent: 'center',
-      alignItems: 'center'
-  },
-  footer: {
-      flex: 1,
-      backgroundColor: '#fff',
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      paddingVertical: 50,
-      paddingHorizontal: 30
+    backgroundColor: '#000000',
+    alignItems:'center',
+    justifyContent:'center'
   },
   logo: {
-      width: height_logo,
-      height: height_logo
+      width: 200,
+      height: 200
   },
   title: {
-      color: '#ff9800',
-      fontSize: 30,
-      fontWeight: 'bold'
+      color: '#ffffff',
+      fontSize: 20,
+      fontWeight: 'bold',
+      alignItems:'center'
   },
   text: {
       color: 'grey',
       marginTop:5
   },
   button: {
-      alignItems: 'flex-end',
-      marginTop: 30
+      alignItems: 'center',
+      marginTop: 30,
+      width:'100%',
+      justifyContent:'center',
   },
   signIn: {
-      width: 150,
-      height: 40,
+      width: button_width,
+      height: 50,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 50,
-      flexDirection: 'row'
+      borderRadius: 10,
   },
+  register: {
+        width: button_width,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        marginTop:15
+    },
   textSign: {
-      color: 'black',
+      color: 'white',
       fontWeight: 'bold'
-  }
+  },
+  textRegister: {
+    color: 'black',
+    fontWeight: 'bold'
+    }
 });

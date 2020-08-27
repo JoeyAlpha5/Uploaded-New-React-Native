@@ -14,17 +14,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-const ResetPassword = () =>{
-    const { colors } = useTheme();
+const Register= ({navigation}) =>{
     const [email, setEmail] = useState();
-    const handleEmailChange =(em) =>{
-        setEmail(em);
-    };
+    const [password, setPassword] = useState();
+    const [mobile, setMobile] = useState();
     return(
         <View style={styles.container}>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Reset Password</Text>
+                <Text style={styles.text_header}>Sign up</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
@@ -44,13 +42,58 @@ const ResetPassword = () =>{
                         }]}
                         autoCapitalize="none"
                         value={email}
-                        onChangeText={(val) => handleEmailChange(val)}
+                        // onChangeText={(val) => handleEmailChange(val)}
                     />
+
                 </View>
+                <Text style={[styles.text_footer, {
+                    color: 'white',
+                    marginTop:35
+                }]}>Mobile</Text>
+                <View style={styles.action}>
+                    <FontAwesome 
+                        name="phone"
+                        color='#eb8d35'
+                        size={20}
+                    />
+                    <TextInput 
+                        // placeholder="Your Email"
+                        // placeholderTextColor="#666666"
+                        style={[styles.textInput, {
+                            color: 'white'
+                        }]}
+                        autoCapitalize="none"
+                        value={mobile}
+                        // onChangeText={(val) => handleEmailChange(val)}
+                    />
+
+                </View>
+                <Text style={[styles.text_footer, {
+                    color: 'white',
+                    marginTop: 35
+                }]}>Password</Text>
+                <View style={styles.action}>
+                <Feather 
+                    name="lock"
+                    color='#eb8d35'
+                    size={20}
+                />
+                <TextInput 
+                    // placeholder="Your Password"
+                    // placeholderTextColor="#666666"
+                    secureTextEntry={true}
+                    style={[styles.textInput, {
+                        color: 'white'
+                    }]}
+                    autoCapitalize="none"
+                    value={password}
+                    // onChangeText={(val) => handlePasswordChange(val)}
+                />
+            </View>
             <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn}
-                        onPress={() => {ResetHandle( password )}}
+                        
                     >
                     <LinearGradient
                         colors={['#eb8d35', '#eb8d35']}
@@ -58,7 +101,7 @@ const ResetPassword = () =>{
                     >
                         <Text style={[styles.textSign, {
                             color:'#000'
-                        }]}>Reset password</Text>
+                        }]}>Sign up</Text>
                     </LinearGradient>
                     </TouchableOpacity>
                 </View>
@@ -66,7 +109,7 @@ const ResetPassword = () =>{
         </View>
     )
 }
-export default ResetPassword
+export default Register
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
@@ -89,10 +132,10 @@ const styles = StyleSheet.create({
     text_header: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 30
+        fontSize: 20
     },
     text_footer: {
-        color: '#05375a',
+        color: '#fff',
         fontSize: 18
     },
     action: {
