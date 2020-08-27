@@ -8,7 +8,8 @@ import {
     StatusBar,
     Image,
     TextInput,
-    AsyncStorage
+    AsyncStorage,
+    Alert
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
@@ -25,6 +26,10 @@ const Login= ({navigation, route}) =>{
         setEmail(em);
     };
     const loginHandle = (em,pass)=>{
+
+        if(em === null && pass === null || em === "" && pass == ""){
+            Alert.alert('Please enter your email and password.');
+        }else{
         // console.log(em,pass);
         fetch('http://185.237.96.39:3000/users/users?type=login&&email='+em+'&&password='+pass)
         .then((response) => response.json())
@@ -33,16 +38,18 @@ const Login= ({navigation, route}) =>{
             if(json.Outcome == 'Authentication test passed'){
                 await AsyncStorage.setItem('email', em);
                 var savedEmail = await AsyncStorage.getItem("email");
-                // navigation.navigate('Uploaded');
+                navigation.navigate('Uploaded');
                 // console.log(savedEmail);
                 route.params.login(true,savedEmail);
 
             }else{
-                console.log(json.Outcome);
+                Alert.alert('User does not exist');
             }
         })
         .catch((error) => console.error(error))
         // .finally(() => navigation.navigate('Uploaded'));
+        }
+
     };
     return(
         <View style={styles.container}>

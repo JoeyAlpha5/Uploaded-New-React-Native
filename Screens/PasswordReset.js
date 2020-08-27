@@ -7,7 +7,8 @@ import {
     StyleSheet,
     StatusBar,
     Image,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,6 +21,24 @@ const ResetPassword = () =>{
     const handleEmailChange =(em) =>{
         setEmail(em);
     };
+
+    const ResetHandle = () =>{
+        if(email == null || email == ""){
+            Alert.alert("Please enter your email address");
+        }else{
+            fetch('http://185.237.96.39:3000/users/users?type=pwdreset&&email='+email)
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json.Outcome);
+                Alert.alert("Password reset link has been sent to your email");
+                setEmail("");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+            
+        }
+    }
     return(
         <View style={styles.container}>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
@@ -50,7 +69,7 @@ const ResetPassword = () =>{
             <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn}
-                        onPress={() => {ResetHandle( password )}}
+                        onPress={() => {ResetHandle()}}
                     >
                     <LinearGradient
                         colors={['#eb8d35', '#eb8d35']}

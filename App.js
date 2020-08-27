@@ -44,6 +44,13 @@ const App = ()=>{
             <Stack.Screen name="Register" component={Register} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
                 backgroundColor: '#000000',
               }}}/>
+
+                <Stack.Screen name="Uploaded" component={HomeTab} options={{title:'Home',headerTintColor: '#ffffff',headerStyle: {
+                  backgroundColor: '#131313',
+                }}}/>
+                <Stack.Screen name="Player" component={Player} options={{title:'View post',headerTintColor: '#ffffff',headerStyle: {
+                  backgroundColor: '#131313',
+                }}}/>
             </Stack.Navigator>
             )
               :
