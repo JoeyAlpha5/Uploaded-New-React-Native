@@ -6,11 +6,10 @@ import {
     Dimensions,
     StyleSheet,
     StatusBar,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '@react-navigation/native';
 
 const Splash = ({navigation})=>{
     return (

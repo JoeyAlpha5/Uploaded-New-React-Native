@@ -7,14 +7,14 @@ import {
     StyleSheet,
     StatusBar,
     Image,
-    TextInput
+    TextInput,
+    AsyncStorage
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-const Login= ({navigation}) =>{
+const Login= ({navigation, route}) =>{
     const { colors } = useTheme();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -29,9 +29,16 @@ const Login= ({navigation}) =>{
         fetch('http://185.237.96.39:3000/users/users?type=login&&email='+em+'&&password='+pass)
         .then((response) => response.json())
         // .then((json) => setFeed(json.Outcome))
-        .then((json) =>{
+        .then( async (json) =>{
             if(json.Outcome == 'Authentication test passed'){
-                navigation.navigate('Uploaded')
+                await AsyncStorage.setItem('email', em);
+                var savedEmail = await AsyncStorage.getItem("email");
+                // navigation.navigate('Uploaded');
+                // console.log(savedEmail);
+                route.params.login(true,savedEmail);
+
+            }else{
+                console.log(json.Outcome);
             }
         })
         .catch((error) => console.error(error))
