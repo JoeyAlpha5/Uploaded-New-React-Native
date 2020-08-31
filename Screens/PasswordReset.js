@@ -50,11 +50,6 @@ const ResetPassword = () =>{
                     color: 'white'
                 }]}>Email</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
-                        name="user-o"
-                        color='#eb8d35'
-                        size={20}
-                    />
                     <TextInput 
                         // placeholder="Your Email"
                         // placeholderTextColor="#666666"

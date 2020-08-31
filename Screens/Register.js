@@ -29,11 +29,6 @@ const Register= ({navigation}) =>{
                     color: 'white'
                 }]}>Email</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
-                        name="user-o"
-                        color='#eb8d35'
-                        size={20}
-                    />
                     <TextInput 
                         // placeholder="Your Email"
                         // placeholderTextColor="#666666"
@@ -51,11 +46,6 @@ const Register= ({navigation}) =>{
                     marginTop:35
                 }]}>Mobile</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
-                        name="phone"
-                        color='#eb8d35'
-                        size={20}
-                    />
                     <TextInput 
                         // placeholder="Your Email"
                         // placeholderTextColor="#666666"
@@ -73,11 +63,6 @@ const Register= ({navigation}) =>{
                     marginTop: 35
                 }]}>Password</Text>
                 <View style={styles.action}>
-                <Feather 
-                    name="lock"
-                    color='#eb8d35'
-                    size={20}
-                />
                 <TextInput 
                     // placeholder="Your Password"
                     // placeholderTextColor="#666666"

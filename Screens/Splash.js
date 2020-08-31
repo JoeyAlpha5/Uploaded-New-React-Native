@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   logo: {
-      width: 200,
-      height: 200
+      width: 125,
+      height: 125
   },
   title: {
       color: '#ffffff',

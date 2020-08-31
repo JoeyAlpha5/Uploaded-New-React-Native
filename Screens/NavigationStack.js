@@ -12,7 +12,7 @@ import { Player } from './Player';
 //page stacks
 const Tab = createBottomTabNavigator();
 
-const HomeTab = ()=>{
+const HomeTab = ({navigation,route})=>{
   return(
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -42,7 +42,7 @@ const HomeTab = ()=>{
       <Tab.Screen name="Home" component={Feed}/>
       <Tab.Screen name="Search" component={Search}/>
       <Tab.Screen name="Notifications" component={Notifications} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Profile" initialParams={{ login: route.params.login }} component={Profile} />
     </Tab.Navigator>
   )
 }

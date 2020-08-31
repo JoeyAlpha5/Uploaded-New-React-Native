@@ -2,11 +2,11 @@ import React, {useEffect,useState} from 'react';
 import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
-export const Feed = ({navigation}) =>{
+export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [isLoading, setLoading] = useState(true);
     useEffect(() => {
-        fetch('http://185.237.96.39:3000/users/users?type=getRandomMediaList&&email=chjalome@gmail.com&&length=10')
+        fetch('http://185.237.96.39:3000/users/users?type=getRandomMediaList&&email=chjalome@gmail.com&&length=30')
           .then((response) => response.json())
           .then((json) => setFeed(json.Response))
           .catch((error) => console.error(error))
@@ -15,6 +15,9 @@ export const Feed = ({navigation}) =>{
 
       const navigate = (page, post) =>{
         navigation.navigate(page, {data:post});
+        // route.params.login(false);
+        // console.log(route);
+
       }
 
     return (

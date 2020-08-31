@@ -10,62 +10,60 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeTab from './Screens/NavigationStack';
 const App = ()=>{
-  const [LogedIn, setLogedIn] = useState();
+  const [LogedIn, setLogedIn] = useState(false);
   const Stack = createStackNavigator();
   const isLoggedIn = async ()=>{
-    return AsyncStorage.getItem("email");
+    const email = await AsyncStorage.getItem("email");
+    console.log(email," that's the email");
+    if(email === null || email === undefined){
+      setLogedIn(false);
+    }else{
+      setLogedIn(true);
+      console.log("saved email ",email);
+    }
   }
   const updateLogin = (isLoggedIn, email) =>{
       setLogedIn(isLoggedIn);
       console.log("login state updated to ",isLoggedIn, " email ", email);
   }
   useEffect(()=>{
-    var savedEmail = isLoggedIn;
-    if(savedEmail !== null){
-      setLogedIn(true);
-    }else{
-      setLogedIn(false);
-    }
+    //
+    var savedEmail = isLoggedIn();
   });
-  return(
-    <NavigationContainer>
-        {
-          LogedIn !== false && LogedIn !== null ? (
-          <Stack.Navigator>
-            <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
-              <Stack.Screen name="Login" component={Login}  initialParams={{ login: updateLogin }}
-              options={{headerTintColor: '#ffffff', title:'Sign in', headerStyle: {
-                backgroundColor: '#000000',
-              }}}/>
-              <Stack.Screen name="PasswordReset" component={PasswordReset}
-              options={{headerTintColor: '#ffffff',headerStyle: {
-                backgroundColor: '#000000',
-              }}}/>
-            <Stack.Screen name="Register" component={Register} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
-                backgroundColor: '#000000',
-              }}}/>
 
-                <Stack.Screen name="Uploaded" component={HomeTab} options={{title:'Home',headerTintColor: '#ffffff',headerStyle: {
+  if(LogedIn == false){
+    return(
+      <NavigationContainer>
+        <Stack.Navigator>
+        <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
+          <Stack.Screen name="Login" component={Login}   initialParams={{ login: updateLogin }}
+          options={{headerTintColor: '#ffffff', title:'Sign in', headerStyle: {
+            backgroundColor: '#000000',
+          }}}/>
+          <Stack.Screen name="PasswordReset" component={PasswordReset}
+          options={{headerTintColor: '#ffffff',headerStyle: {
+            backgroundColor: '#000000',
+          }}}/>
+          <Stack.Screen name="Register" component={Register} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
+            backgroundColor: '#000000',
+          }}}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }else{
+    return(
+      <NavigationContainer>
+          <Stack.Navigator>
+                <Stack.Screen name="Uploaded" component={HomeTab} initialParams={{ login: updateLogin }}  options={{title:'Uploaded',headerTintColor: '#ffffff',headerStyle: {
                   backgroundColor: '#131313',
                 }}}/>
                 <Stack.Screen name="Player" component={Player} options={{title:'View post',headerTintColor: '#ffffff',headerStyle: {
                   backgroundColor: '#131313',
                 }}}/>
-            </Stack.Navigator>
-            )
-              :
-              (
-              <Stack.Navigator>
-                <Stack.Screen name="Uploaded" component={HomeTab} options={{title:'Home',headerTintColor: '#ffffff',headerStyle: {
-                  backgroundColor: '#131313',
-                }}}/>
-                <Stack.Screen name="Player" component={Player} options={{title:'View post',headerTintColor: '#ffffff',headerStyle: {
-                  backgroundColor: '#131313',
-                }}}/>
-            </Stack.Navigator>)
-        }
-    </NavigationContainer>
-  )
+          </Stack.Navigator>
+      </NavigationContainer>
+    )
+  }
 }
 
 export default App

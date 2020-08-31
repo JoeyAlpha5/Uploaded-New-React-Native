@@ -38,9 +38,10 @@ const Login= ({navigation, route}) =>{
             if(json.Outcome == 'Authentication test passed'){
                 await AsyncStorage.setItem('email', em);
                 var savedEmail = await AsyncStorage.getItem("email");
-                navigation.navigate('Uploaded');
+                // navigation.navigate('Uploaded');
                 // console.log(savedEmail);
                 route.params.login(true,savedEmail);
+                // console.log(route);
 
             }else{
                 Alert.alert('User does not exist');
@@ -62,11 +63,6 @@ const Login= ({navigation, route}) =>{
                     color: 'white'
                 }]}>Email</Text>
                 <View style={styles.action}>
-                    <FontAwesome 
-                        name="user-o"
-                        color='#eb8d35'
-                        size={20}
-                    />
                     <TextInput 
                         // placeholder="Your Email"
                         // placeholderTextColor="#666666"
@@ -84,11 +80,6 @@ const Login= ({navigation, route}) =>{
                     marginTop: 35
                 }]}>Password</Text>
                 <View style={styles.action}>
-                <Feather 
-                    name="lock"
-                    color='#eb8d35'
-                    size={20}
-                />
                 <TextInput 
                     // placeholder="Your Password"
                     // placeholderTextColor="#666666"
