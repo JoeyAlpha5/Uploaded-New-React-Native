@@ -1,38 +1,38 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity} from 'react-native';
+import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    //
+    const getFeed = async ()=>{
+        var savedEmail = await AsyncStorage.getItem("email");
+        fetch('http://185.237.96.39:3000/users/users?type=getRandomMediaList&&email='+savedEmail+'&&length=30')
+        .then((response) => response.json())
+        .then((json) => setFeed(json.Response))
+        .catch((error) => console.error(error))
+        .finally(() => setLoading(false));
+    }
     useEffect(() => {
-        fetch('http://185.237.96.39:3000/users/users?type=getRandomMediaList&&email=chjalome@gmail.com&&length=30')
-          .then((response) => response.json())
-          .then((json) => setFeed(json.Response))
-          .catch((error) => console.error(error))
-          .finally(() => setLoading(false));
+        getFeed();
       }, []);
 
-      const navigate = (page, post) =>{
-        navigation.navigate(page, {data:post});
-        // route.params.login(false);
-        // console.log(route);
-
-      }
+    const navigate = (page, post) =>{
+    navigation.navigate(page, {data:post});
+    }
 
     return (
         <View style={styles.view}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
-            {/* post content goes in here */}
-            {isLoading ? <ActivityIndicator style={{color:'#ffffff'}}/> : (
+            {isLoading ? <ActivityIndicator size="large" color="#eb8d35"/> : (
             <FlatList style={{flexDirection:'column',width:'99%'}}
                 data={feed}
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
                 
                     <View style={styles.Post}>
-                
-                {/* // <ImageBackground  imageStyle={{borderRadius:20,width:'100%'}} style={styles.Post} source={{uri:item.post_cover_url}}> */}
+            
                     <View style={styles.TopPostContent}>
                         <View style={styles.ProfileImageSec}>
                             <Image source={{uri: item.artist_thumbnail}} style={{width:50,height:50,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>
@@ -46,11 +46,6 @@ export const Feed = ({navigation, route}) =>{
                     </TouchableOpacity>
                     <View style={{width:'98%',height:1,backgroundColor:'#000000',marginTop:10}}></View>
 
-                    {/* <View style={styles.BottomPostContent}>
-                            <Icons name='heart' size={25} color={'#ffffff'}/>
-                            <Icon name='comment-o' size={25} color={'#ffffff'}/>
-                            <Icon name='eye' size={25} color={'#ffffff'}/>
-                    </View>  */}
                     <View style={styles.BottomPostContent}>
                         <Icons name='heart' size={25} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
                         <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{item.post_num_comments}</Text>
@@ -109,7 +104,8 @@ styles = StyleSheet.create({
     view:{
         justifyContent:'center',
         alignItems:'center',
-        backgroundColor:'#000000'
+        backgroundColor:'#000000',
+        height:'100%'
     },
     Post:{
         height:400,

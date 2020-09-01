@@ -23,6 +23,9 @@ const Login= ({navigation, route}) =>{
         setPassword(pass)
     };
     const handleEmailChange =(em) =>{
+        var email_array = em.split(" ");
+        var trimmed_email = email_array.join("");
+        console.log(trimmed_email);
         setEmail(em);
     };
     const loginHandle = (em,pass)=>{
