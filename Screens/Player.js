@@ -22,7 +22,7 @@ const Player = ({navigation, route}) =>{
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
                         <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
-                        <View style={{marginLeft:15}}>
+                        <View style={{marginLeft:15,width:'63%'}}>
                             <Text style={{fontWeight:'bold',fontSize:15}}>{data.artist_name}</Text>
                             <Text style={{width:'80%'}}>{data.post_name}</Text>
                         </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         borderRadius:4
     },  
     topPostDetails:{
-        justifyContent:'space-between',
+        // justifyContent:'space-between',
         flexDirection:'row',
         paddingTop:5, 
         // width:'70%',
@@ -74,13 +74,14 @@ const styles = StyleSheet.create({
     },
     postDetails:{
         width:'100%',
-        height:65,
+        height:'auto',
         justifyContent:'space-between',
         flexDirection:'row',
         backgroundColor:'#fff',
         shadowColor: "#000",
         paddingLeft:5,
         paddingRight:5,
+        paddingBottom:10
     },
     commentsInput:{
         width:'100%',
