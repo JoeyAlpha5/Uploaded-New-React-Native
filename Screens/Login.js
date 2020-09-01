@@ -30,8 +30,14 @@ const Login= ({navigation, route}) =>{
     };
     const loginHandle = (em,pass)=>{
 
-        if(em === null && pass === null || em === "" && pass == ""){
-            Alert.alert('Please enter your email and password.');
+        if(em === null && pass === null || em === "" || pass === ""){
+            if(em === ""){
+                Alert.alert('Please enter your email');
+            }else if(pass === ""){
+                Alert.alert('Please enter your password');
+            }else{
+                Alert.alert('Please enter your email and password.');
+            }
         }else{
         // console.log(em,pass);
         fetch('http://185.237.96.39:3000/users/users?type=login&&email='+em+'&&password='+pass)
