@@ -7,25 +7,93 @@ import {
     StyleSheet,
     StatusBar,
     Image,
-    TextInput
+    TextInput,
+    AsyncStorage,
+    Alert
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-const Register= ({navigation}) =>{
+const Register= ({navigation, route}) =>{
+    const [emailInputColor,setEmailInputColor] = useState('#f2f2f2');
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [username, setUsername] = useState();
-    //
-    const handleEmailChange = (email)=>{
 
+    useEffect(()=>{
+        console.log("params ",route.params.login);
+    })
+    //
+    const handleEmailChange = (em)=>{
+        var email_array = em.split(" ");
+        var trimmed_email = email_array.join("");
+        var valid_email = validate_email(trimmed_email);
+        setEmail(trimmed_email);
     }
 
     const handlePasswordChange = (pass)=>{
-
+        console.log("password change");
+        setPassword(pass);
     }
+
+    const handleUsernameChange = (username)=>{
+        console.log("username change");
+        setUsername(username);
+    }
+
+    const validate_email = (email) =>{
+        console.log(email);
+        var email_regex = new RegExp(/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})/);
+        var email_valid = email_regex.test(email);
+        //if email is not valid
+        if(email_valid == false){
+            console.log("email is invalid");
+            setEmailInputColor("#f44336");
+            return false;
+        }else{
+            console.log("email is valid");
+            setEmailInputColor("#4caf50");
+            return true;
+        }
+    }
+
+    //sing up form submission
+    const signUp = ()=>{
+        var valid_email = validate_email(email);
+        if(username == "" || username == null || username == undefined || username.length < 2){
+            Alert.alert("Your username must be at least 2 characters long.");
+        }
+        else if(valid_email == false || email == "" || email == null || email == undefined){
+            Alert.alert("Please enter a valid email address");
+        }else if(password == "" || password == null || password == undefined || password.length < 8){
+            Alert.alert("Your password must be at least 8 characters long.");
+        }else{
+            registerApi();
+        }
+    }
+
+    const registerApi = () =>{
+        fetch('http://185.237.96.39:3000/users/users?type=register&&email='+email+'&&password='+password+"&&username="+username)
+        .then((response) => response.json())
+        .then( async (json) =>{
+            if(json.Outcome == 'Registration successfull'){
+                await AsyncStorage.setItem('email', email);
+                // navigation.navigate('Uploaded');
+                route.params.login(true,email);
+            }else if(json.Outcome == 'Registration failed. Email exists. Authentication test failed'){
+                Alert.alert("The email address belongs to an existing account.");
+            }
+            else{
+                Alert.alert('Registration unsuccessful');
+            }
+        })
+        .catch((error) => console.error(error))
+        // .finally(() => navigation.navigate('Uploaded'));
+    }
+
+
     return(
         <View style={styles.container}>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
@@ -38,33 +106,29 @@ const Register= ({navigation}) =>{
                 }]}>Username</Text>
                 <View style={styles.action}>
                     <TextInput 
-                        // placeholder="Your Email"
-                        // placeholderTextColor="#666666"
                         style={[styles.textInput, {
                             color: 'white'
                         }]}
                         autoCapitalize="none"
                         value={username}
-                        // onChangeText={(val) => handleEmailChange(val)}
+                        onChangeText={(val) => handleUsernameChange(val)}
                     />
-
                 </View>
                 <Text style={[styles.text_footer, {
                     color: 'white',
                     marginTop:35
-                }]}>Email/Mobile</Text>
-                <View style={styles.action}>
+                }]}>Email</Text>
+                <View style={[styles.action,{borderBottomColor:'#000'}]}>
                     <TextInput 
-                        // placeholder="Your Email"
-                        // placeholderTextColor="#666666"
                         style={[styles.textInput, {
-                            color: 'white'
+                            color: 'white',
+                            borderColor:emailInputColor,
+                            borderBottomWidth:1
                         }]}
                         autoCapitalize="none"
                         value={email}
-                        // onChangeText={(val) => handleEmailChange(val)}
+                        onChangeText={(val) => handleEmailChange(val)}
                     />
-
                 </View>
                 <Text style={[styles.text_footer, {
                     color: 'white',
@@ -72,21 +136,19 @@ const Register= ({navigation}) =>{
                 }]}>Password</Text>
                 <View style={styles.action}>
                 <TextInput 
-                    // placeholder="Your Password"
-                    // placeholderTextColor="#666666"
                     secureTextEntry={true}
                     style={[styles.textInput, {
                         color: 'white'
                     }]}
                     autoCapitalize="none"
                     value={password}
-                    // onChangeText={(val) => handlePasswordChange(val)}
+                    onChangeText={(val) => handlePasswordChange(val)}
                 />
             </View>
             <View style={styles.button}>
                     <TouchableOpacity
-                        style={styles.signIn}
-                        
+                        style={styles.signIn} 
+                        onPress={()=>signUp()}
                     >
                     <LinearGradient
                         colors={['#eb8d35', '#eb8d35']}

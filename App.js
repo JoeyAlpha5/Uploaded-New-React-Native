@@ -44,7 +44,7 @@ const App = ()=>{
           options={{headerTintColor: '#ffffff',headerStyle: {
             backgroundColor: '#000000',
           }}}/>
-          <Stack.Screen name="Register" component={Register} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
+          <Stack.Screen name="Register"  component={Register} initialParams={{ login: updateLogin }} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
             backgroundColor: '#000000',
           }}}/>
         </Stack.Navigator>
