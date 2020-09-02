@@ -4,15 +4,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
+    const [count,setCount] = useState(0);
     const [isLoading, setLoading] = useState(true);
     const getFeed = async ()=>{
-        console.log("getting more videos");
+        console.log("getting more videos, count is ", count);
         var savedEmail = await AsyncStorage.getItem("email");
-        fetch('http://185.237.96.39:3000/users/users?type=getRandomMediaList&&email='+savedEmail+'&&length=10')
+        fetch('http://185.237.96.39:3000/users/users?type=getHomeList&&email='+savedEmail+'&&count='+count)
         .then((response) => response.json())
         .then((json) => setFeed([...feed,...json.Response]))
         .catch((error) => console.error(error))
-        .finally(() => setLoading(false));
+        .finally(() =>{ setLoading(false); setCount(count+11) });
     }
     useEffect(() => {
         //get the feed on load

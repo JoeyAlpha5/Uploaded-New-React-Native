@@ -17,7 +17,15 @@ import Feather from 'react-native-vector-icons/Feather';
 const Register= ({navigation}) =>{
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [mobile, setMobile] = useState();
+    const [username, setUsername] = useState();
+    //
+    const handleEmailChange = (email)=>{
+
+    }
+
+    const handlePasswordChange = (pass)=>{
+
+    }
     return(
         <View style={styles.container}>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
@@ -27,7 +35,24 @@ const Register= ({navigation}) =>{
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
                     color: 'white'
-                }]}>Email</Text>
+                }]}>Username</Text>
+                <View style={styles.action}>
+                    <TextInput 
+                        // placeholder="Your Email"
+                        // placeholderTextColor="#666666"
+                        style={[styles.textInput, {
+                            color: 'white'
+                        }]}
+                        autoCapitalize="none"
+                        value={username}
+                        // onChangeText={(val) => handleEmailChange(val)}
+                    />
+
+                </View>
+                <Text style={[styles.text_footer, {
+                    color: 'white',
+                    marginTop:35
+                }]}>Email/Mobile</Text>
                 <View style={styles.action}>
                     <TextInput 
                         // placeholder="Your Email"
@@ -37,23 +62,6 @@ const Register= ({navigation}) =>{
                         }]}
                         autoCapitalize="none"
                         value={email}
-                        // onChangeText={(val) => handleEmailChange(val)}
-                    />
-
-                </View>
-                <Text style={[styles.text_footer, {
-                    color: 'white',
-                    marginTop:35
-                }]}>Mobile</Text>
-                <View style={styles.action}>
-                    <TextInput 
-                        // placeholder="Your Email"
-                        // placeholderTextColor="#666666"
-                        style={[styles.textInput, {
-                            color: 'white'
-                        }]}
-                        autoCapitalize="none"
-                        value={mobile}
                         // onChangeText={(val) => handleEmailChange(val)}
                     />
 

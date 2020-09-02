@@ -16,7 +16,7 @@ import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 const Login= ({navigation, route}) =>{
-    const { colors } = useTheme();
+    const [emailInputColor,setEmailInputColor] = useState('#f2f2f2');
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const handlePasswordChange = (pass)=>{
@@ -25,19 +25,32 @@ const Login= ({navigation, route}) =>{
     const handleEmailChange =(em) =>{
         var email_array = em.split(" ");
         var trimmed_email = email_array.join("");
-        console.log(trimmed_email);
-        setEmail(em);
+        var valid_email = validate_email(trimmed_email);
+        setEmail(trimmed_email);
     };
-    const loginHandle = (em,pass)=>{
 
-        if(em === null && pass === null || em === "" || pass === ""){
-            if(em === ""){
-                Alert.alert('Please enter your email');
-            }else if(pass === ""){
-                Alert.alert('Please enter your password');
-            }else{
-                Alert.alert('Please enter your email and password.');
-            }
+    const validate_email = (email) =>{
+        console.log(email);
+        var email_regex = new RegExp(/\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})/);
+        var email_valid = email_regex.test(email);
+        //if email is not valid
+        if(email_valid == false){
+            console.log("email is invalid");
+            setEmailInputColor("#f44336");
+            return false;
+        }else{
+            console.log("email is valid");
+            setEmailInputColor("#4caf50");
+            return true;
+        }
+    }
+
+    const loginHandle = (em,pass)=>{
+        var valid_email = validate_email(em);
+        if(em == "" || valid_email == false || em == null || em == undefined){
+            Alert.alert('Please enter a valid email address');
+        }else if(pass == "" || pass == null || pass == undefined){
+            Alert.alert('Please enter your password');
         }else{
         // console.log(em,pass);
         fetch('http://185.237.96.39:3000/users/users?type=login&&email='+em+'&&password='+pass)
@@ -71,12 +84,14 @@ const Login= ({navigation, route}) =>{
                 <Text style={[styles.text_footer, {
                     color: 'white'
                 }]}>Email</Text>
-                <View style={styles.action}>
+                <View style={[styles.action,{borderBottomColor:'#000'}]}>
                     <TextInput 
                         // placeholder="Your Email"
                         // placeholderTextColor="#666666"
                         style={[styles.textInput, {
-                            color: 'white'
+                            color: 'white',
+                            borderColor:emailInputColor,
+                            borderBottomWidth:1
                         }]}
                         autoCapitalize="none"
                         value={email}
@@ -94,7 +109,7 @@ const Login= ({navigation, route}) =>{
                     // placeholderTextColor="#666666"
                     secureTextEntry={true}
                     style={[styles.textInput, {
-                        color: 'white'
+                        color: 'white',
                     }]}
                     autoCapitalize="none"
                     value={password}

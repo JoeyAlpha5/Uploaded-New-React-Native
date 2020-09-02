@@ -32,7 +32,7 @@ const Splash = ({navigation})=>{
                             colors={['#ffffff', '#ffffff']}
                             style={styles.register}
                         >
-                            <Text style={styles.textRegister}>Register</Text>
+                            <Text style={styles.textRegister}>Sign up</Text>
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>

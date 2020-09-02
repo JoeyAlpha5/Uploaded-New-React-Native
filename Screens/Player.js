@@ -13,7 +13,7 @@ const Player = ({navigation, route}) =>{
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
-            <View>
+            <View style={{flex: 1,}}>
                 <Video source={{uri: data.post_source_url }} 
                     repeat={true}       
                     ignoreSilentSwitch={"obey"}                          
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     },
     commentsInput:{
         width:'100%',
+        // flex:1
     },
     commentsHeader:{
         marginLeft:5
