@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, Button, AsyncStorage} from 'react-native';
-import Header from '../components/Header';
 
 export const Profile = ({navigation,route}) =>{
     const signOut = async ()=>{

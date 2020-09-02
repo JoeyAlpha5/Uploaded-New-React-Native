@@ -42,7 +42,6 @@ export const Feed = ({navigation, route}) =>{
                 data={feed}
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
-                
                     <View style={styles.Post}>
                         <View style={styles.TopPostContent}>
                             <View style={styles.ProfileImageSec}>
@@ -51,8 +50,8 @@ export const Feed = ({navigation, route}) =>{
                             </View>
                         </View>
                         <TouchableOpacity onPress={()=>navigate('Player',item)} style={{width:'100%'}}>
-                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'flex-end'}} source={{uri:item.post_cover_url}}>
-                                <Text style={styles.postdesc}>{item.post_name}{"\n"}</Text>
+                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'flex-end',alignItems:'flex-start'}} source={{uri:item.post_cover_url}}>
+                                <Text style={styles.postdesc}>{item.post_name}</Text>
                             </ImageBackground>
                         </TouchableOpacity>
                         {/* <View style={{width:'98%',height:1,backgroundColor:'#000000',marginTop:10}}></View> */}
@@ -83,13 +82,15 @@ styles = StyleSheet.create({
         fontSize:12,
         fontWeight:'bold',
         color:'#ffffff',
-        backgroundColor:'#000000',
-        padding:10,
-        // marginRight:50,
-        width:'80%',
+        backgroundColor:'rgba(0,0,0,.5)',
+        padding:7,
+        height:'auto',
         marginBottom:30,
+        borderTopRightRadius:3,
+        borderBottomRightRadius:3,
         flexDirection:'column-reverse',
-        lineHeight:20
+        lineHeight:20,
+        maxWidth:'80%'
     },
     Options:{
         marginTop:20
