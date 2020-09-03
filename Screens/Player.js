@@ -1,24 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, Dimensions, StatusBar,StyleSheet, TextInput, Image} from 'react-native';
+import {View, Text, Dimensions, StatusBar,StyleSheet, TextInput, Image, ActivityIndicator} from 'react-native';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 const Player = ({navigation, route}) =>{
-    const data = route.params.data;
-    const {width, height} = Dimensions.get("screen");
     useEffect(() => {
         console.log(route.params.data);
     });
+    const [loader,setLoader] = useState(true);
+    const data = route.params.data;
+    const {width, height} = Dimensions.get("screen");
+    const videoBuffering = (data) =>{
+        console.log('video buffering');
+        setLoader(true);
+    }
+    const videoProgress = (data)=>{
+        console.log("Video currently playing");
+        setLoader(false);
+    }
+    const videoLoading = (data)=>{
+        console.log("video loading");
+        setLoader(true);
+    }
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <View style={{flex: 1,}}>
-                <Video source={{uri: data.post_source_url }} 
-                    repeat={true}       
-                    ignoreSilentSwitch={"obey"}                          
-                    resizeMode={"contain"}           
-                    style={{width:width,height:height/3, backgroundColor:'#000000'}} />
+                <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
+                    {loader == true ?(<ActivityIndicator size="large" color="#eb8d35" style={{position:'absolute',zIndex: 1,}}/> ):
+                     null    
+                    }
+                    <Video source={{uri: data.post_source_url }} 
+                        repeat={true}       
+                        ignoreSilentSwitch={"obey"}                          
+                        resizeMode={"contain"}
+                        onProgress={videoProgress}
+                        onBuffer={videoBuffering}  
+                        onLoad={videoLoading}         
+                        style={{width:width,height:height/3, backgroundColor:'#000000'}} />
+                </View>
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
                         <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>

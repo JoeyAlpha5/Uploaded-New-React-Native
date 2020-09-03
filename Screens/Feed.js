@@ -1,19 +1,26 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity} from 'react-native';
+import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
+import Icono from 'react-native-vector-icons/Ionicons';
+import { set } from 'react-native-reanimated';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [count,setCount] = useState(0);
     const [isLoading, setLoading] = useState(true);
+    const [Err,setErr] = useState(false);
+    const [Refreshing,setRefreshing] = useState(false);
     const getFeed = async ()=>{
         console.log("getting more videos, count is ", count);
         var savedEmail = await AsyncStorage.getItem("email");
         fetch('http://185.237.96.39:3000/users/users?type=getHomeList&&email='+savedEmail+'&&count='+count)
         .then((response) => response.json())
-        .then((json) => setFeed([...feed,...json.Response]))
-        .catch((error) => console.error(error))
-        .finally(() =>{ setLoading(false); setCount(count+11) });
+        .then((json) =>{ setFeed([...feed,...json.Response]); setErr(false);setRefreshing(false)})
+        .catch((error) => {
+            console.error(error);
+            setErr(true);
+        })
+        .finally(() =>{ setLoading(false); setCount(count+11);setRefreshing(false) });
     }
     useEffect(() => {
         //get the feed on load
@@ -22,7 +29,22 @@ export const Feed = ({navigation, route}) =>{
 
     // navigate to view the post
     const navigate = (page, post) =>{
-    navigation.navigate(page, {data:post});
+        navigation.navigate(page, {data:post});
+    }
+    //
+    const onRefresh = ()=>{
+        setRefreshing(true);
+        setCount(0);
+        setFeed([]);
+        getFeed();
+    }
+
+    const onReload=()=>{
+        setErr(false);
+        setLoading(true);
+        setCount(0);
+        setFeed([]);
+        getFeed();
     }
 
     const getPostDuration = (post_duration)=>{
@@ -37,12 +59,31 @@ export const Feed = ({navigation, route}) =>{
     return (
         <View style={styles.view}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
+            {/* show unable to load feed if internet issue is encountered */}
+            {Err == true? 
+                (
+                    <View style={{justifyContent: 'center',alignItems: 'center',height:'100%',width:'100%'}}>
+                        <Text style={{color:'#ffffff'}}>Unable to load feed</Text>
+                        <View style={{width:200,height:40,justifyContent: 'center',alignItems: 'center',marginTop:20}}>
+                            <Icono name='reload-circle' size={50} color={'#717171'} onPress={()=>onReload()}/>
+                        </View>
+                    </View>
+                )
+                :
+                (
+                    null
+                )
+            }
+
+
+
             {isLoading ? <ActivityIndicator size="large" color="#eb8d35"/> : (
-            <FlatList style={{flexDirection:'column',width:'99%'}}
+            <FlatList style={{flexDirection:'column',width:'99%'}}                                
                 data={feed}
+                refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={onRefresh}/>} 
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
-                    <View style={styles.Post}>
+                    <View style={styles.Post}>                        
                         <View style={styles.TopPostContent}>
                             <View style={styles.ProfileImageSec}>
                                 <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>

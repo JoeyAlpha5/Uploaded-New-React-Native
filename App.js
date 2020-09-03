@@ -35,7 +35,7 @@ const App = ()=>{
     return(
       <NavigationContainer>
         <Stack.Navigator>
-        <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
+          <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
           <Stack.Screen name="Login" component={Login}   initialParams={{ login: updateLogin }}
           options={{headerTintColor: '#ffffff', title:'Sign in', headerStyle: {
             backgroundColor: '#000000',
