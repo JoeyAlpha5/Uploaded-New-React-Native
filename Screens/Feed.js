@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl} from 'react-native';
+import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';
@@ -18,7 +18,12 @@ export const Feed = ({navigation, route}) =>{
         .then((json) =>{ setFeed([...feed,...json.Response]); setErr(false);setRefreshing(false)})
         .catch((error) => {
             console.error(error);
-            setErr(true);
+            if(feed.length != 0){
+                Alert.alert("Unable to load new posts, please check your internet connection.");
+                setRefreshing(false);
+            }else{
+                setErr(true);
+            }   
         })
         .finally(() =>{ setLoading(false); setCount(count+11);setRefreshing(false) });
     }
@@ -35,7 +40,7 @@ export const Feed = ({navigation, route}) =>{
     const onRefresh = ()=>{
         setRefreshing(true);
         setCount(0);
-        setFeed([]);
+        // setFeed([]);
         getFeed();
     }
 
@@ -43,7 +48,7 @@ export const Feed = ({navigation, route}) =>{
         setErr(false);
         setLoading(true);
         setCount(0);
-        setFeed([]);
+        // setFeed([]);
         getFeed();
     }
 
