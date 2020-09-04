@@ -57,7 +57,7 @@ const App = ()=>{
                 <Stack.Screen name="Uploaded" component={HomeTab} initialParams={{ login: updateLogin }}  options={{title:'Uploaded',headerTintColor: '#ffffff',headerStyle: {
                   backgroundColor: '#131313',
                 }}}/>
-                <Stack.Screen name="Player" component={Player} options={{title:'View post',headerTintColor: '#ffffff',headerStyle: {
+                <Stack.Screen name="Player" component={Player} screenOptions={{headerShown:false}} options={{headerShown:false,title:'View post',headerTintColor: '#ffffff',headerStyle: {
                   backgroundColor: '#131313',
                 }}}/>
           </Stack.Navigator>
