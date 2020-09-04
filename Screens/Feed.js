@@ -51,7 +51,6 @@ export const Feed = ({navigation, route}) =>{
         // setFeed([]);
         getFeed();
     }
-
     const getPostDuration = (post_duration)=>{
         var int_post_duration = parseInt(post_duration);
         var time_in_minutes = (int_post_duration/60).toFixed(2);
