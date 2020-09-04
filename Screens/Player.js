@@ -5,41 +5,81 @@ import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
+import Ant from 'react-native-vector-icons/AntDesign';
 const Player = ({navigation, route}) =>{
+    videoRef;
     useEffect(() => {
         console.log(route.params.data);
     });
-    // const [loader,setLoader] = useState(true);
+    const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
     const data = route.params.data;
     const {width, height} = Dimensions.get("screen");
+    const videoRef = React.createRef();
     const videoProgress = (data)=>{
-        console.log("Video currently playing");
+        console.log(data);
     }
-
+    //
     const goBack = ()=>{
         navigation.goBack(null);
         console.log("back button pressed");
+    }
+    const displayForwardBackDisplay = ()=>{
+        setforwardBackDisplay(true);
+        setTimeout(()=>{
+            setforwardBackDisplay(false);
+        },5000)
+        console.log("controls showing");
+    }
+
+    const hideForwardBackDisplay = ()=>{
+        setforwardBackDisplay(false);
+        console.log("controlshiding");
+    }
+
+    const forwardVideo = () =>{
+        console.log("video forward");
+    }
+
+    const rewindVideo = () =>{
+        console.log("video rewind");
+        this.player.ref.seek(0)
+
     }
 
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <View style={{flex: 1,}}>
-                <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
-                    <VideoPlayer source={{uri: data.post_source_url }} 
-                        repeat={true} 
-                        onBack={goBack}  
-                        navigator={navigation}    
-                        ignoreSilentSwitch={"obey"}                          
-                        resizeMode={"contain"}
-                        disableVolume={true}
-                        disableFullscreen={true}
-                        onProgress={videoProgress}        
-                        style={{width:width,height:height/3, backgroundColor:'#000000'}} />
-                </View>
+                
+                    <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
+                        {forwardBackDisplay == true ?
+                            (
+                                <View style={{position:'absolute',zIndex: 1,flexDirection: 'row',justifyContent: 'space-between',width:'60%',padding:5,opacity:.8}}>
+                                    <Ant name='banckward' size={30} color={'#fff'} onPress={rewindVideo} style={{marginLeft:10,marginTop:2}}/>
+                                    <Ant name='forward' size={30} color={'#fff'}  onPress={forwardVideo} style={{marginLeft:10,marginTop:2}}/>
+                                </View>
+                            ):
+                            null
+                        }
+                        <VideoPlayer source={{uri: data.post_source_url }} 
+                            repeat={true} 
+                            onBack={goBack}  
+                            onShowControls={displayForwardBackDisplay}
+                            onHideControls={hideForwardBackDisplay}
+                            navigator={navigation}    
+                            ignoreSilentSwitch={"obey"}                          
+                            resizeMode={"contain"}
+                            disableVolume={true}
+                            controlTimeout={5000}
+                            disableFullscreen={true}
+                            onProgress={videoProgress}    
+                            style={{width:width,height:height/3, backgroundColor:'#000000'}} />
+                    </View>               
+                
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
                             <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
+                    
                         <View style={{marginLeft:15,width:'63%'}}>
                             <Text style={{fontWeight:'bold',fontSize:15}}>{data.artist_name}</Text>
                             <Text style={{width:'80%'}}>{data.post_name}</Text>
