@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator} from 'react-native';
+import React, { useEffect, useState, Component } from 'react';
+import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator,Button} from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 import Ant from 'react-native-vector-icons/AntDesign';
+// class  extends Component
 const Player = ({navigation, route}) =>{
-    videoRef;
     useEffect(() => {
         console.log(route.params.data);
     });
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
     const data = route.params.data;
     const {width, height} = Dimensions.get("screen");
-    const videoRef = React.createRef();
     const videoProgress = (data)=>{
         console.log(data);
     }
@@ -56,7 +55,7 @@ const Player = ({navigation, route}) =>{
                             (
                                 <View style={{position:'absolute',zIndex: 1,flexDirection: 'row',justifyContent: 'space-between',width:'60%',padding:5,opacity:.8}}>
                                     <Ant name='banckward' size={30} color={'#fff'} onPress={rewindVideo} style={{marginLeft:10,marginTop:2}}/>
-                                    <Ant name='forward' size={30} color={'#fff'}  onPress={forwardVideo} style={{marginLeft:10,marginTop:2}}/>
+                                    <Ant name='forward' size={30} color={'#fff'}  style={{marginLeft:10,marginTop:2}} onPress={()=>console.log("forward pressed")}/>
                                 </View>
                             ):
                             null
@@ -72,7 +71,10 @@ const Player = ({navigation, route}) =>{
                             disableVolume={true}
                             controlTimeout={5000}
                             disableFullscreen={true}
-                            onProgress={videoProgress}    
+                            onProgress={videoProgress}
+                            ref={(ref) => {
+                                this.player = ref
+                              }}    
                             style={{width:width,height:height/3, backgroundColor:'#000000'}} />
                     </View>               
                 

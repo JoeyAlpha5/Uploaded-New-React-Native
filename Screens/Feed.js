@@ -13,7 +13,7 @@ export const Feed = ({navigation, route}) =>{
     const getFeed = async ()=>{
         console.log("getting more videos, count is ", count);
         var savedEmail = await AsyncStorage.getItem("email");
-        fetch('http://185.237.96.39:3000/users/users?type=getHomeList&&email='+savedEmail+'&&count='+count)
+        fetch('http://185.237.96.39:3000/users/users?type=getHomeList2&&email='+savedEmail+'&&count='+count)
         .then((response) => response.json())
         .then((json) =>{ setFeed([...feed,...json.Response]); setErr(false);setRefreshing(false)})
         .catch((error) => {
@@ -59,6 +59,53 @@ export const Feed = ({navigation, route}) =>{
         seconds = Math.floor(seconds);
         return minutes.toString()+":"+seconds.toString();
     }
+    
+    const getDate = (date) => {
+        var today = new Date();
+        var other_date = new Date(date);
+        var date_difference = new Date(today.getTime()-other_date.getTime());
+        var minutes = date_difference.getMinutes();
+        var hours =  date_difference.getHours();
+        var _date = date_difference.getDate();
+        var month = date_difference.getMonth();
+        var year = date_difference.getFullYear()-1970;
+        if(year > 0){
+          if(year == 1){
+            return (1+ " year ago");
+          }else{
+            return (year + " years ago");
+          }
+        }else if(month > 0 ){
+          if(month == 1){
+            return (1+ " month ago");
+          }else{
+            return (month+ " months ago");
+          }
+        }else if(_date > 0){
+            if(_date == 1){
+              return (1+ " day ago");
+            }else if(_date < 7){
+              return (_date+ " days ago");
+            }else{
+              return (Math.floor(_date/7)+" weeks ago");
+            }
+        }
+        else if(hours > 0){
+          if(hours == 1){
+            return (1+ " hour ago");
+          }else{
+            return (hours+ " hours ago");
+          }
+        }else if(minutes > 0){
+          if(minutes == 1){
+            return (1+ " minute ago");
+          }else{
+            return (minutes + " miinutes agao");
+          }
+        }
+      
+      }
+      
 
     return (
         <View style={styles.view}>
@@ -91,7 +138,13 @@ export const Feed = ({navigation, route}) =>{
                         <View style={styles.TopPostContent}>
                             <View style={styles.ProfileImageSec}>
                                 <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>
-                                <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>
+                                <View>
+
+                                    <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>
+                                    <Text style={{marginLeft:10,fontSize:10,color:'#717171'}}>
+                                        Posted a video {getDate(item.post_date)}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <TouchableOpacity onPress={()=>navigate('Player',item)} style={{width:'100%'}}>
