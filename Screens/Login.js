@@ -66,7 +66,7 @@ const Login= ({navigation, route}) =>{
                 // console.log(route);
 
             }else{
-                Alert.alert('User does not exist');
+                Alert.alert('User does not exist, please check your email address or password');
             }
         })
         .catch((error) => console.error(error))

@@ -9,7 +9,9 @@ import {
     Image,
     TextInput,
     AsyncStorage,
-    Alert
+    Alert, 
+    CheckBox,
+    Linking
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,11 +23,18 @@ const Register= ({navigation, route}) =>{
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [username, setUsername] = useState();
+    const [terms, setTerms] = useState(false);
+    const terms_url = 'http://uploadedstream.com/Terms%20of%20Service%20for%20uploaded.pdf';
 
     useEffect(()=>{
         console.log("params ",route.params.login);
     })
     //
+
+    const OpenURL = async () =>{
+        await Linking.openURL(terms_url);
+    }
+
     const handleEmailChange = (em)=>{
         var email_array = em.split(" ");
         var trimmed_email = email_array.join("");
@@ -69,7 +78,10 @@ const Register= ({navigation, route}) =>{
             Alert.alert("Please enter a valid email address");
         }else if(password == "" || password == null || password == undefined || password.length < 8){
             Alert.alert("Your password must be at least 8 characters long.");
-        }else{
+        }else if(terms == false){
+            Alert.alert("You must accept the terms and conditions before signing up");
+        }
+        else{
             registerApi();
         }
     }
@@ -145,6 +157,15 @@ const Register= ({navigation, route}) =>{
                     onChangeText={(val) => handlePasswordChange(val)}
                 />
             </View>
+                <View style={{color:'white',justifyContent: 'center',flexDirection: 'row',marginTop:20}}> 
+                    <CheckBox
+                        value={terms}
+                        // checked={true}
+                        tintColors={{ true: '#eb8d35', false: 'black' }}
+                        onValueChange={()=> setTerms(!terms)}
+                    />
+                    <Text onPress={()=>OpenURL()} style={{color:'white',marginTop:5,textDecorationLine:'underline'}}>Accecpt terms and conditions</Text>
+                </View>
             <View style={styles.button}>
                     <TouchableOpacity
                         style={styles.signIn} 
@@ -219,7 +240,7 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 20
     },
     signIn: {
         width: '100%',
