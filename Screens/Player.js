@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 import Ant from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 // class  extends Component
 import { firebase } from '../firebase/firebase';
 const Player = ({navigation, route}) =>{
@@ -153,7 +154,8 @@ const Player = ({navigation, route}) =>{
                     }
             </View> */}
             <View style={styles.commentsInput}>
-                <TextInput style={{width:'100%', height:40,paddingLeft:15,}} placeholder={"Add comment.."}/>
+                <TextInput style={{height:40,paddingLeft:15,}} placeholder={"Add comment.."}/>
+                <Ionicons name="send-sharp" size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
             </View>
         </View>
     )
@@ -190,6 +192,9 @@ const styles = StyleSheet.create({
     },
     commentsInput:{
         width:'100%',
+        backgroundColor:'#e6e6e6',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         // flex:1
     },
     commentsHeader:{
