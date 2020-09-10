@@ -137,7 +137,17 @@ export const Feed = ({navigation, route}) =>{
                     <View style={styles.Post}>                        
                         <View style={styles.TopPostContent}>
                             <View style={styles.ProfileImageSec}>
-                                <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>
+                                {item.artist_thumbnail?
+
+                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>
+                                    :
+                                    (
+                                        <View style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
+                                            <Icons name="user" size={25} color={'white'}/>
+                                        </View>
+                                    )
+                                }
+
                                 <View>
 
                                     <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>

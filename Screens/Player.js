@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Component } from 'react';
-import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator,Button} from 'react-native';
+import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator,FlatList} from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,15 +7,39 @@ import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 import Ant from 'react-native-vector-icons/AntDesign';
 // class  extends Component
+import { firebase } from '../firebase/firebase';
 const Player = ({navigation, route}) =>{
+    const database = firebase.database().ref("Comments");
+    const [Comments,setComments] = useState([]);
+    const [commentsSpinner,setcommentsSpinner] = useState(true);
+    const [commentsError,setcommentsError] = useState(false);
+    const getComments = ()=>{
+        const new_comments = [];
+        database.once("value", data=>{
+            data.forEach(item=>{
+                new_comments.push(item);
+            });
+        }).then(()=>{
+            setComments(new_comments);
+            console.log("comments ",Comments);
+            console.log("new comments ",new_comments);
+            setcommentsSpinner(false);
+        }).catch(err=>{
+            setcommentsSpinner(false);
+            setcommentsError(true);
+        });
+    }
+
     useEffect(() => {
-        console.log(route.params.data);
-    });
+        console.log("getting comments");
+        // setComments([]);
+        getComments();
+    }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
     const data = route.params.data;
     const {width, height} = Dimensions.get("screen");
     const videoProgress = (data)=>{
-        console.log(data);
+        // console.log(data);
     }
     //
     const goBack = ()=>{
@@ -29,20 +53,15 @@ const Player = ({navigation, route}) =>{
         },5000)
         console.log("controls showing");
     }
-
     const hideForwardBackDisplay = ()=>{
         setforwardBackDisplay(false);
         console.log("controlshiding");
     }
-
     const forwardVideo = () =>{
         console.log("video forward");
     }
-
     const rewindVideo = () =>{
         console.log("video rewind");
-        this.player.ref.seek(0)
-
     }
 
     return (
@@ -71,16 +90,23 @@ const Player = ({navigation, route}) =>{
                             disableVolume={true}
                             controlTimeout={5000}
                             disableFullscreen={true}
-                            onProgress={videoProgress}
-                            ref={(ref) => {
-                                this.player = ref
-                              }}    
+                            onProgress={videoProgress}  
                             style={{width:width,height:height/3, backgroundColor:'#000000'}} />
                     </View>               
                 
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
+
+                        {data.artist_thumbnail?
                             <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
+                        :
+                        (
+                            <View style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
+                                <Icons name="user" size={25} color={'white'}/>
+                            </View>
+                        )
+                        }
+
                     
                         <View style={{marginLeft:15,width:'63%'}}>
                             <Text style={{fontWeight:'bold',fontSize:15}}>{data.artist_name}</Text>
@@ -106,7 +132,26 @@ const Player = ({navigation, route}) =>{
                     </View>
                 </View>
             </View>
+            {/* <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
 
+                    {commentsSpinner == true?
+                        
+                        (<ActivityIndicator size="large" color="#eb8d35"/>)
+                        :
+                        (
+                            <FlatList
+                            data={Comments}
+                            keyExtractor={({ id }, index) => index.toFixed()}
+                            renderItem={({ item }) => (
+                                <Text style={{color:'black',marginTop:50}}>
+    
+                                </Text>
+                            )}
+                          />
+                        )
+
+                    }
+            </View> */}
             <View style={styles.commentsInput}>
                 <TextInput style={{width:'100%', height:40,paddingLeft:15,}} placeholder={"Add comment.."}/>
             </View>
