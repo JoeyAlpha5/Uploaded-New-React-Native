@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { 
     View, 
     Text, 
@@ -9,9 +9,13 @@ import {
     Image,
     AsyncStorage
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import LinearGradient from 'react-native-linear-gradient';
 
 const Splash = ({navigation})=>{
+    useEffect(() => {
+        SplashScreen.hide();
+      }, []);
     return (
         <View style={styles.container}>
 

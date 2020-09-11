@@ -3,6 +3,7 @@ import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBac
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';
+import SplashScreen from 'react-native-splash-screen';
 import { set } from 'react-native-reanimated';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
@@ -29,6 +30,7 @@ export const Feed = ({navigation, route}) =>{
     }
     useEffect(() => {
         //get the feed on load
+        SplashScreen.hide();
         getFeed();
       }, []);
 

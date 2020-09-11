@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState,useEffect} from 'react';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
 import {AsyncStorage} from 'react-native';
 import Player from './Screens/Player';
 import Splash from './Screens/Splash';
@@ -28,8 +28,6 @@ const App = ()=>{
       console.log("login state updated to ",isLoggedIn, " email ", email);
   }
   useEffect(()=>{
-    //
-    SplashScreen.hide();
     var savedEmail = isLoggedIn();
   });
 

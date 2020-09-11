@@ -10,30 +10,22 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // class  extends Component
 import { firebase } from '../firebase/firebase';
 const Player = ({navigation, route}) =>{
-    const database = firebase.database().ref("Comments");
+    const db = firebase.firestore().collection("Comments");
     const [Comments,setComments] = useState([]);
     const [commentsSpinner,setcommentsSpinner] = useState(true);
     const [commentsError,setcommentsError] = useState(false);
+
     const getComments = ()=>{
-        const new_comments = [];
-        database.once("value", data=>{
-            data.forEach(item=>{
-                new_comments.push(item);
+        db.get().then(x=>{
+            x.docs.forEach(c=>{
+                console.log("comments");
+                console.log(c);
             });
-        }).then(()=>{
-            setComments(new_comments);
-            console.log("comments ",Comments);
-            console.log("new comments ",new_comments);
-            setcommentsSpinner(false);
-        }).catch(err=>{
-            setcommentsSpinner(false);
-            setcommentsError(true);
         });
     }
 
     useEffect(() => {
         console.log("getting comments");
-        // setComments([]);
         getComments();
     }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
