@@ -8,11 +8,11 @@ import {
     StatusBar,
     Image,
     TextInput,
-    AsyncStorage,
     Alert, 
     CheckBox,
     Linking
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';

@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useState,useEffect} from 'react';
-import SplashScreen from 'react-native-splash-screen';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Player from './Screens/Player';
 import Splash from './Screens/Splash';
 import Login from './Screens/Login';
@@ -11,7 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeTab from './Screens/NavigationStack';
 const App = ()=>{
-  const [LogedIn, setLogedIn] = useState(false);
+  const [LogedIn, setLogedIn] = useState(true);
   const Stack = createStackNavigator();
   const isLoggedIn = async ()=>{
     const email = await AsyncStorage.getItem("email");

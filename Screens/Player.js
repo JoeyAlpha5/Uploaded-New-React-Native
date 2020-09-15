@@ -7,26 +7,42 @@ import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
 // class  extends Component
-import { firebase } from '../firebase/firebase';
+import { firebase, comments } from '../firebase/firebase';
 const Player = ({navigation, route}) =>{
-    const db = firebase.firestore().collection("Comments");
     const [Comments,setComments] = useState([]);
     const [commentsSpinner,setcommentsSpinner] = useState(true);
     const [commentsError,setcommentsError] = useState(false);
-
+    const [views,setViews] = useState(0);
     const getComments = ()=>{
-        db.get().then(x=>{
-            x.docs.forEach(c=>{
-                console.log("comments");
-                console.log(c);
-            });
-        });
+        // let comments_array = []
+        // comments.onSnapshot(snapshot=>{
+        //     console.log("commments count", snapshot)
+        //     snapshot.forEach(doc=>{
+        //         // comment.push(doc.data());
+        //         console.log("comment ",doc.data());
+        //     });
+        //     // setComments(comments_array);
+        // });
+    }
+
+    const getPostView = async ()=>{
+        var user_id = await AsyncStorage.getItem("user_id");
+        console.log("user id is ", user_id);
+        var post_id = route.params.data.post_id;
+        fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id)
+        .then(response=>response.json())
+        .then(json=>{
+            console.log(json);
+            setViews(json.view_count);
+        })
     }
 
     useEffect(() => {
         console.log("getting comments");
-        getComments();
+        // getComments();
+        getPostView();
     }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
     const data = route.params.data;
@@ -111,7 +127,7 @@ const Player = ({navigation, route}) =>{
                             <Icons name='heart' size={19} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
                         </View>
                         <View>
-                            <Icon name='eye' size={21} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{data.post_num_views}</Text>
+                            <Icon name='eye' size={21} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
                         </View>
                         <View style={{marginTop:2}}>
                             <Icono name='share' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
@@ -125,7 +141,7 @@ const Player = ({navigation, route}) =>{
                     </View>
                 </View>
             </View>
-            {/* <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
+            <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
 
                     {commentsSpinner == true?
                         
@@ -137,14 +153,14 @@ const Player = ({navigation, route}) =>{
                             keyExtractor={({ id }, index) => index.toFixed()}
                             renderItem={({ item }) => (
                                 <Text style={{color:'black',marginTop:50}}>
-    
+                                    Hello world
                                 </Text>
                             )}
                           />
                         )
 
                     }
-            </View> */}
+            </View>
             <View style={styles.commentsInput}>
                 <TextInput style={{height:40,paddingLeft:15,}} placeholder={"Add comment.."}/>
                 <Ionicons name="send-sharp" size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>

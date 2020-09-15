@@ -1,5 +1,6 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image, AsyncStorage, StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl, Alert} from 'react-native';
+import {ActivityIndicator, View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl, Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';

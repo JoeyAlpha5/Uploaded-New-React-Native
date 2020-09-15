@@ -8,9 +8,9 @@ import {
     StatusBar,
     Image,
     TextInput,
-    AsyncStorage,
     Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -59,6 +59,7 @@ const Login= ({navigation, route}) =>{
         .then( async (json) =>{
             if(json.Outcome == 'Authentication test passed'){
                 await AsyncStorage.setItem('email', em);
+                await AsyncStorage.setItem('user_id', JSON.stringify(json.id));
                 var savedEmail = await AsyncStorage.getItem("email");
                 // navigation.navigate('Uploaded');
                 // console.log(savedEmail);

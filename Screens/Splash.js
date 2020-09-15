@@ -7,7 +7,6 @@ import {
     StyleSheet,
     StatusBar,
     Image,
-    AsyncStorage
 } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import LinearGradient from 'react-native-linear-gradient';

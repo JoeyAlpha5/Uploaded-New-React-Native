@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Button, AsyncStorage} from 'react-native';
+import {View, Text, Button} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const Profile = ({navigation,route}) =>{
     const signOut = async ()=>{

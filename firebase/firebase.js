@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import '@firebase/auth';
 import '@firebase/firestore';
-
+var app;
 const firebaseConfig = {
     apiKey: "AIzaSyDnQA3dMGr6-LK2qoDk7L7Ltvm9W9L6vXE",
     authDomain: "uploaded-9719b.firebaseapp.com",
@@ -14,7 +14,9 @@ const firebaseConfig = {
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+   app = firebase.initializeApp(firebaseConfig);
 }
 
+const db = firebase.firestore(app);
+export const comments = db.collection("UploadedComments");
 export { firebase };
