@@ -12,12 +12,26 @@ export const Feed = ({navigation, route}) =>{
     const [isLoading, setLoading] = useState(true);
     const [Err,setErr] = useState(false);
     const [Refreshing,setRefreshing] = useState(false);
-    const getFeed = async ()=>{
-        console.log("getting more videos, count is ", count);
+    const getFeed = async (Reload)=>{
+        let feedCount = 0;
+        if(Reload != true){
+            feedCount = count;
+        }
+        console.log("getting more videos, count is ", feedCount);
         var savedEmail = await AsyncStorage.getItem("email");
-        fetch('http://185.237.96.39:3000/users/users?type=getHomeList2&&email='+savedEmail+'&&count='+count)
+        fetch('http://185.237.96.39:3000/users/users?type=getHomeList2&&email='+savedEmail+'&&count='+feedCount)
         .then((response) => response.json())
-        .then((json) =>{ setFeed([...feed,...json.Response]); setErr(false);setRefreshing(false)})
+        .then((json) =>{ 
+            //if reloading set new state, else update feed state
+            setErr(false);
+            setRefreshing(false); 
+            if(Reload == true){
+                setFeed(json.Response);
+            }else{
+                setFeed([...feed,...json.Response]);
+            }
+        
+        })
         .catch((error) => {
             console.error(error);
             if(feed.length != 0){
@@ -32,10 +46,10 @@ export const Feed = ({navigation, route}) =>{
     useEffect(() => {
         //get the feed on load
         SplashScreen.hide();
-        getFeed();
+        getFeed(false);
       }, []);
 
-      
+
     // navigate to view the post
     const navigate = (page, post) =>{
         //get current feed into separate array
@@ -56,17 +70,14 @@ export const Feed = ({navigation, route}) =>{
     //
     const onRefresh = ()=>{
         setRefreshing(true);
-        setCount(0);
-        // setFeed([]);
         getFeed();
     }
 
     const onReload=()=>{
         setErr(false);
         setLoading(true);
-        setCount(0);
-        // setFeed([]);
-        getFeed();
+        setFeed([]);
+        getFeed(true);
     }
     const getPostDuration = (post_duration)=>{
         var int_post_duration = parseInt(post_duration);
@@ -127,7 +138,6 @@ export const Feed = ({navigation, route}) =>{
     return (
         <View style={styles.view}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
-            {/* show unable to load feed if internet issue is encountered */}
             {Err == true? 
                 (
                     <View style={{justifyContent: 'center',alignItems: 'center',height:'100%',width:'100%'}}>
