@@ -35,9 +35,23 @@ export const Feed = ({navigation, route}) =>{
         getFeed();
       }, []);
 
+      
     // navigate to view the post
     const navigate = (page, post) =>{
-        navigation.navigate(page, {data:post});
+        //get current feed into separate array
+        let current_array = [...feed];
+        for(let array_count = 0; array_count < current_array.length; array_count++){
+            //update the view count of selected post
+            if(post.post_id == current_array[array_count].post_id){
+                var current_post = current_array[array_count];
+                current_post['post_num_views'] += 1;
+                current_array[array_count] = current_post;
+                //update feed array in state
+                setFeed(current_array);
+                navigation.navigate(page, {data:current_post});
+                break;
+            }
+        }
     }
     //
     const onRefresh = ()=>{
