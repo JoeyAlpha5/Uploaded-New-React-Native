@@ -17,6 +17,6 @@ if (!firebase.apps.length) {
    app = firebase.initializeApp(firebaseConfig);
 }
 
-const db = firebase.firestore(app);
-export const comments = db.collection("UploadedComments");
+const db = firebase.database();
+export const comments = db.ref("Comments");
 export { firebase };

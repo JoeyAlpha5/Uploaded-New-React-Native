@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Component } from 'react';
-import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator,FlatList} from 'react-native';
+import {View, Text, Dimensions, StatusBar,StyleSheet,TouchableOpacity, TextInput, Image, ActivityIndicator,FlatList,Keyboard} from 'react-native';
 import VideoPlayer from 'react-native-video-controls';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,16 +15,19 @@ const Player = ({navigation, route}) =>{
     const [commentsSpinner,setcommentsSpinner] = useState(true);
     const [commentsError,setcommentsError] = useState(false);
     const [views,setViews] = useState(0);
+    const [comment,setComment] = useState();
     const getComments = ()=>{
-        // let comments_array = []
-        // comments.onSnapshot(snapshot=>{
-        //     console.log("commments count", snapshot)
-        //     snapshot.forEach(doc=>{
-        //         // comment.push(doc.data());
-        //         console.log("comment ",doc.data());
-        //     });
-        //     // setComments(comments_array);
-        // });
+        let comments_array = []
+        comments.once('value',data=>{
+            setcommentsSpinner(false);
+            data.forEach(comment=>{
+                console.log(comment.val());
+                comments_array.push(comment.val());
+            });
+        }).then(()=>{
+            console.log("comments ", comments_array);
+            setComments(comments_array);
+        });
     }
 
     const getPostView = async ()=>{
@@ -41,8 +44,13 @@ const Player = ({navigation, route}) =>{
 
     useEffect(() => {
         console.log("getting comments");
-        // getComments();
+        getComments();
         getPostView();
+
+        //listen for comments
+        comments.on('value',()=>{
+            getComments();
+        })
     }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
     const data = route.params.data;
@@ -72,6 +80,17 @@ const Player = ({navigation, route}) =>{
     const rewindVideo = () =>{
         console.log("video rewind");
     }
+
+   const onChangeText = (text) =>{
+       setComment(text);
+   }
+
+   const submitComment = ()=>{
+       console.log("comment is ", comment);
+       comments.push({"comment":comment});
+       Keyboard.dismiss;
+       setComment('');
+   }
 
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between'}}>
@@ -153,17 +172,16 @@ const Player = ({navigation, route}) =>{
                             keyExtractor={({ id }, index) => index.toFixed()}
                             renderItem={({ item }) => (
                                 <Text style={{color:'black',marginTop:50}}>
-                                    Hello world
+                                    {item.comment}
                                 </Text>
                             )}
                           />
                         )
-
                     }
             </View>
             <View style={styles.commentsInput}>
-                <TextInput style={{height:40,paddingLeft:15,}} placeholder={"Add comment.."}/>
-                <Ionicons name="send-sharp" size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
+                <TextInput style={{height:40,paddingLeft:15,}} value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
+                <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
             </View>
         </View>
     )
