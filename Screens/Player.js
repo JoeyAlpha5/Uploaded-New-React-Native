@@ -15,14 +15,19 @@ const Player = ({navigation, route}) =>{
     const [commentsSpinner,setcommentsSpinner] = useState(true);
     const [commentsError,setcommentsError] = useState(false);
     const [views,setViews] = useState(0);
+    const [viewCommentButton, setCommentButton] = useState(false);
     const [comment,setComment] = useState();
+    const data = route.params.data;
     const getComments = ()=>{
+        var int_post_id = data.post_id;
         let comments_array = []
         comments.once('value',data=>{
             setcommentsSpinner(false);
             data.forEach(comment=>{
-                console.log(comment.val());
-                comments_array.push(comment.val());
+                if(comment.val().post_id == int_post_id){
+                    comments_array.push(comment.val());
+                    console.log(comment.val());
+                }
             });
         }).then(()=>{
             console.log("comments ", comments_array);
@@ -46,14 +51,12 @@ const Player = ({navigation, route}) =>{
         console.log("getting comments");
         getComments();
         getPostView();
-
-        //listen for comments
+        //listen for comments, remember to come back to close this subscription
         comments.on('value',()=>{
             getComments();
-        })
+        });
     }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
-    const data = route.params.data;
     const {width, height} = Dimensions.get("screen");
     const videoProgress = (data)=>{
         // console.log(data);
@@ -82,14 +85,27 @@ const Player = ({navigation, route}) =>{
     }
 
    const onChangeText = (text) =>{
+       //hide comments
+        // setCommentsDisplay(false);
+       if(text == ""){
+            setCommentButton(false);
+       }
+       else if(text.length > 250){
+        console.log("comments length",text.length);
+       }
+       else{
+            setCommentButton(true);
+       }
        setComment(text);
+
    }
 
-   const submitComment = ()=>{
-       console.log("comment is ", comment);
-       comments.push({"comment":comment});
-       Keyboard.dismiss;
-       setComment('');
+   const submitComment = async ()=>{
+        console.log(comment);
+        var username = await AsyncStorage.getItem("username");
+        comments.push({"comment":comment, username:username, post_id:data.post_id});
+        setCommentButton(false);
+        setComment('');
    }
 
     return (
@@ -115,6 +131,7 @@ const Player = ({navigation, route}) =>{
                             navigator={navigation}    
                             ignoreSilentSwitch={"obey"}                          
                             resizeMode={"contain"}
+                            muted={true}
                             disableVolume={true}
                             controlTimeout={5000}
                             disableFullscreen={true}
@@ -159,9 +176,8 @@ const Player = ({navigation, route}) =>{
                         <Text>Follow</Text>
                     </View>
                 </View>
-            </View>
-            <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
-
+                {/* comments view */}
+                <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
                     {commentsSpinner == true?
                         
                         (<ActivityIndicator size="large" color="#eb8d35"/>)
@@ -169,19 +185,40 @@ const Player = ({navigation, route}) =>{
                         (
                             <FlatList
                             data={Comments}
+                            style={{width:'90%'}}
                             keyExtractor={({ id }, index) => index.toFixed()}
                             renderItem={({ item }) => (
-                                <Text style={{color:'black',marginTop:50}}>
-                                    {item.comment}
-                                </Text>
+                            <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,marginTop:20,borderColor:'#e6e6e6',height:'auto',padding: 10,paddingTop:20,paddingBottom:20,width:'90%'}}>
+                                <View style={{width:40,height:40,borderRadius:50,borderColor:'#e4e6e8',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
+                                    <Icons name="user" size={25} color={'white'}/>
+                                </View>
+                                <View style={{marginLeft:15,}}>
+                                    <Text style={{color:'black',fontSize:11,color:'#717171'}}>
+                                        {item.username}
+                                    </Text>
+                                    <Text style={{fontSize:12,lineHeight:18}}>
+                                        {item.comment}
+                                    </Text>
+                                </View>
+                            </View>
+
                             )}
-                          />
+                        />
                         )
                     }
+                </View>
+                {/* comments view ends here */}
             </View>
+
             <View style={styles.commentsInput}>
                 <TextInput style={{height:40,paddingLeft:15,}} value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
-                <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
+                {viewCommentButton == true?
+                    (
+                        <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
+                    )
+                    :
+                    null
+                }
             </View>
         </View>
     )
@@ -235,7 +272,8 @@ const styles = StyleSheet.create({
         backgroundColor:'#fff',
         shadowColor: "#000",
         borderTopWidth:0.2,
-        borderColor:'#e4e6e8'
+        borderColor:'#e4e6e8',
+        // flex: 1,
         // shadowOffset: {
         //     width: 0,
         //     height: 2,

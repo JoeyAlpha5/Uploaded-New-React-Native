@@ -205,7 +205,7 @@ export const Feed = ({navigation, route}) =>{
                 </View>
 
             )} onEndReached={()=>{
-                getFeed();
+                getFeed(false);
             }} onEndReachedThreshold ={10}/>
             )}
         </View>

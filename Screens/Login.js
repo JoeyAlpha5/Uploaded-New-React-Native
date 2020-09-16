@@ -60,12 +60,10 @@ const Login= ({navigation, route}) =>{
             if(json.Outcome == 'Authentication test passed'){
                 await AsyncStorage.setItem('email', em);
                 await AsyncStorage.setItem('user_id', JSON.stringify(json.id));
+                await AsyncStorage.setItem("username", json.username);
                 var savedEmail = await AsyncStorage.getItem("email");
-                // navigation.navigate('Uploaded');
-                // console.log(savedEmail);
+                console.log(json);
                 route.params.login(true,savedEmail);
-                // console.log(route);
-
             }else{
                 Alert.alert('User does not exist, please check your email address or password');
             }
