@@ -6,6 +6,7 @@ import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';
 import SplashScreen from 'react-native-splash-screen';
 import { set } from 'react-native-reanimated';
+import { firebase, comments } from '../firebase/firebase';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [count,setCount] = useState(0);
@@ -86,6 +87,15 @@ export const Feed = ({navigation, route}) =>{
         var seconds = (parseFloat(time_in_minutes) - minutes)*60;
         seconds = Math.floor(seconds);
         return minutes.toString()+":"+seconds.toString();
+    }
+
+    const getCommentsCount = (post_id)=>{
+        var comments_count = 0;
+        comments.orderByChild('post_id').equalTo(post_id).on('value',data=>{
+            console.log("comments count ", data.numChildren());
+            comments_count =  data.numChildren();
+        });
+        return comments_count;
     }
     
     const getDate = (date) => {
@@ -194,7 +204,7 @@ export const Feed = ({navigation, route}) =>{
                         <View style={styles.BottomPostContent}>
                             <View style={styles.postIcons}>
                                 <Icons name='heart' size={25} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
-                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{item.post_num_comments}</Text>
+                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{getCommentsCount(item.post_id)}</Text>
                                 <Icon name='eye' size={25} color={'#717171'} style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
                             </View>
                             <Text style={{color:'#717171', marginRight:10}}>

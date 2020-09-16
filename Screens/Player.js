@@ -132,7 +132,7 @@ const Player = ({navigation, route}) =>{
                             navigator={navigation}    
                             ignoreSilentSwitch={"obey"}                          
                             resizeMode={"contain"}
-                            muted={true}
+                            // muted={true}
                             disableVolume={true}
                             controlTimeout={5000}
                             disableFullscreen={true}
