@@ -17,17 +17,18 @@ const Player = ({navigation, route}) =>{
     const [views,setViews] = useState(0);
     const [viewCommentButton, setCommentButton] = useState(false);
     const [comment,setComment] = useState();
+    const [commentsCount,setCommentsCount] = useState(0);
     const data = route.params.data;
     const getComments = ()=>{
         var int_post_id = data.post_id;
         let comments_array = []
-        comments.once('value',data=>{
+        comments.orderByChild('post_id').equalTo(int_post_id).once('value',data=>{
+            console.log("comments count ", data.numChildren());
+            setCommentsCount(data.numChildren());
             setcommentsSpinner(false);
             data.forEach(comment=>{
-                if(comment.val().post_id == int_post_id){
-                    comments_array.push(comment.val());
-                    console.log(comment.val());
-                }
+                comments_array.push(comment.val());
+                console.log(comment.val());
             });
         }).then(()=>{
             console.log("comments ", comments_array);
@@ -171,7 +172,7 @@ const Player = ({navigation, route}) =>{
                     </View>
                 </View>
                 <View style={styles.commentsBar}>
-                    <Text style={styles.commentsHeader}>Comments: {data.post_num_comments}</Text>
+                    <Text style={styles.commentsHeader}>Comments: {commentsCount}</Text>
                     <View style={styles.follow}>
                         <Text>Follow</Text>
                     </View>
