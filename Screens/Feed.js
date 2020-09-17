@@ -7,6 +7,8 @@ import Icono from 'react-native-vector-icons/Ionicons';
 import SplashScreen from 'react-native-splash-screen';
 import { set } from 'react-native-reanimated';
 import { firebase, comments } from '../firebase/firebase';
+import publicIP from 'react-native-public-ip';
+import GetIp from 'react-native-public-ip';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [count,setCount] = useState(0);
@@ -21,36 +23,45 @@ export const Feed = ({navigation, route}) =>{
         }
         console.log("getting more videos, count is ", feedCount);
         var savedEmail = await AsyncStorage.getItem("email");
-        fetch('http://185.237.96.39:3000/users/users?type=getHomeList3&&email='+savedEmail+'&&count='+feedCount)
-        .then((response) =>response.json())
-        .then((json) =>{ 
-            //if reloading set new state, else update feed state
-            setErr(false);
-            setRefreshing(false); 
-            if(Reload == true){
-                setFeed(json.Response);
-            }else{
-                setFeed([...feed,...json.Response]);
-            }
-        
-        })
-        .catch((error) => {
-            console.error(error);
-            if(feed.length != 0){
-                Alert.alert("Unable to load new posts, please check your internet connection.");
-                setRefreshing(false);
-            }else{
-                setErr(true);
-            }   
-        })
-        .finally(() =>{ setLoading(false); setCount(count+11);setRefreshing(false) });
+        publicIP()
+        .then(ip=>{
+            console.log("ip address is ", ip);
+            fetch('http://185.237.96.39:3000/users/users?type=getHomeList3&&email='+savedEmail+'&&count='+feedCount+"&&user_ip="+ip+"&&user_id="+user_id)
+            .then((response) =>response.json())
+            .then((json) =>{ 
+                //if reloading set new state, else update feed state
+                setErr(false);
+                setRefreshing(false); 
+                if(Reload == true){
+                    setFeed(json.Response);
+                }else{
+                    setFeed([...feed,...json.Response]);
+                }
+            
+            })
+            .catch((error) => {
+                console.error(error);
+                if(feed.length != 0){
+                    Alert.alert("Unable to load new posts, please check your internet connection.");
+                    setRefreshing(false);
+                }else{
+                    setErr(true);
+                }   
+            })
+            .finally(() =>{ setLoading(false); setCount(count+11);setRefreshing(false) });
+        })  
     }
     useEffect(() => {
         //get the feed on load
         SplashScreen.hide();
+        GetIp();
         getFeed(false);
       }, []);
 
+
+      const GetIp = ()=>{
+
+      }
 
     // navigate to view the post
     const navigate = (page, post) =>{

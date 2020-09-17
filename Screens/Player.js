@@ -178,7 +178,7 @@ const Player = ({navigation, route}) =>{
                             <Ionicons name='ios-eye-outline' size={22} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
                         </View>
                         <View style={{marginTop:2}}>
-                            <Simple name='options' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
+                            <Icono  name='share' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
                         </View>
                     </View>
                 </View>
