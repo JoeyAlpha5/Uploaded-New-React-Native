@@ -64,7 +64,7 @@ export const Feed = ({navigation, route}) =>{
                 current_array[array_count] = current_post;
                 //update feed array in state
                 setFeed(current_array);
-                navigation.navigate(page, {data:current_post});
+                navigation.navigate(page, {data:current_post,updateLike:updateLike});
                 break;
             }
         }
@@ -99,6 +99,11 @@ export const Feed = ({navigation, route}) =>{
         return comments_count;
     }
 
+    //this method is called from the player page
+    const updateLike = (liked,like_count,post_id)=>{
+
+    }
+
     const like = async (post_id) =>{
         var user_id = await AsyncStorage.getItem("user_id");
         console.log("post id ", post_id);
@@ -121,6 +126,7 @@ export const Feed = ({navigation, route}) =>{
                     }
                     console.log("current post ", current_post);
                     setFeed(current_feed);
+                    break;
                 }
             }
         })

@@ -18,7 +18,8 @@ const Player = ({navigation, route}) =>{
     const [viewCommentButton, setCommentButton] = useState(false);
     const [comment,setComment] = useState();
     const [commentsCount,setCommentsCount] = useState(0);
-    const data = route.params.data;
+    const [data,setData] = useState(route.params.data);
+    const updateLike = route.params.updateLike;
     const getComments = ()=>{
         var int_post_id = data.post_id;
         let comments_array = []
@@ -43,12 +44,13 @@ const Player = ({navigation, route}) =>{
         fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id)
         .then(response=>response.json())
         .then(json=>{
-            console.log(json);
             setViews(json.view_count);
         })
     }
 
     useEffect(() => {
+        console.log("post liked ", data.user_num_likes_post);
+
         console.log("getting comments");
         getComments();
         getPostView();
@@ -92,10 +94,33 @@ const Player = ({navigation, route}) =>{
         setComment('');
    }
 
+   const PostLike = async ()=>{
+        var user_id = await AsyncStorage.getItem("user_id");
+        fetch('http://185.237.96.39:3000/users/users?type=userlikespost&&post_id='+data.post_id+'&&user_id='+user_id)
+        .then(re=>re.json())
+        .then(json=>{
+            // console.log(json);
+            // console.log(data);
+            let current_data = data;
+            if(json.Outcome == "Success. User UNLiked post"){
+                current_data['user_num_likes_post'] = 0;
+            }else{
+                current_data['user_num_likes_post'] = 1;
+            }
+            current_data['post_num_likes'] = json.num_likes;
+            // console.log(current_data);
+            setData(current_data);
+            //
+            console.log("state data ",current_data);
+
+        })
+
+   }
+
     return (
-        <View style={{width:width, flex: 1,justifyContent:'space-between'}}>
+        <View style={{width:width, flex: 1,justifyContent:'space-between',backgroundColor:'#000000'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
-            <View style={{flex: 1,}}>
+            <View style={{flex: 1,alignItems: 'center',}}>
                 
                     <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
                         <VideoPlayer source={{uri: data.post_source_url }} 
@@ -127,14 +152,26 @@ const Player = ({navigation, route}) =>{
 
                     
                         <View style={{marginLeft:15,width:'63%'}}>
-                            <Text style={{fontWeight:'bold',fontSize:15}}>{data.artist_name}</Text>
-                            <Text style={{width:'80%'}}>{data.post_name}</Text>
+                            <Text style={{fontWeight:'bold',fontSize:15,color:'white'}}>{data.artist_name}</Text>
+                            <Text style={{width:'80%',color:'white'}}>{data.post_name}</Text>
                         </View>
                     </View>
                     <View style={{flexDirection:'row',paddingTop:10,marginRight:10}}>
-                        <View style={{marginTop:2}}>
-                            <Icons name='heart' size={19} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
-                        </View>
+
+                        {data.user_num_likes_post == 1?
+                            (
+                                <View style={{marginTop:2}}>
+                                    <Ionicons name='heart'  onPress={()=>PostLike()} size={19} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                </View>
+                            ):
+                            (
+                                <View style={{marginTop:2}}>
+                                    <Icons name='heart' size={19} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                </View>
+                            )
+                        }
+
+
                         <View>
                             <Icon name='eye' size={21} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
                         </View>
@@ -146,11 +183,11 @@ const Player = ({navigation, route}) =>{
                 <View style={styles.commentsBar}>
                     <Text style={styles.commentsHeader}>Comments: {commentsCount}</Text>
                     <View style={styles.follow}>
-                        <Text>Follow</Text>
+                        <Text style={{color:'white'}}>Follow</Text>
                     </View>
                 </View>
                 {/* comments view */}
-                <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1}}>
+                <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1,backgroundColor:'#181818',marginTop: 5,width:'98%',borderRadius:10,marginBottom:5}}>
                     {commentsSpinner == true?
                         
                         (<ActivityIndicator size="large" color="#eb8d35"/>)
@@ -158,18 +195,18 @@ const Player = ({navigation, route}) =>{
                         (
                             <FlatList
                             data={Comments}
-                            style={{width:'90%'}}
+                            style={{width:'100%'}}
                             keyExtractor={({ id }, index) => index.toFixed()}
                             renderItem={({ item }) => (
-                            <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,marginTop:20,borderColor:'#e6e6e6',height:'auto',padding: 10,paddingTop:20,paddingBottom:20,width:'90%'}}>
-                                <View style={{width:40,height:40,borderRadius:50,borderColor:'#e4e6e8',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
+                            <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:0.2,marginTop:20,   height:'auto',padding: 10,paddingTop:20,paddingBottom:20,borderColor:'#242424',width:'100%'}}>
+                                <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
                                     <Icons name="user" size={25} color={'white'}/>
                                 </View>
                                 <View style={{marginLeft:15,}}>
                                     <Text style={{color:'black',fontSize:11,color:'#717171'}}>
                                         {item.username}
                                     </Text>
-                                    <Text style={{fontSize:12,lineHeight:18}}>
+                                    <Text style={{fontSize:12,lineHeight:18,color:'white',paddingRight: 50,}}>
                                         {item.comment}
                                     </Text>
                                 </View>
@@ -201,9 +238,10 @@ const styles = StyleSheet.create({
     follow:{
         marginRight:10,
         width:80,
-        borderColor:'#e6e6e6',
+        // borderColor:'#717171',
         height:30,
-        borderWidth:1,
+        // borderWidth:1,
+        backgroundColor: '#eb8d35',
         alignItems:'center',
         justifyContent: 'center',
         borderRadius:4
@@ -216,12 +254,14 @@ const styles = StyleSheet.create({
         // backgroundColor:'#000'
     },
     postDetails:{
-        width:'100%',
+        width:'98%',
         height:'auto',
         justifyContent:'space-between',
         flexDirection:'row',
-        backgroundColor:'#fff',
+        backgroundColor:'#181818',
         shadowColor: "#000",
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         paddingLeft:5,
         paddingRight:5,
         paddingBottom:10
@@ -234,18 +274,22 @@ const styles = StyleSheet.create({
         // flex:1
     },
     commentsHeader:{
-        marginLeft:5
+        marginLeft:5,
+        color:'white'
     },
     commentsBar:{
-        width:'100%',
+        width:'98%',
         height:50,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
         justifyContent:'space-between',
         flexDirection:'row',
         paddingTop:10,
-        backgroundColor:'#fff',
+        // marginBottom:10,
+        backgroundColor:'#181818',
         shadowColor: "#000",
         borderTopWidth:0.2,
-        borderColor:'#e4e6e8',
+        borderColor:'#717171',
         // flex: 1,
         // shadowOffset: {
         //     width: 0,
