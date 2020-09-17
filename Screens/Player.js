@@ -67,23 +67,6 @@ const Player = ({navigation, route}) =>{
         navigation.goBack(null);
         console.log("back button pressed");
     }
-    const displayForwardBackDisplay = ()=>{
-        setforwardBackDisplay(true);
-        setTimeout(()=>{
-            setforwardBackDisplay(false);
-        },5000)
-        console.log("controls showing");
-    }
-    const hideForwardBackDisplay = ()=>{
-        setforwardBackDisplay(false);
-        console.log("controlshiding");
-    }
-    const forwardVideo = () =>{
-        console.log("video forward");
-    }
-    const rewindVideo = () =>{
-        console.log("video rewind");
-    }
 
    const onChangeText = (text) =>{
        //hide comments
@@ -115,20 +98,9 @@ const Player = ({navigation, route}) =>{
             <View style={{flex: 1,}}>
                 
                     <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
-                        {/* {forwardBackDisplay == true ?
-                            (
-                                <View style={{position:'absolute',zIndex: 1,flexDirection: 'row',justifyContent: 'space-between',width:'60%',padding:5,opacity:.8}}>
-                                    <Ant name='banckward' size={30} color={'#fff'} onPress={rewindVideo} style={{marginLeft:10,marginTop:2}}/>
-                                    <Ant name='forward' size={30} color={'#fff'}  style={{marginLeft:10,marginTop:2}} onPress={()=>console.log("forward pressed")}/>
-                                </View>
-                            ):
-                            null
-                        } */}
                         <VideoPlayer source={{uri: data.post_source_url }} 
                             repeat={true} 
                             onBack={goBack}  
-                            onShowControls={displayForwardBackDisplay}
-                            onHideControls={hideForwardBackDisplay}
                             navigator={navigation}    
                             ignoreSilentSwitch={"obey"}                          
                             resizeMode={"contain"}
