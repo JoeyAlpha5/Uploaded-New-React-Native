@@ -7,6 +7,7 @@ import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Fontisto';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Simple from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 // class  extends Component
 import { firebase, comments } from '../firebase/firebase';
@@ -130,6 +131,7 @@ const Player = ({navigation, route}) =>{
                             ignoreSilentSwitch={"obey"}                          
                             resizeMode={"contain"}
                             // muted={true}
+                            seekColor={"#eb8d35"}
                             disableVolume={true}
                             controlTimeout={5000}
                             disableFullscreen={true}
@@ -144,39 +146,39 @@ const Player = ({navigation, route}) =>{
                             <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
                         :
                         (
-                            <View style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
-                                <Icons name="user" size={25} color={'white'}/>
+                            <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
+                                <Ionicons name="person-outline" size={25} color={'#717171'}/>
                             </View>
                         )
                         }
 
                     
-                        <View style={{marginLeft:15,width:'63%'}}>
-                            <Text style={{fontWeight:'bold',fontSize:15,color:'white'}}>{data.artist_name}</Text>
-                            <Text style={{width:'80%',color:'white'}}>{data.post_name}</Text>
+                        <View style={{marginLeft:15,width:'73%'}}>
+                            <Text style={{fontWeight:'bold',fontSize:12,color:'white'}}>{data.artist_name}</Text>
+                            <Text style={{width:'100%',color:'white'}}>{data.post_name}</Text>
                         </View>
                     </View>
-                    <View style={{flexDirection:'row',paddingTop:10,marginRight:10}}>
+                    <View style={{flexDirection:'row',paddingTop:10}}>
 
                         {data.user_num_likes_post == 1?
                             (
-                                <View style={{marginTop:2}}>
-                                    <Ionicons name='heart'  onPress={()=>PostLike()} size={19} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                <View style={{marginTop:2,marginRight:15}}>
+                                    <Ionicons name='heart'  onPress={()=>PostLike()} size={18} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
                                 </View>
                             ):
                             (
-                                <View style={{marginTop:2}}>
-                                    <Icons name='heart' size={19} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                <View style={{marginTop:2,marginRight:15}}>
+                                    <Icons name='heart' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
                                 </View>
                             )
                         }
 
 
-                        <View>
-                            <Icon name='eye' size={21} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
+                        <View style={{marginRight:10}}>
+                            <Ionicons name='ios-eye-outline' size={22} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
                         </View>
                         <View style={{marginTop:2}}>
-                            <Icono name='share' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
+                            <Simple name='options' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
                         </View>
                     </View>
                 </View>
@@ -199,8 +201,8 @@ const Player = ({navigation, route}) =>{
                             keyExtractor={({ id }, index) => index.toFixed()}
                             renderItem={({ item }) => (
                             <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:0.2,marginTop:20,   height:'auto',padding: 10,paddingTop:20,paddingBottom:20,borderColor:'#242424',width:'100%'}}>
-                                <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
-                                    <Icons name="user" size={25} color={'white'}/>
+                                <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
+                                    <Ionicons name="person-outline" size={25} color={'#717171'}/>
                                 </View>
                                 <View style={{marginLeft:15,}}>
                                     <Text style={{color:'black',fontSize:11,color:'#717171'}}>
@@ -219,18 +221,19 @@ const Player = ({navigation, route}) =>{
                 </View>
                 {/* comments view ends here */}
             </View>
-
-            <View style={styles.commentsInput}>
-                <TextInput style={{height:40,paddingLeft:15,}} value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
-                {viewCommentButton == true?
-                    (
-                        <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
-                    )
-                    :
-                    null
-                }
+            <View style={{width:'100%',alignItems:'center'}}>
+                <View style={styles.commentsInput}>
+                    <TextInput style={{height:40,paddingLeft:15,color:'white'}} placeholderTextColor="#717171"  value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
+                    {viewCommentButton == true?
+                        (
+                            <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>
+                        )
+                        :
+                        null
+                    }
+                </View>
+                </View>
             </View>
-        </View>
     )
 }
 export  default Player
@@ -263,14 +266,16 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         paddingLeft:5,
-        paddingRight:5,
+        paddingRight:100,
         paddingBottom:10
     },
     commentsInput:{
-        width:'100%',
-        backgroundColor:'#e6e6e6',
+        width:'98%',
+        backgroundColor:'#181818',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         // flex:1
     },
     commentsHeader:{

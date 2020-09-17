@@ -212,11 +212,11 @@ export const Feed = ({navigation, route}) =>{
                             <View style={styles.ProfileImageSec}>
                                 {item.artist_thumbnail?
 
-                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff'}}/>
+                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
                                     :
                                     (
-                                        <View style={{width:40,height:40,borderRadius:50,borderWidth:2,borderColor:'#ffffff',justifyContent: 'center',alignItems: 'center',backgroundColor:'#717171'}}>
-                                            <Icons name="user" size={25} color={'white'}/>
+                                        <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
+                                            <Icono name="person-outline" size={25} color={'#717171'}/>
                                         </View>
                                     )
                                 }
@@ -253,8 +253,8 @@ export const Feed = ({navigation, route}) =>{
 
                                 }
 
-                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{getCommentsCount(item.post_id)}</Text>
-                                <Icon name='eye' size={25} color={'#717171'} style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
+                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{getCommentsCount(item.post_id)}</Text>
+                                <Icono name='ios-eye-outline' size={28} color={'#717171'} style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
                             </View>
                             <Text style={{color:'#717171', marginRight:10}}>
                                 {getPostDuration(item.post_duration)}
