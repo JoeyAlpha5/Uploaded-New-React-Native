@@ -15,13 +15,14 @@ export const Feed = ({navigation, route}) =>{
     const [Refreshing,setRefreshing] = useState(false);
     const getFeed = async (Reload)=>{
         let feedCount = 0;
+        let user_id = await AsyncStorage.getItem("user_id");
         if(Reload != true){
             feedCount = count;
         }
         console.log("getting more videos, count is ", feedCount);
         var savedEmail = await AsyncStorage.getItem("email");
-        fetch('http://185.237.96.39:3000/users/users?type=getHomeList2&&email='+savedEmail+'&&count='+feedCount)
-        .then((response) => response.json())
+        fetch('http://185.237.96.39:3000/users/users?type=getHomeList3&&email='+savedEmail+'&&count='+feedCount)
+        .then((response) =>response.json())
         .then((json) =>{ 
             //if reloading set new state, else update feed state
             setErr(false);
@@ -96,6 +97,35 @@ export const Feed = ({navigation, route}) =>{
             comments_count =  data.numChildren();
         });
         return comments_count;
+    }
+
+    const like = async (post_id) =>{
+        var user_id = await AsyncStorage.getItem("user_id");
+        console.log("post id ", post_id);
+        console.log("user id is ", user_id);
+        fetch('http://185.237.96.39:3000/users/users?type=userlikespost&&post_id='+post_id+'&&user_id='+user_id)
+        .then((re)=>re.json())
+        .then(json=>{
+            console.log("liked ",json);
+            //change the like count
+            let current_feed = [...feed];
+            for(let feed_count = 0; feed_count < current_feed.length; feed_count++){
+                if (current_feed[feed_count].post_id == post_id){
+                    let current_post = current_feed[feed_count];
+                    current_post["post_num_likes"] = json.num_likes;
+                    //change the icon f
+                    if(json.Outcome == "Success. User UNLiked post"){
+                        current_post["user_num_likes_post"] =  0;
+                    }else{
+                        current_post["user_num_likes_post"] =  1;
+                    }
+                    console.log("current post ", current_post);
+                    setFeed(current_feed);
+                }
+            }
+        })
+
+
     }
     
     const getDate = (date) => {
@@ -203,7 +233,20 @@ export const Feed = ({navigation, route}) =>{
 
                         <View style={styles.BottomPostContent}>
                             <View style={styles.postIcons}>
-                                <Icons name='heart' size={25} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                {item.user_num_likes_post == 1?
+                                    (
+                                        <View style={{flexDirection:'row'}}>
+                                            <Icono name='heart' size={25} onPress={()=>like(item.post_id)} color={'#eb8d35'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                        </View>
+                                    ):
+                                    (
+                                        <View style={{flexDirection:'row'}}>
+                                            <Icons name='heart' size={25} onPress={()=>like(item.post_id)} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                        </View>
+                                    )
+
+                                }
+
                                 <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{getCommentsCount(item.post_id)}</Text>
                                 <Icon name='eye' size={25} color={'#717171'} style={{marginLeft:15}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
                             </View>
