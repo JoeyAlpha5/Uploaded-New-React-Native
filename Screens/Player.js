@@ -19,7 +19,7 @@ const Player = ({navigation, route}) =>{
     const [viewCommentButton, setCommentButton] = useState(false);
     const [comment,setComment] = useState();
     const [commentsCount,setCommentsCount] = useState(0);
-    const [data,setData] = useState(route.params.data);
+    const data = route.params.data;
     const [liked,setLiked] =useState(0);
     const [likesCount,setLikesCount] = useState(0);
     const updateLike = route.params.updateLike;
@@ -104,14 +104,16 @@ const Player = ({navigation, route}) =>{
         .then(re=>re.json())
         .then(json=>{
             console.log(json);
+            var liked;
             if(json.Outcome == "Success. User UNLiked post"){
                 setLiked(0);
+                liked = 0;
             }else{
                 setLiked(1);
+                liked = 1;
             }
             setLikesCount(json.num_likes);
-
-
+            route.params.updateLike(liked,json.num_likes,data.post_id);
         })
 
    }
@@ -128,7 +130,7 @@ const Player = ({navigation, route}) =>{
                         navigator={navigation}    
                         ignoreSilentSwitch={"obey"}                          
                         resizeMode={"contain"}
-                        muted={true}
+                        // muted={true}
                         seekColor={"#eb8d35"}
                         disableVolume={true}
                         controlTimeout={5000}

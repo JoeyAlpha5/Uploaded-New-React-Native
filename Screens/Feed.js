@@ -111,8 +111,19 @@ export const Feed = ({navigation, route}) =>{
     }
 
     //this method is called from the player page
-    const updateLike = (liked,like_count,post_id)=>{
-
+    const updateLike = (liked,like_count,post_id,outcome)=>{
+        let current_feed = [...feed];
+        for(let feed_count = 0; feed_count < current_feed.length; feed_count++){
+            if (current_feed[feed_count].post_id == post_id){
+                let current_post = current_feed[feed_count];
+                current_post["post_num_likes"] = like_count;
+                current_post["user_num_likes_post"] =  liked;
+                console.log("current post ", current_post);
+                setFeed(current_feed);
+                break;
+            }
+        }
+        
     }
 
     const like = async (post_id) =>{
@@ -123,26 +134,14 @@ export const Feed = ({navigation, route}) =>{
         .then((re)=>re.json())
         .then(json=>{
             console.log("liked ",json);
-            //change the like count
-            let current_feed = [...feed];
-            for(let feed_count = 0; feed_count < current_feed.length; feed_count++){
-                if (current_feed[feed_count].post_id == post_id){
-                    let current_post = current_feed[feed_count];
-                    current_post["post_num_likes"] = json.num_likes;
-                    //change the icon f
-                    if(json.Outcome == "Success. User UNLiked post"){
-                        current_post["user_num_likes_post"] =  0;
-                    }else{
-                        current_post["user_num_likes_post"] =  1;
-                    }
-                    console.log("current post ", current_post);
-                    setFeed(current_feed);
-                    break;
-                }
+            var liked;
+            if(json.Outcome == "Success. User UNLiked post"){
+                liked =  0;
+            }else{
+                liked =  1;
             }
+            updateLike(liked,json.num_likes,post_id);
         })
-
-
     }
     
     const getDate = (date) => {
