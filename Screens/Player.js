@@ -20,6 +20,8 @@ const Player = ({navigation, route}) =>{
     const [comment,setComment] = useState();
     const [commentsCount,setCommentsCount] = useState(0);
     const [data,setData] = useState(route.params.data);
+    const [liked,setLiked] =useState(0);
+    const [likesCount,setLikesCount] = useState(0);
     const updateLike = route.params.updateLike;
     const getComments = ()=>{
         var int_post_id = data.post_id;
@@ -50,8 +52,9 @@ const Player = ({navigation, route}) =>{
     }
 
     useEffect(() => {
+        setLikesCount(data.post_num_likes);
+        setLiked(data.user_num_likes_post);
         console.log("post liked ", data.user_num_likes_post);
-
         console.log("getting comments");
         getComments();
         getPostView();
@@ -100,19 +103,14 @@ const Player = ({navigation, route}) =>{
         fetch('http://185.237.96.39:3000/users/users?type=userlikespost&&post_id='+data.post_id+'&&user_id='+user_id)
         .then(re=>re.json())
         .then(json=>{
-            // console.log(json);
-            // console.log(data);
-            let current_data = data;
+            console.log(json);
             if(json.Outcome == "Success. User UNLiked post"){
-                current_data['user_num_likes_post'] = 0;
+                setLiked(0);
             }else{
-                current_data['user_num_likes_post'] = 1;
+                setLiked(1);
             }
-            current_data['post_num_likes'] = json.num_likes;
-            // console.log(current_data);
-            setData(current_data);
-            //
-            console.log("state data ",current_data);
+            setLikesCount(json.num_likes);
+
 
         })
 
@@ -123,21 +121,21 @@ const Player = ({navigation, route}) =>{
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <View style={{flex: 1,alignItems: 'center',}}>
                 
-                    <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
-                        <VideoPlayer source={{uri: data.post_source_url }} 
-                            repeat={true} 
-                            onBack={goBack}  
-                            navigator={navigation}    
-                            ignoreSilentSwitch={"obey"}                          
-                            resizeMode={"contain"}
-                            // muted={true}
-                            seekColor={"#eb8d35"}
-                            disableVolume={true}
-                            controlTimeout={5000}
-                            disableFullscreen={true}
-                            onProgress={videoProgress}  
-                            style={{width:width,height:height/3, backgroundColor:'#000000'}} />
-                    </View>               
+                <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
+                    <VideoPlayer source={{uri: data.post_source_url }} 
+                        repeat={true} 
+                        onBack={goBack}  
+                        navigator={navigation}    
+                        ignoreSilentSwitch={"obey"}                          
+                        resizeMode={"contain"}
+                        muted={true}
+                        seekColor={"#eb8d35"}
+                        disableVolume={true}
+                        controlTimeout={5000}
+                        disableFullscreen={true}
+                        onProgress={videoProgress}  
+                        style={{width:width,height:height/3, backgroundColor:'#000000'}} />
+                </View>               
                 
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
@@ -160,18 +158,19 @@ const Player = ({navigation, route}) =>{
                     </View>
                     <View style={{flexDirection:'row',paddingTop:10}}>
 
-                        {data.user_num_likes_post == 1?
+                        {liked == 1?
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Ionicons name='heart'  onPress={()=>PostLike()} size={18} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                    <Icono name='heart' size={18} onPress={()=>PostLike()} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
                                 </View>
                             ):
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Icons name='heart' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{data.post_num_likes}</Text>
+                                    <Icons name='heart' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
                                 </View>
                             )
                         }
+
 
 
                         <View style={{marginRight:10}}>

@@ -8,7 +8,9 @@ import {
     StatusBar,
     Image,
     TextInput,
-    Alert
+    Alert,
+    SafeAreaView, 
+    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -74,10 +76,11 @@ const Login= ({navigation, route}) =>{
 
     };
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+        <ScrollView>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Sign in to Uploaded</Text>
+                {/* <Text style={styles.text_header}>Sign in to Uploaded</Text> */}
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
@@ -134,7 +137,8 @@ const Login= ({navigation, route}) =>{
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </ScrollView>
+        </SafeAreaView>
     )
 }
 export default Login

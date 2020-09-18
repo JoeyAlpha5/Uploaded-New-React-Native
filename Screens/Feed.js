@@ -250,6 +250,7 @@ export const Feed = ({navigation, route}) =>{
 
                         <View style={styles.BottomPostContent}>
                             <View style={styles.postIcons}>
+                                
                                 {item.user_num_likes_post == 1?
                                     (
                                         <View style={{flexDirection:'row'}}>

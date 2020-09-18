@@ -10,7 +10,9 @@ import {
     TextInput,
     Alert, 
     CheckBox,
-    Linking
+    Linking,
+    SafeAreaView, 
+    ScrollView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -107,10 +109,11 @@ const Register= ({navigation, route}) =>{
 
 
     return(
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+        <ScrollView>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Sign up</Text>
+                {/* <Text style={styles.text_header}>Sign up</Text> */}
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
@@ -182,7 +185,9 @@ const Register= ({navigation, route}) =>{
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
+        </ScrollView>
+        </SafeAreaView>
+
     )
 }
 export default Register
