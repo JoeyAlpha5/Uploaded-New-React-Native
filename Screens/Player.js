@@ -163,12 +163,12 @@ const Player = ({navigation, route}) =>{
                         {liked == 1?
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Icono name='heart' size={18} onPress={()=>PostLike()} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
+                                    <Ant name='heart' size={18} onPress={()=>PostLike()} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
                                 </View>
                             ):
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Icons name='heart' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
+                                    <Ant name='hearto' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
                                 </View>
                             )
                         }
@@ -209,7 +209,7 @@ const Player = ({navigation, route}) =>{
                                     <Text style={{color:'black',fontSize:11,color:'#717171'}}>
                                         {item.username}
                                     </Text>
-                                    <Text style={{fontSize:12,lineHeight:18,color:'white',paddingRight: 50,}}>
+                                    <Text style={{fontSize:11,lineHeight:18,color:'white',paddingRight: 50,}}>
                                         {item.comment}
                                     </Text>
                                 </View>

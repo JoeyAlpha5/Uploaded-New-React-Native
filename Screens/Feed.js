@@ -8,6 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { set } from 'react-native-reanimated';
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
+import Ant from 'react-native-vector-icons/AntDesign';
 import GetIp from 'react-native-public-ip';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
@@ -100,7 +101,8 @@ export const Feed = ({navigation, route}) =>{
         var minutes = Math.floor(parseFloat(time_in_minutes));
         var seconds = (parseFloat(time_in_minutes) - minutes)*60;
         seconds = Math.floor(seconds);
-        return minutes.toString()+":"+seconds.toString();
+        seconds < 10? seconds = '0'+seconds.toString(): seconds = seconds.toString();
+        return minutes.toString()+":"+seconds;
     }
 
     const getCommentsCount = (post_id)=>{
@@ -243,8 +245,11 @@ export const Feed = ({navigation, route}) =>{
                             </View>
                         </View>
                         <TouchableOpacity onPress={()=>navigate('Player',item)} style={{width:'100%'}}>
-                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'flex-end',alignItems:'flex-start'}} source={{uri:item.post_cover_url}}>
+                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'space-between',alignItems:'flex-end',flexDirection: 'row',}} source={{uri:item.post_cover_url}}>
                                 <Text style={styles.postdesc}>{item.post_name}</Text>
+                                <Text style={{color:'#717171',marginRight:10,marginBottom: 5,color:'white',backgroundColor: '#000000',padding: 3,fontSize:12,borderRadius:6}}>
+                                    {getPostDuration(item.post_duration)}
+                                </Text>
                             </ImageBackground>
                         </TouchableOpacity>
                         {/* <View style={{width:'98%',height:1,backgroundColor:'#000000',marginTop:10}}></View> */}
@@ -255,12 +260,12 @@ export const Feed = ({navigation, route}) =>{
                                 {item.user_num_likes_post == 1?
                                     (
                                         <View style={{flexDirection:'row'}}>
-                                            <Icono name='heart' size={25} onPress={()=>like(item.post_id)} color={'#eb8d35'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                            <Ant name='heart' size={25} onPress={()=>like(item.post_id)} color={'#eb8d35'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
                                         </View>
                                     ):
                                     (
                                         <View style={{flexDirection:'row'}}>
-                                            <Icons name='heart' size={25} onPress={()=>like(item.post_id)} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                            <Ant name='hearto' size={25} onPress={()=>like(item.post_id)} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
                                         </View>
                                     )
 
@@ -269,9 +274,9 @@ export const Feed = ({navigation, route}) =>{
                                 <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{getCommentsCount(item.post_id)}</Text>
                                 <Icono name='ios-eye-outline' size={28} color={'#717171'} style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
                             </View>
-                            <Text style={{color:'#717171', marginRight:10}}>
-                                {getPostDuration(item.post_duration)}
-                            </Text>
+                            <View>
+                                <Icons name='repeat' size={20} color={'#717171'}  style={{marginRight:10}}/><Text style={{color:'#717171'}}></Text>
+                            </View>
                         </View>
 
                 </View>

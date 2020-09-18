@@ -80,7 +80,7 @@ const Login= ({navigation, route}) =>{
         <ScrollView>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                <Text style={styles.text_header}>Sign in to Uploaded</Text>
+                <Text style={styles.text_header}>Sign in</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
