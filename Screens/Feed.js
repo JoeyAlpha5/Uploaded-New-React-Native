@@ -15,21 +15,23 @@ export const Feed = ({navigation, route}) =>{
     const [isLoading, setLoading] = useState(true);
     const [Err,setErr] = useState(false);
     const [Refreshing,setRefreshing] = useState(false);
-    const getFeed = async (Reload)=>{
+    const getFeed = async (Reload,from)=>{
         let feedCount = 0;
         let user_id = await AsyncStorage.getItem("user_id");
         if(Reload != true){
             feedCount = count;
         }
         console.log("getting more videos, count is ", feedCount);
+        console.log("from ", from);
         var savedEmail = await AsyncStorage.getItem("email");
         publicIP()
         .then(ip=>{
-            console.log("ip address is ", ip);
+            console.log("ip address is ", ip, "feed count ", feedCount," user_id ",user_id," saved email ",savedEmail);
             fetch('http://185.237.96.39:3000/users/users?type=getHomeList3&&email='+savedEmail+'&&count='+feedCount+"&&user_ip="+ip+"&&user_id="+user_id)
             .then((response) =>response.json())
             .then((json) =>{ 
                 //if reloading set new state, else update feed state
+                console.log("json ", json);
                 setErr(false);
                 setRefreshing(false); 
                 if(Reload == true){
@@ -40,7 +42,7 @@ export const Feed = ({navigation, route}) =>{
             
             })
             .catch((error) => {
-                console.error(error);
+                console.error("error ",error);
                 if(feed.length != 0){
                     Alert.alert("Unable to load new posts, please check your internet connection.");
                     setRefreshing(false);
@@ -55,7 +57,7 @@ export const Feed = ({navigation, route}) =>{
         //get the feed on load
         SplashScreen.hide();
         GetIp();
-        getFeed(false);
+        getFeed(false,"useffect");
       }, []);
 
 
@@ -83,14 +85,14 @@ export const Feed = ({navigation, route}) =>{
     //
     const onRefresh = ()=>{
         setRefreshing(true);
-        getFeed();
+        getFeed(true,"onrefresh");
     }
 
     const onReload=()=>{
         setErr(false);
         setLoading(true);
         setFeed([]);
-        getFeed(true);
+        getFeed(true,"onreload");
     }
     const getPostDuration = (post_duration)=>{
         var int_post_duration = parseInt(post_duration);
@@ -275,8 +277,8 @@ export const Feed = ({navigation, route}) =>{
                 </View>
 
             )} onEndReached={()=>{
-                getFeed(false);
-            }} onEndReachedThreshold ={10}/>
+                getFeed(false,"threshold");
+            }} onEndReachedThreshold={10}/>
             )}
         </View>
     )

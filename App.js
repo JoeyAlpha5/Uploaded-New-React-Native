@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {useState,useEffect} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
+import {Image,View} from 'react-native';
 import Player from './Screens/Player';
 import Splash from './Screens/Splash';
 import Login from './Screens/Login';
@@ -36,14 +37,31 @@ const App = ()=>{
         <Stack.Navigator>
           <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
           <Stack.Screen name="Login" component={Login}   initialParams={{ login: updateLogin }}
-          options={{headerTintColor: '#ffffff', title:'Sign in', headerStyle: {
+          options={{headerTintColor: '#ffffff', headerTitle:()=>(            
+                <Image
+                style={{ width: 30, height: 30 }}
+                source={require('./assets/logo.png')}
+                resizeMode='contain'
+              />
+          ), 
+          headerTitleAlign:'center',
+          headerStyle: {
             backgroundColor: '#000000',
           }}}/>
           <Stack.Screen name="PasswordReset" component={PasswordReset}
           options={{headerTintColor: '#ffffff',headerStyle: {
             backgroundColor: '#000000',
           }}}/>
-          <Stack.Screen name="Register"  component={Register} initialParams={{ login: updateLogin }} options={{title:'Sign up',headerTintColor: '#ffffff',headerStyle: {
+          <Stack.Screen name="Register"  component={Register} initialParams={{ login: updateLogin }} options={{headerTintColor: '#ffffff',
+            headerTitle:()=>(            
+              <Image
+              style={{ width: 30, height: 30 }}
+              source={require('./assets/logo.png')}
+              resizeMode='contain'
+            />
+        ), 
+        headerTitleAlign:'center',
+          headerStyle: {
             backgroundColor: '#000000',
           }}}/>
         </Stack.Navigator>

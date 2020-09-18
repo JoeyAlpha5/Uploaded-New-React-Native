@@ -80,7 +80,7 @@ const Login= ({navigation, route}) =>{
         <ScrollView>
             <StatusBar backgroundColor='#eb8d35' barStyle="light-content"/>
             <View style={styles.header}>
-                {/* <Text style={styles.text_header}>Sign in to Uploaded</Text> */}
+                <Text style={styles.text_header}>Sign in to Uploaded</Text>
             </View>
             <View style={styles.footer}>
                 <Text style={[styles.text_footer, {
@@ -149,9 +149,11 @@ const styles = StyleSheet.create({
     },
     header: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingHorizontal: 20,
-        paddingBottom: 50
+        paddingBottom: 10,
+        marginTop: 90,
     },
     footer: {
         flex: 3,
