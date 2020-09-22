@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, Component} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Image,View} from 'react-native';
 import Player from './Screens/Player';
@@ -10,6 +10,7 @@ import PasswordReset from './Screens/PasswordReset';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeTab from './Screens/NavigationStack';
+import OneSignal from 'react-native-onesignal';
 const App = ()=>{
   const [LogedIn, setLogedIn] = useState(true);
   const Stack = createStackNavigator();
@@ -29,7 +30,32 @@ const App = ()=>{
   }
   useEffect(()=>{
     var savedEmail = isLoggedIn();
+    PushService();
   });
+
+  const PushService = ()=>{
+    console.log("push service");
+    //Remove this method to stop OneSignal Debugging 
+    OneSignal.setLogLevel(6, 0);
+    OneSignal.init("6546b42c-4cb3-46c1-bb7f-e046448eee31", {kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInAppLaunchURL: false, kOSSettingsKeyInFocusDisplayOption:2});
+    OneSignal.inFocusDisplaying(2); // Controls what should happen if a notification is received while the app is open. 2 means that the notification will go directly to the device's notification center.
+    OneSignal.addEventListener('opened', onOpened);
+    OneSignal.addEventListener('ids', onIds);
+  }
+
+  //when push notification are opened
+  const onOpened = (openResult)=>{
+    console.log('Message: ', openResult.notification.payload.body);
+    console.log('Data: ', openResult.notification.payload.additionalData);
+    console.log('isActive: ', openResult.notification.isAppInFocus);
+    console.log('openResult: ', openResult);
+  }
+
+  //getting the device id
+  const onIds = async (device_id_info) =>{
+    console.log("device id info ", device_id_info.userId);
+    await AsyncStorage.setItem("device_id", device_id_info.userId);
+  }
 
   if(LogedIn == false){
     return(

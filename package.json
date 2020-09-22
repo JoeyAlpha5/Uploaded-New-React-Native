@@ -21,6 +21,7 @@
     "react-native-exoplayer": "github:ngager-group/react-native-exoplayer",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-onesignal": "^3.9.1",
     "react-native-public-ip": "^1.0.2",
     "react-native-reanimated": "^1.13.0",
     "react-native-safe-area-context": "^3.1.7",
