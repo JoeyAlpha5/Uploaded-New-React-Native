@@ -157,51 +157,51 @@ export const Feed = ({navigation, route}) =>{
         })
     }
     
-    const getDate = (date) => {
-        var today = new Date();
-        var other_date = new Date(date);
-        var date_difference = new Date(today.getTime()-other_date.getTime());
-        var minutes = date_difference.getMinutes();
-        var hours =  date_difference.getHours();
-        var _date = date_difference.getDate();
-        var month = date_difference.getMonth();
-        var year = date_difference.getFullYear()-1970;
-        if(year > 0){
-          if(year == 1){
-            return (1+ " year ago");
-          }else{
-            return (year + " years ago");
-          }
-        }else if(month > 0 ){
-          if(month == 1){
-            return (1+ " month ago");
-          }else{
-            return (month+ " months ago");
-          }
-        }else if(_date > 0){
-            if(_date == 1){
-              return (1+ " day ago");
-            }else if(_date < 7){
-              return (_date+ " days ago");
-            }else{
-              return (Math.floor(_date/7)+" weeks ago");
-            }
-        }
-        else if(hours > 0){
-          if(hours == 1){
-            return (1+ " hour ago");
-          }else{
-            return (hours+ " hours ago");
-          }
-        }else if(minutes > 0){
-          if(minutes == 1){
-            return (1+ " minute ago");
-          }else{
-            return (minutes + " miinutes agao");
-          }
-        }
+    // const getDate = (date) => {
+    //     var today = new Date();
+    //     var other_date = new Date(date);
+    //     var date_difference = new Date(today.getTime()-other_date.getTime());
+    //     var minutes = date_difference.getMinutes();
+    //     var hours =  date_difference.getHours();
+    //     var _date = date_difference.getDate();
+    //     var month = date_difference.getMonth();
+    //     var year = date_difference.getFullYear()-1970;
+    //     if(year > 0){
+    //       if(year == 1){
+    //         return (1+ " year ago");
+    //       }else{
+    //         return (year + " years ago");
+    //       }
+    //     }else if(month > 0 ){
+    //       if(month == 1){
+    //         return (1+ " month ago");
+    //       }else{
+    //         return (month+ " months ago");
+    //       }
+    //     }else if(_date > 0){
+    //         if(_date == 1){
+    //           return (1+ " day ago");
+    //         }else if(_date < 7){
+    //           return (_date+ " days ago");
+    //         }else{
+    //           return (Math.floor(_date/7)+" weeks ago");
+    //         }
+    //     }
+    //     else if(hours > 0){
+    //       if(hours == 1){
+    //         return (1+ " hour ago");
+    //       }else{
+    //         return (hours+ " hours ago");
+    //       }
+    //     }else if(minutes > 0){
+    //       if(minutes == 1){
+    //         return (1+ " minute ago");
+    //       }else{
+    //         return (minutes + " miinutes agao");
+    //       }
+    //     }
       
-      }
+    // }
       
 
     return (
@@ -248,7 +248,7 @@ export const Feed = ({navigation, route}) =>{
 
                                     <Text style={{marginLeft:10,fontSize:15,color:'#ffffff'}}>{item.artist_name}</Text>
                                     <Text style={{marginLeft:10,fontSize:10,color:'#717171'}}>
-                                        Posted a video {getDate(item.post_date)}
+                                        Posted a video {item.post_age}
                                     </Text>
                                 </View>
                             </View>

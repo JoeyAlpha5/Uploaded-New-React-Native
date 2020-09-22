@@ -26,6 +26,7 @@ const Register= ({navigation, route}) =>{
     const [password, setPassword] = useState();
     const [username, setUsername] = useState();
     const [terms, setTerms] = useState(false);
+    const [uniqueUsername,setUniqueUsername] = useState(false);
     const terms_url = 'http://uploadedstream.com/Terms%20of%20Service%20for%20uploaded.pdf';
 
     useEffect(()=>{
@@ -50,7 +51,16 @@ const Register= ({navigation, route}) =>{
     }
 
     const handleUsernameChange = (username)=>{
-        console.log("username change");
+        fetch('http://185.237.96.39:3000/users/users?type=checkuniqueusername&&new_username='+username)
+        .then(re=>re.json())
+        .then(json=>{
+            console.log(json);
+            if(json.Outcome == "Duplicate username"){
+                setUniqueUsername(false);
+            }else{
+                setUniqueUsername(true);
+            }
+        });
         setUsername(username);
     }
 
@@ -75,6 +85,9 @@ const Register= ({navigation, route}) =>{
         var valid_email = validate_email(email);
         if(username == "" || username == null || username == undefined || username.length < 2){
             Alert.alert("Your username must be at least 2 characters long.");
+        }
+        else if(uniqueUsername == false){
+            Alert.alert("Username already exists");
         }
         else if(valid_email == false || email == "" || email == null || email == undefined){
             Alert.alert("Please enter a valid email address");
@@ -120,10 +133,10 @@ const Register= ({navigation, route}) =>{
                 <Text style={[styles.text_footer, {
                     color: 'white'
                 }]}>Username</Text>
-                <View style={styles.action}>
+                <View style={[styles.action]}>
                     <TextInput 
                         style={[styles.textInput, {
-                            color: 'white'
+                            color: 'white',
                         }]}
                         autoCapitalize="none"
                         value={username}
