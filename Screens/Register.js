@@ -20,6 +20,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTheme } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import publicIP from 'react-native-public-ip';
 const Register= ({navigation, route}) =>{
     const [emailInputColor,setEmailInputColor] = useState('#f2f2f2');
     const [email, setEmail] = useState();

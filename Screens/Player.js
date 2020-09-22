@@ -11,6 +11,7 @@ import Simple from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 // class  extends Component
 import { firebase, comments } from '../firebase/firebase';
+import publicIP from 'react-native-public-ip';
 const Player = ({navigation, route}) =>{
     const [Comments,setComments] = useState([]);
     const [commentsSpinner,setcommentsSpinner] = useState(true);
@@ -44,10 +45,13 @@ const Player = ({navigation, route}) =>{
         var user_id = await AsyncStorage.getItem("user_id");
         console.log("user id is ", user_id);
         var post_id = route.params.data.post_id;
-        fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id)
-        .then(response=>response.json())
-        .then(json=>{
-            setViews(json.view_count);
+        publicIP()
+        .then(ip=>{
+            fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip)
+            .then(response=>response.json())
+            .then(json=>{
+                setViews(json.view_count);
+            })
         })
     }
 

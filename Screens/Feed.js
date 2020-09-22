@@ -9,7 +9,6 @@ import { set } from 'react-native-reanimated';
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
 import Ant from 'react-native-vector-icons/AntDesign';
-import GetIp from 'react-native-public-ip';
 export const Feed = ({navigation, route}) =>{
     const [feed,setFeed] = useState([]);
     const [count,setCount] = useState(0);
