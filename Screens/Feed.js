@@ -51,7 +51,16 @@ export const Feed = ({navigation, route}) =>{
                     setErr(true);
                 }   
             })
-            .finally(() =>{ setLoading(false); setCount(count+11);setRefreshing(false) });
+            .finally(() =>{ 
+                setLoading(false); 
+                if(Reload == true){
+                    setCount(11);
+                }else{
+                    setCount(count+11);
+                }
+                setRefreshing(false);
+                console.log("feed count is ", count) 
+            });
         })  
     }
     useEffect(() => {

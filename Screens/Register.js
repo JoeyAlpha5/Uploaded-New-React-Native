@@ -94,7 +94,8 @@ const Register= ({navigation, route}) =>{
         .then( async (json) =>{
             if(json.Outcome == 'Registration successfull'){
                 await AsyncStorage.setItem('email', email);
-                // navigation.navigate('Uploaded');
+                await AsyncStorage.setItem("username", json.username);
+                await AsyncStorage.setItem('user_id', JSON.stringify(json.id));
                 route.params.login(true,email);
             }else if(json.Outcome == 'Registration failed. Email exists. Authentication test failed'){
                 Alert.alert("The email address belongs to an existing account.");
