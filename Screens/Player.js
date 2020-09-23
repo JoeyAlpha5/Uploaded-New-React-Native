@@ -9,9 +9,13 @@ import Ant from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Simple from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
-// class  extends Component
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
+
+//components
+import PlayerList from '../components/PlayerList';
+import CommentsComponent from '../components/Comments';
+//
 const Player = ({navigation, route}) =>{
     const [Comments,setComments] = useState([]);
     const [commentsSpinner,setcommentsSpinner] = useState(true);
@@ -20,10 +24,12 @@ const Player = ({navigation, route}) =>{
     const [viewCommentButton, setCommentButton] = useState(false);
     const [comment,setComment] = useState();
     const [commentsCount,setCommentsCount] = useState(0);
-    const data = route.params.data;
+    const [data,setData] = useState(route.params.data);
     const [liked,setLiked] =useState(0);
     const [likesCount,setLikesCount] = useState(0);
-    const updateLike = route.params.updateLike;
+    const [playlist,setPlaylist] = useState([]);
+    const [showList,setShowlist] = useState(false);
+    const updateLike = data.updateLike;
     const getComments = ()=>{
         var int_post_id = data.post_id;
         let comments_array = []
@@ -41,10 +47,12 @@ const Player = ({navigation, route}) =>{
         });
     }
 
-    const getPostView = async ()=>{
+    const getPostView = async (post)=>{
+        // console.log("updated post is ", post);
+        // console.log("data is ", data);
         var user_id = await AsyncStorage.getItem("user_id");
         console.log("user id is ", user_id);
-        var post_id = route.params.data.post_id;
+        var post_id = data.post_id;
         publicIP()
         .then(ip=>{
             fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip)
@@ -56,8 +64,10 @@ const Player = ({navigation, route}) =>{
     }
 
     useEffect(() => {
+        // console.log(data);
         setLikesCount(data.post_num_likes);
         setLiked(data.user_num_likes_post);
+        setPlaylist(route.params.playlist);
         console.log("post liked ", data.user_num_likes_post);
         console.log("getting comments");
         getComments();
@@ -117,16 +127,28 @@ const Player = ({navigation, route}) =>{
                 liked = 1;
             }
             setLikesCount(json.num_likes);
-            route.params.updateLike(liked,json.num_likes,data.post_id);
+            data.updateLike(liked,json.num_likes,data.post_id);
         })
 
+   }
+
+
+   const playNext =(post)=>{
+       setData(post);
+        //
+    //    setLikesCount(post.post_num_likes);
+    //    setLiked(post.user_num_likes_post);
+    // //    setPlaylist(route.params.playlist);
+    //    console.log("post liked ", post.user_num_likes_post);
+    //    console.log("getting comments");
+    //    getComments(post.post_id);
+       getPostView(post);
    }
 
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between',backgroundColor:'#000000'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <View style={{flex: 1,alignItems: 'center',}}>
-                
                 <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
                     <VideoPlayer source={{uri: data.post_source_url }} 
                         repeat={true} 
@@ -193,38 +215,26 @@ const Player = ({navigation, route}) =>{
                         <Text style={{color:'white'}}>Follow</Text>
                     </View>
                 </View>
-                {/* comments view */}
-                <View style={{justifyContent: 'center',alignItems: 'center',flexDirection: 'column',flex: 1,backgroundColor:'#181818',marginTop: 5,width:'98%',borderRadius:10,marginBottom:5}}>
-                    {commentsSpinner == true?
-                        
-                        (<ActivityIndicator size="large" color="#eb8d35"/>)
-                        :
-                        (
-                            <FlatList
-                            data={Comments}
-                            style={{width:'100%'}}
-                            keyExtractor={({ id }, index) => index.toFixed()}
-                            renderItem={({ item }) => (
-                            <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:0.2,marginTop:20,   height:'auto',padding: 10,paddingTop:20,paddingBottom:20,borderColor:'#242424',width:'100%'}}>
-                                <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
-                                    <Ionicons name="person-outline" size={25} color={'#717171'}/>
-                                </View>
-                                <View style={{marginLeft:15,}}>
-                                    <Text style={{color:'black',fontSize:11,color:'#717171'}}>
-                                        {item.username}
-                                    </Text>
-                                    <Text style={{fontSize:11,lineHeight:18,color:'white',paddingRight: 50,}}>
-                                        {item.comment}
-                                    </Text>
-                                </View>
-                            </View>
 
-                            )}
-                        />
+                <View style={styles.VideoDropDown}>
+                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>View next</Text>
+                    {showList == true?
+                        (
+                            <Icons name="chevron-up" onPress={()=>setShowlist(false)} color="#717171" size={20} style={{marginRight:12}}/>
+                        ):
+                        (
+                            <Icons name="chevron-down" onPress={()=>setShowlist(true)} color="#717171" size={20} style={{marginRight:12}}/>
                         )
                     }
                 </View>
-                {/* comments view ends here */}
+
+
+                {showList == true?
+                    <PlayerList listArray={playlist} next={playNext}/>:null
+                }
+
+                <CommentsComponent comments={Comments} spinner={commentsSpinner}/>
+                
             </View>
             <View style={{width:'100%',alignItems:'center'}}>
                 <View style={styles.commentsInput}>
@@ -243,6 +253,19 @@ const Player = ({navigation, route}) =>{
 }
 export  default Player
 const styles = StyleSheet.create({
+    VideoDropDown:{
+        width:'98%',
+        backgroundColor:'#181818',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        paddingBottom:10,
+        borderTopWidth:0.2,
+        borderColor:'#000000',
+        padding:10
+        
+    },
     follow:{
         marginRight:10,
         width:80,
@@ -290,16 +313,18 @@ const styles = StyleSheet.create({
     commentsBar:{
         width:'98%',
         height:50,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        // borderBottomLeftRadius: 10,
+        // borderBottomRightRadius: 10,
         justifyContent:'space-between',
         flexDirection:'row',
         paddingTop:10,
         // marginBottom:10,
         backgroundColor:'#181818',
-        shadowColor: "#000",
+        // shadowColor: "#000",
+        // borderTopWidth:0.2,
+        // borderColor:'#717171',
         borderTopWidth:0.2,
-        borderColor:'#717171',
+        borderColor:'#000000',
         // flex: 1,
         // shadowOffset: {
         //     width: 0,
