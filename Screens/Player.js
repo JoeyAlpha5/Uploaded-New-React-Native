@@ -30,8 +30,7 @@ const Player = ({navigation, route}) =>{
     const [playlist,setPlaylist] = useState([]);
     const [showList,setShowlist] = useState(false);
     const updateLike = data.updateLike;
-    const getComments = ()=>{
-        var int_post_id = data.post_id;
+    const getComments = (int_post_id)=>{
         let comments_array = []
         comments.orderByChild('post_id').equalTo(int_post_id).once('value',data=>{
             console.log("comments count ", data.numChildren());
@@ -47,12 +46,11 @@ const Player = ({navigation, route}) =>{
         });
     }
 
-    const getPostView = async (post)=>{
+    const getPostView = async (post_id)=>{
         // console.log("updated post is ", post);
         // console.log("data is ", data);
         var user_id = await AsyncStorage.getItem("user_id");
         console.log("user id is ", user_id);
-        var post_id = data.post_id;
         publicIP()
         .then(ip=>{
             fetch('http://185.237.96.39:3000/users/users?type=setViewsv2&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip)
@@ -65,16 +63,17 @@ const Player = ({navigation, route}) =>{
 
     useEffect(() => {
         // console.log(data);
+        // console.log("use effect just ran");
         setLikesCount(data.post_num_likes);
         setLiked(data.user_num_likes_post);
         setPlaylist(route.params.playlist);
         console.log("post liked ", data.user_num_likes_post);
         console.log("getting comments");
-        getComments();
-        getPostView();
+        getComments(data.post_id);
+        getPostView(data.post_id);
         //listen for comments, remember to come back to close this subscription
         comments.on('value',()=>{
-            getComments();
+            getComments(data.post_id);
         });
     }, []);
     const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
@@ -135,14 +134,12 @@ const Player = ({navigation, route}) =>{
 
    const playNext =(post)=>{
        setData(post);
-        //
-    //    setLikesCount(post.post_num_likes);
-    //    setLiked(post.user_num_likes_post);
-    // //    setPlaylist(route.params.playlist);
-    //    console.log("post liked ", post.user_num_likes_post);
-    //    console.log("getting comments");
-    //    getComments(post.post_id);
-       getPostView(post);
+       setLikesCount(post.post_num_likes);
+       setLiked(post.user_num_likes_post);
+       getComments(post.post_id);
+       getPostView(post.post_id);
+    //    console.log(post);
+    //    console.log(data);
    }
 
     return (
