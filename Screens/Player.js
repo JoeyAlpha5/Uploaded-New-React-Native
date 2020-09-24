@@ -28,8 +28,8 @@ const Player = ({navigation, route}) =>{
     const [liked,setLiked] =useState(0);
     const [likesCount,setLikesCount] = useState(0);
     const [playlist,setPlaylist] = useState([]);
-    const [showList,setShowlist] = useState(false);
-    const updateLike = data.updateLike;
+    const [showList,setShowlist] = useState(true);
+    const updateLike = route.params.updateLike;
     const getComments = (int_post_id)=>{
         let comments_array = []
         comments.orderByChild('post_id').equalTo(int_post_id).once('value',data=>{
@@ -60,6 +60,19 @@ const Player = ({navigation, route}) =>{
             })
         })
     }
+
+
+    // const getMorePlaylist = () =>{
+    //     var user_id = await AsyncStorage.getItem("user_id");
+    //     publicIP()
+    //     .then(ip=>{
+    //         fetch('http://185.237.96.39:3000/users/users?type=getPostPlayList&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip)
+    //         .then(response=>response.json())
+    //         .then(json=>{
+    //             setViews(json);
+    //         })
+    //     })
+    // }
 
     useEffect(() => {
         // console.log(data);
@@ -112,6 +125,7 @@ const Player = ({navigation, route}) =>{
    }
 
    const PostLike = async ()=>{
+    //    console.log("post like ",data.post_id);
         var user_id = await AsyncStorage.getItem("user_id");
         fetch('http://185.237.96.39:3000/users/users?type=userlikespost&&post_id='+data.post_id+'&&user_id='+user_id)
         .then(re=>re.json())
@@ -126,7 +140,7 @@ const Player = ({navigation, route}) =>{
                 liked = 1;
             }
             setLikesCount(json.num_likes);
-            data.updateLike(liked,json.num_likes,data.post_id);
+            updateLike(liked,json.num_likes,data.post_id);
         })
 
    }

@@ -6,6 +6,10 @@ const PlayerList = (props)=>{
         props.next(item);
         
     }
+
+    const getMore = ()=>{
+        console.log("getting more");
+    }
     return (
         <FlatList
         data={props.listArray} 
@@ -13,7 +17,7 @@ const PlayerList = (props)=>{
         renderItem={({ item }) => (
             <TouchableOpacity onPress={()=>viewPost(item)}>
                 <View style={{width:'100%'}}>
-                    <View style={{width:'80%',marginTop:20,flexDirection:'row'}}>
+                    <View style={{width:'80%',marginTop:5,flexDirection:'row'}}>
                         <Image style={{width:40,height:40,borderRadius:50}} source={{uri: item.artist_thumbnail}}/>
                         <View style={{alignItems:'flex-start',justifyContent:'flex-start',marginBottom:40}}>
                             <Text style={{color:'white',fontSize:9,color:'#717171',marginLeft:10}}>{item.artist_name}</Text>
@@ -24,7 +28,10 @@ const PlayerList = (props)=>{
                 </View>
             </TouchableOpacity>
         )} 
-    />
+        onEndReached={()=>{
+            getMore()
+        }}
+        onEndReachedThreshold={10}/>
     )
 }
 export default PlayerList
