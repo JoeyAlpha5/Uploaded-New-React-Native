@@ -92,7 +92,7 @@ export const Feed = ({navigation, route}) =>{
                 current_array[array_count] = current_post;
                 //update feed array in state
                 setFeed(current_array);
-                console.log(current_array.slice(array_count+1,array_count+5));
+                // console.log(current_array.slice(array_count+1,array_count+5));
                 navigation.navigate(page, {data:current_post,updateLike:updateLike,playlist:current_array.slice(array_count+1,array_count+6)});
                 break;
             }

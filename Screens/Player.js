@@ -29,16 +29,17 @@ const Player = ({navigation, route}) =>{
     const [likesCount,setLikesCount] = useState(0);
     const [playlist,setPlaylist] = useState([]);
     const [showList,setShowlist] = useState(true);
+    const [CurrentPostId,setCurrentPostId] = useState();
     const updateLike = route.params.updateLike;
     const getComments = (int_post_id)=>{
         let comments_array = []
         comments.orderByChild('post_id').equalTo(int_post_id).once('value',data=>{
-            console.log("comments count ", data.numChildren());
+            // console.log("comments count ", data.numChildren());
             setCommentsCount(data.numChildren());
             setcommentsSpinner(false);
             data.forEach(comment=>{
                 comments_array.push(comment.val());
-                console.log(comment.val());
+                // console.log(comment.val());
             });
         }).then(()=>{
             console.log("comments ", comments_array);
@@ -62,23 +63,28 @@ const Player = ({navigation, route}) =>{
     }
 
 
-    // const getMorePlaylist = () =>{
-    //     var user_id = await AsyncStorage.getItem("user_id");
-    //     publicIP()
-    //     .then(ip=>{
-    //         fetch('http://185.237.96.39:3000/users/users?type=getPostPlayList&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip)
-    //         .then(response=>response.json())
-    //         .then(json=>{
-    //             setViews(json);
-    //         })
-    //     })
-    // }
+    const getMorePlaylist = async (post_id) =>{
+        var user_id = await AsyncStorage.getItem("user_id");
+        publicIP()
+        .then(ip=>{
+            // http://185.237.96.39:3000/users/users?type=getPostPlayList&&post_id=247&&count=11&&user_ip=156.155.163.160&&user_id=1
+            fetch('http://185.237.96.39:3000/users/users?type=getPostPlayList&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip+"&&count=5")
+            .then(response=>response.json())
+            .then(json=>{
+                // console.log(json);
+                setPlaylist([...playlist,...json.Response]);
+                // setCount(count+11);
+            })
+        })
+    }
 
     useEffect(() => {
         // console.log(data);
         // console.log("use effect just ran");
         setLikesCount(data.post_num_likes);
         setLiked(data.user_num_likes_post);
+        // setPlaylist(route.params.playlist);
+        // getMorePlaylist(data.post_id);
         setPlaylist(route.params.playlist);
         console.log("post liked ", data.user_num_likes_post);
         console.log("getting comments");
@@ -90,11 +96,8 @@ const Player = ({navigation, route}) =>{
             getComments(data.post_id);
         });
     }, []);
-    const [forwardBackDisplay,setforwardBackDisplay] = useState(false);
+
     const {width, height} = Dimensions.get("screen");
-    const videoProgress = (data)=>{
-        // console.log(data);
-    }
     //
     const goBack = ()=>{
         navigation.goBack(null);
@@ -104,6 +107,7 @@ const Player = ({navigation, route}) =>{
    const onChangeText = (text) =>{
        //hide comments
         // setCommentsDisplay(false);
+        setShowlist(false);
        if(text == ""){
             setCommentButton(false);
        }
@@ -148,6 +152,8 @@ const Player = ({navigation, route}) =>{
 
 
    const playNext =(post)=>{
+       setCurrentPostId(post.post_id);
+       console.log("current post id ",CurrentPostId);
        setData(post);
        setLikesCount(post.post_num_likes);
        setLiked(post.user_num_likes_post);
@@ -158,17 +164,24 @@ const Player = ({navigation, route}) =>{
         comments.on('value',()=>{
             getComments(post.post_id);
         });
-    //    console.log(post);
-    //    console.log(data);
+
+        getMorePlaylist(post.post_id);
    }
 
+
+    const videoFinished = () =>{
+
+        console.log("finished video ", CurrentPostId);
+    }
+  
     return (
         <View style={{width:width, flex: 1,justifyContent:'space-between',backgroundColor:'#000000'}}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             <View style={{flex: 1,alignItems: 'center',}}>
                 <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
                     <VideoPlayer source={{uri: data.post_source_url }} 
-                        repeat={true} 
+                        // repeat={true} 
+                        onEnd={videoFinished}
                         onBack={goBack}  
                         navigator={navigation}    
                         ignoreSilentSwitch={"obey"}                          
@@ -177,14 +190,12 @@ const Player = ({navigation, route}) =>{
                         seekColor={"#eb8d35"}
                         disableVolume={true}
                         controlTimeout={5000}
-                        disableFullscreen={true}
-                        onProgress={videoProgress}  
+                        disableFullscreen={true} 
                         style={{width:width,height:height/3, backgroundColor:'#000000'}} />
                 </View>               
                 
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
-
                         {data.artist_thumbnail?
                             <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
                         :
@@ -234,7 +245,7 @@ const Player = ({navigation, route}) =>{
                 </View>
 
                 <View style={styles.VideoDropDown}>
-                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>View next</Text>
+                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>Playlist</Text>
                     {showList == true?
                         (
                             <Icons name="chevron-up" onPress={()=>setShowlist(false)} color="#717171" size={20} style={{marginRight:12}}/>
@@ -247,15 +258,16 @@ const Player = ({navigation, route}) =>{
 
 
                 {showList == true?
-                    <PlayerList listArray={playlist} next={playNext}/>:null
+                    <PlayerList listArray={playlist} next={playNext} loadMore={getMorePlaylist}/>:null
                 }
 
+               
                 <CommentsComponent comments={Comments} spinner={commentsSpinner}/>
                 
             </View>
             <View style={{width:'100%',alignItems:'center'}}>
                 <View style={styles.commentsInput}>
-                    <TextInput style={{height:40,paddingLeft:15,color:'white'}} placeholderTextColor="#717171"  value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
+                    <TextInput style={{height:40,paddingLeft:15,color:'white',width:'85%'}} placeholderTextColor="#717171"  value={comment} onChangeText={text => onChangeText(text)} placeholder={"Add comment.."}/>
                     {viewCommentButton == true?
                         (
                             <Ionicons name="send-sharp"  onPress={()=>submitComment()} size={25} color={'#717171'} style={{marginTop:10,marginRight:10}}/>

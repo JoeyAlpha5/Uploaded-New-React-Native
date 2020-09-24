@@ -9,9 +9,15 @@ const PlayerList = (props)=>{
 
     const getMore = ()=>{
         console.log("getting more");
+        //get last post id in the listArray
+        var listArrayLength = props.listArray.length;
+        var last_post_id = props.listArray[listArrayLength-1];
+        console.log("last post id ", last_post_id.post_id);
+        props.loadMore(last_post_id);
     }
     return (
         <FlatList
+        // style={{marginTop:20,backgroundColor: '#fff'}}
         data={props.listArray} 
         keyExtractor={({ id }, index) => index.toFixed()}
         renderItem={({ item }) => (
@@ -29,9 +35,10 @@ const PlayerList = (props)=>{
             </TouchableOpacity>
         )} 
         onEndReached={()=>{
-            getMore()
+            getMore();
         }}
-        onEndReachedThreshold={10}/>
+        onEndReachedThreshold={10}
+        />
     )
 }
 export default PlayerList
