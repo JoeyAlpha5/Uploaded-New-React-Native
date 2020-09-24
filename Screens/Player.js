@@ -169,9 +169,21 @@ const Player = ({navigation, route}) =>{
    }
 
 
-    const videoFinished = () =>{
-
-        console.log("finished video ", CurrentPostId);
+    const videoFinished = (data) =>{
+        var currentTime = Math.floor(data.currentTime);
+        var videoDuration = Math.floor(data.playableDuration);
+        var SecondsLeft = videoDuration-currentTime
+        if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
+            console.log("current time  and duration ", currentTime, " ", videoDuration);
+            //check what the next post is 
+            for(let count = 0; count < playlist.length; count++){
+                if(playlist[count].post_id==CurrentPostId){
+                    console.log("next post is ", playlist[count+1]);
+                    playNext(playlist[count+1]);
+                    break;
+                }
+            }
+        }  
     }
   
     return (
@@ -181,7 +193,8 @@ const Player = ({navigation, route}) =>{
                 <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
                     <VideoPlayer source={{uri: data.post_source_url }} 
                         // repeat={true} 
-                        onEnd={videoFinished}
+                        onProgress={videoFinished}
+                        // onEnd={videoFinished}
                         onBack={goBack}  
                         navigator={navigation}    
                         ignoreSilentSwitch={"obey"}                          
