@@ -85,6 +85,7 @@ const Player = ({navigation, route}) =>{
         getComments(data.post_id);
         getPostView(data.post_id);
         //listen for comments, remember to come back to close this subscription
+        comments.off();
         comments.on('value',()=>{
             getComments(data.post_id);
         });
@@ -152,6 +153,11 @@ const Player = ({navigation, route}) =>{
        setLiked(post.user_num_likes_post);
        getComments(post.post_id);
        getPostView(post.post_id);
+       comments.off();
+        //listen for comments, remember to come back to close this subscription
+        comments.on('value',()=>{
+            getComments(post.post_id);
+        });
     //    console.log(post);
     //    console.log(data);
    }
