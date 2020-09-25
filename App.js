@@ -97,7 +97,7 @@ const App = ()=>{
     return(
       <NavigationContainer>
           <Stack.Navigator>
-                <Stack.Screen name="Uploaded" component={HomeTab} initialParams={{ login: updateLogin }}  options={{title:'Uploaded',headerTintColor: '#ffffff',headerStyle: {
+                <Stack.Screen name="Uploaded" component={HomeTab}  initialParams={{ login: updateLogin }}  options={{title:'Uploaded',headerTintColor: '#ffffff',headerShown:false,headerStyle: {
                   backgroundColor: '#131313',
                 }}}/>
                 <Stack.Screen name="Player" component={Player} screenOptions={{headerShown:false}} options={{headerShown:false,title:'View post',headerTintColor: '#ffffff',headerStyle: {

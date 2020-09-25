@@ -9,6 +9,7 @@ import { set } from 'react-native-reanimated';
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
 import Ant from 'react-native-vector-icons/AntDesign';
+import { Header } from 'react-native-elements';
 
 
 //components
@@ -211,6 +212,15 @@ export const Feed = ({navigation, route}) =>{
     // }
       
     return (
+        <>
+        <Header
+            placement="left"
+            containerStyle={{
+                backgroundColor: '#181818',
+                borderBottomWidth: 0,
+            }}
+            centerComponent={{ text: 'Uploaded', style: { color: '#fff',fontSize:20,borderBottomWidth:0 } }}        
+        />
         <View style={styles.view}>
             <StatusBar backgroundColor='#000000' barStyle="light-content"/>
             {Err == true? 
@@ -235,6 +245,7 @@ export const Feed = ({navigation, route}) =>{
             <Post feed={feed} play={navigate} Feed={getFeed} likePost={like} Refreshing={Refreshing} onRefresh={onRefresh} PostDuration={getPostDuration} CommentsCount={getCommentsCount} />
         )}
         </View>
+    </>
     )
 }
 

@@ -11,6 +11,8 @@ import Simple from 'react-native-vector-icons/SimpleLineIcons';
 import AsyncStorage from '@react-native-community/async-storage';
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
+import { Header } from 'react-native-elements';
+
 
 //components
 import PlayerList from '../components/PlayerList';

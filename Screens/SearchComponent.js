@@ -1,47 +1,41 @@
 import React, { useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView ,Dimensions, FlatList, Image} from 'react-native';
-import SearchBar from '../components/SearchBar';
-import { Header } from 'react-native-elements';
-import useResults from '../Hooks/useResults';
-import Searched from './Searched';
-import SearchComponent from './SearchComponent';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+const numColumns = 3;
 const WIDTH = Dimensions.get('window').width
 
-export const Search  = ({navigation}) => {
-    const [term, setTerm] = useState('');
-    const [searchApi, results, errorMessage,isSearched] = useResults();
-    _renderItem=()=>{
-         if(!isSearched){
-           return <SearchComponent results={results}/>
-         }
-         else{
-           return  <Searched results={results}/>
-         }
-    }
+const SearchComponent  = ({results}) => {
 
   return (
-    <View style={{width:'100%',height:'100%',backgroundColor:'#131313'}}>  
-        <SearchBar
-            term={term}
-            onTermChange={setTerm}
-            onTermSubmit={() => searchApi(term)}
-          />
-      <View style={styles.container}>
-            {_renderItem()}
-      </View>
-
-    </View>
+    <>
+       
+         <FlatList
+                keyExtractor={(result) => result.id}
+                data = {results}
+                numColumns={numColumns}
+                renderItem={({item})=>{
+                 
+                     return(
+                         <TouchableOpacity style={styles.itemStyle} onPress={() => navigation.navigate('PostScreen', { item })}>
+                             <View style={styles.itemStyle}>
+                                <Image style={{width:'100%', height:'100%'}} source={{uri:item.cover_url}}/>
+                             </View>
+                     </TouchableOpacity>
+                     )  
+                    
+                }}
+             />
+    </>
   );
 };
-// export default Search;
+
 const styles = StyleSheet.create({
     container:{
         flex: 1,
-        // paddingTop: 10,
-        backgroundColor:'#000'
+        paddingTop: 40
     },
     itemStyle:{
-        backgroundColor: 'white',
+        // backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
@@ -85,3 +79,4 @@ const styles = StyleSheet.create({
       },
 });
 
+export default SearchComponent;

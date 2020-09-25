@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, FlatList,RefreshControl,Image} from 'react-native';
 // import notifications from '../firebase/firebase';
 import { FirebaseNotifications } from '../firebase/firebase';
+import { Header } from 'react-native-elements';
+
 
 export const Notifications = () =>{
     const [notificationsArray, setNotificationsArray] = useState([]);
@@ -96,6 +98,15 @@ export const Notifications = () =>{
 
     return (
         <View style={{flex:1,height:'100%', width:'100%',backgroundColor:'#000000',justifyContent: 'center',alignItems: 'center',}}>
+            <Header
+                placement="left"
+                containerStyle={{
+                    backgroundColor: '#181818',
+                    borderBottomWidth: 0.5,
+                    borderBottomColor: '#000',
+                }}
+                centerComponent={{ text: 'Notifications', style: { color: '#fff',fontSize:20,borderBottomWidth:0 } }}
+            />
            {/* <Text style={{color:'#717171'}}>Coming soon</Text> */}
            <FlatList
                 style={{flexDirection:'column',width:'100%'}} 

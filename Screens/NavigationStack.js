@@ -36,7 +36,7 @@ const HomeTab = ({navigation,route})=>{
       tabBarOptions={{
         activeTintColor: '#ff9800',
         inactiveTintColor: 'gray',
-        style:{backgroundColor:'#131313'}
+        style:{backgroundColor:'#131313',borderTopWidth:0}
       }}
       >
       <Tab.Screen name="Home" component={Feed}/>
