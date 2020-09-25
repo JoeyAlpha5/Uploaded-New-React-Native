@@ -1,21 +1,30 @@
 import React, { useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView ,Dimensions, FlatList, Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Player from './Player';
+import { useScrollToTop } from '@react-navigation/native';
 const numColumns = 1;
 const WIDTH = Dimensions.get('window').width
 
 const Searched  = ({results}) => {
+  const Player = (post)=>{
+    console.log(post);
+  }
+
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
 
   return (
     <>
         <FlatList
+            ref={ref}  
             data = {results}
             keyExtractor={(result) => result.cover_url}
             numColumns={numColumns}
             renderItem={({item})=>{
                  return(
                      <TouchableOpacity
-                     onPress={() => navigation.navigate('PostScreen', { item })}
+                     onPress={() => Player(item)}
                    >
                      <View style={styles.itemstyle}>
                         <View style={{ flexDirection: 'row' }}>
@@ -81,9 +90,9 @@ const styles = StyleSheet.create({
         padding:5
       },
       avatarStyle: {
-        width: 50,
-        height: 50,
-        borderRadius: 50,
+        width: 40,
+        height: 40,
+        borderRadius: 5,
         marginTop: 6,
       },
       textStyle: {

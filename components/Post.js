@@ -4,10 +4,14 @@ import Ant from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';
+import { useScrollToTop } from '@react-navigation/native';
 const Post = (props) =>{
+    const ref = React.useRef(null);
+    useScrollToTop(ref);
     return(
-        <View>
-            <FlatList style={{flexDirection:'column',width:'99%'}}                                
+        <View style={{flex:1}}>
+            <FlatList style={{flexDirection:'column',width:'99%'}}  
+                ref={ref}                              
                 data={props.feed}
                 refreshControl={<RefreshControl refreshing={props.Refreshing} onRefresh={props.onRefresh}/>} 
                 keyExtractor={({ id }, index) => index.toFixed()}
@@ -74,7 +78,7 @@ const Post = (props) =>{
 
             )} onEndReached={()=>{
                 props.Feed(false,"threshold");
-            }} onEndReachedThreshold={10}/>
+            }} onEndReachedThreshold={2}/>
         </View>
     )
 }

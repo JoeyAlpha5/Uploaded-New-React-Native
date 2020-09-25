@@ -1,5 +1,5 @@
 import React, {useEffect,useState} from 'react';
-import {ActivityIndicator, View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl, Alert} from 'react-native';
+import {ActivityIndicator, View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl, Alert,ScrollView,SafeAreaView,Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
@@ -10,10 +10,13 @@ import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
 import Ant from 'react-native-vector-icons/AntDesign';
 import { Header } from 'react-native-elements';
-
+import { useScrollToTop } from '@react-navigation/native';
 
 //components
 import Post from '../components/Post';
+const WIDTH = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('window').height;
+
 //
 
 export const Feed = ({navigation, route}) =>{
@@ -213,37 +216,38 @@ export const Feed = ({navigation, route}) =>{
       
     return (
         <>
-        <Header
-            placement="left"
-            containerStyle={{
-                backgroundColor: '#181818',
-                borderBottomWidth: 0,
-            }}
-            centerComponent={{ text: 'Uploaded', style: { color: '#fff',fontSize:20,borderBottomWidth:0 } }}        
-        />
-        <View style={styles.view}>
-            <StatusBar backgroundColor='#000000' barStyle="light-content"/>
-            {Err == true? 
-                (
-                    <View style={{justifyContent: 'center',alignItems: 'center',height:'100%',width:'100%'}}>
-                        <Text style={{color:'#ffffff'}}>Unable to load feed</Text>
-                        <View style={{width:200,height:40,justifyContent: 'center',alignItems: 'center',marginTop:20}}>
-                            <Icono name='reload-circle' size={50} color={'#717171'} onPress={()=>onReload()}/>
+            <Header
+                placement="left"
+                containerStyle={{
+                    backgroundColor: '#181818',
+                    borderBottomWidth: 0,
+                }}
+                centerComponent={{ text: 'Uploaded', style: { color: '#fff',fontSize:20,borderBottomWidth:0 } }}        
+            />
+            <View style={styles.view}>
+            {/* <StatusBar backgroundColor='red' barStyle="light-content"/> */}
+                <StatusBar backgroundColor='#000000' barStyle="light-content"/>
+                {Err == true? 
+                    (
+                        <View style={{justifyContent: 'center',alignItems: 'center',height:'100%',width:'100%'}}>
+                            <Text style={{color:'#ffffff'}}>Unable to load feed</Text>
+                            <View style={{width:200,height:40,justifyContent: 'center',alignItems: 'center',marginTop:20}}>
+                                <Icono name='reload-circle' size={50} color={'#717171'} onPress={()=>onReload()}/>
+                            </View>
                         </View>
-                    </View>
-                )
-                :
-                (
-                    null
-                )
-            }
+                    )
+                    :
+                    (
+                        null
+                    )
+                }
 
 
 
-        {isLoading ? <ActivityIndicator size="large" color="#eb8d35"/> : (
+            {isLoading ? <ActivityIndicator size="large" color="#eb8d35"/> : (
 
-            <Post feed={feed} play={navigate} Feed={getFeed} likePost={like} Refreshing={Refreshing} onRefresh={onRefresh} PostDuration={getPostDuration} CommentsCount={getCommentsCount} />
-        )}
+                <Post feed={feed} play={navigate} Feed={getFeed} likePost={like} Refreshing={Refreshing} onRefresh={onRefresh} PostDuration={getPostDuration} CommentsCount={getCommentsCount} />
+            )}
         </View>
     </>
     )
@@ -302,7 +306,9 @@ styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor:'#000000',
-        height:'100%'
+        height:'100%',
+        flex: 1,
+        height:HEIGHT,
     },
     Post:{
         height:400,

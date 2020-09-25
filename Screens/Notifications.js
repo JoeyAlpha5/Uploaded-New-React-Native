@@ -3,13 +3,17 @@ import {View, Text, FlatList,RefreshControl,Image} from 'react-native';
 // import notifications from '../firebase/firebase';
 import { FirebaseNotifications } from '../firebase/firebase';
 import { Header } from 'react-native-elements';
+import { useScrollToTop } from '@react-navigation/native';
 
 
 export const Notifications = () =>{
     const [notificationsArray, setNotificationsArray] = useState([]);
     const [serverTime,setServerTime] = useState();
     const [Refreshing,setRefreshing] =useState(false);
-
+    //
+    const ref = React.useRef(null);
+    useScrollToTop(ref);
+    //
     const getNotifications = ()=>{
         let notif_array = [];
         FirebaseNotifications.orderByChild('-notification_date').limitToLast(30).once('value', data=>{
@@ -109,6 +113,7 @@ export const Notifications = () =>{
             />
            {/* <Text style={{color:'#717171'}}>Coming soon</Text> */}
            <FlatList
+                ref={ref}
                 style={{flexDirection:'column',width:'100%'}} 
                 refreshControl={<RefreshControl refreshing={Refreshing} onRefresh={onRefresh}/>} 
                 data={notificationsArray}

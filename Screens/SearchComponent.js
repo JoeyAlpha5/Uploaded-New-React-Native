@@ -1,10 +1,21 @@
 import React, { useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView ,Dimensions, FlatList, Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Player from './Player';
+import { useScrollToTop } from '@react-navigation/native';
+// import Player from './Player';
 const numColumns = 3;
 const WIDTH = Dimensions.get('window').width
 
 const SearchComponent  = ({results}) => {
+
+  const Player =(post)=>{
+    console.log(post);
+  }
+
+  const ref = React.useRef(null);
+  useScrollToTop(ref);
+
 
   return (
     <>
@@ -12,11 +23,12 @@ const SearchComponent  = ({results}) => {
          <FlatList
                 keyExtractor={(result) => result.id}
                 data = {results}
+                ref={ref}
                 numColumns={numColumns}
                 renderItem={({item})=>{
                  
                      return(
-                         <TouchableOpacity style={styles.itemStyle} onPress={() => navigation.navigate('PostScreen', { item })}>
+                         <TouchableOpacity style={styles.itemStyle} onPress={() => Player(item)}>
                              <View style={styles.itemStyle}>
                                 <Image style={{width:'100%', height:'100%'}} source={{uri:item.cover_url}}/>
                              </View>

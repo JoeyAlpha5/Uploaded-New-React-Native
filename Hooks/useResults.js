@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default () => {
   const [results, setResults] = useState([]);
@@ -7,33 +8,29 @@ export default () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const searchApi = async searchTerm => {
-    try{
-        const response = await axios.get('http://185.237.96.39:3000/users/users?type=searchmostviewed&&count=0&&user_ip=10.10.25.155&&user_id=1');
-        if(searchTerm === ''){
-            setSearched(false)
-            setResults(response.data.Response)
-        }
-        else{
-                const res = response.data.Response;
-                setSearched(true)
-                const filter = [];
-                res.forEach(element => {
-                   if(element.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1){
-                       filter.push(element);
-                   }
-                });
-                setResults(filter);
-        }
-       
-    } 
-    catch{
-        console.log('Something went wrong')
-    }  
+    
+    fetch('http://185.237.96.39:3000/users/users?type=searchmostviewed&&count=0&&user_ip=10.10.25.155&&user_id=1')
+    .then(response=>response.json())
+    .then(res=>{
+      if(searchTerm === ''){
+        setSearched(false)
+        setResults(res.Response)
+      }else{
+        // const res = res.Response;
+        setSearched(true)
+        const filter = [];
+        res.forEach(element => {
+           if(element.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1){
+               filter.push(element);
+           }
+        });
+        setResults(filter);
+      }
+    })
+
+
   };
 
-  // Call searchApi when component
-  // is first rendered.  BAD CODE!
-  // searchApi('pasta');
   useEffect(() => {
     searchApi('');
   }, []);

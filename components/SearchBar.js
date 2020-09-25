@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
+    // marginTop:10
     fontSize: 18
   },
   iconStyle: {
