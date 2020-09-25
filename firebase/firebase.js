@@ -19,4 +19,5 @@ if (!firebase.apps.length) {
 
 const db = firebase.database();
 export const comments = db.ref("Comments");
+export const notifications = db.ref("notification");
 export { firebase };

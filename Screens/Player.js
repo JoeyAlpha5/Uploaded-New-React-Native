@@ -85,7 +85,7 @@ const Player = ({navigation, route}) =>{
         setLiked(data.user_num_likes_post);
         // setPlaylist(route.params.playlist);
         // getMorePlaylist(data.post_id);
-        setPlaylist(route.params.playlist);
+        // setPlaylist(route.params.playlist);
         console.log("post liked ", data.user_num_likes_post);
         console.log("getting comments");
         getComments(data.post_id);
@@ -95,6 +95,9 @@ const Player = ({navigation, route}) =>{
         comments.on('value',()=>{
             getComments(data.post_id);
         });
+
+        getMorePlaylist(data.post_id);
+
     }, []);
 
     const {width, height} = Dimensions.get("screen");
@@ -170,20 +173,27 @@ const Player = ({navigation, route}) =>{
 
 
     const videoFinished = (data) =>{
-        var currentTime = Math.floor(data.currentTime);
-        var videoDuration = Math.floor(data.playableDuration);
-        var SecondsLeft = videoDuration-currentTime
-        if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
-            console.log("current time  and duration ", currentTime, " ", videoDuration);
-            //check what the next post is 
-            for(let count = 0; count < playlist.length; count++){
-                if(playlist[count].post_id==CurrentPostId){
-                    console.log("next post is ", playlist[count+1]);
-                    playNext(playlist[count+1]);
-                    break;
-                }
-            }
-        }  
+        console.log(data);
+        // var currentTime = Math.floor(data.currentTime);
+        // var videoDuration = Math.floor(data.playableDuration);
+        // var SecondsLeft = videoDuration-currentTime
+        // // console.log("current time  and duration ", currentTime, " ", videoDuration);
+        // if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
+        // // if(CurrentPostId != undefined && currentTime == videoDuration){
+        //     //check what the next post is 
+        //     for(let count = 0; count < playlist.length; count++){
+        //         if(playlist[count].post_id==CurrentPostId){
+        //             console.log("current time  and duration ", currentTime, " ", videoDuration);
+        //             console.log("next post is ", playlist[count+1]);
+        //             playNext(playlist[count+1]);
+        //             break;
+        //         }
+        //     }
+        // }  
+    }
+
+    const videoPlaying = () =>{
+        console.log("playlist ", playlist);
     }
   
     return (
@@ -193,8 +203,7 @@ const Player = ({navigation, route}) =>{
                 <View style={{height:height/3,justifyContent: 'center',alignItems: 'center',}}>
                     <VideoPlayer source={{uri: data.post_source_url }} 
                         // repeat={true} 
-                        onProgress={videoFinished}
-                        // onEnd={videoFinished}
+                        // onProgress={videoFinished}
                         onBack={goBack}  
                         navigator={navigation}    
                         ignoreSilentSwitch={"obey"}                          
@@ -204,6 +213,7 @@ const Player = ({navigation, route}) =>{
                         disableVolume={true}
                         controlTimeout={5000}
                         disableFullscreen={true} 
+                        // onEnd={videoPlaying}
                         style={{width:width,height:height/3, backgroundColor:'#000000'}} />
                 </View>               
                 
@@ -258,7 +268,7 @@ const Player = ({navigation, route}) =>{
                 </View>
 
                 <View style={styles.VideoDropDown}>
-                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>Playlist</Text>
+                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>Next</Text>
                     {showList == true?
                         (
                             <Icons name="chevron-up" onPress={()=>setShowlist(false)} color="#717171" size={20} style={{marginRight:12}}/>
