@@ -22,7 +22,7 @@ const PlayerList = (props)=>{
         keyExtractor={({ id }, index) => index.toFixed()}
         renderItem={({ item }) => (
             <TouchableOpacity onPress={()=>viewPost(item)}>
-                <View style={{width:'100%'}}>
+                <View style={{width:'100%',borderBottomWidth: 0.3,borderBottomColor:'#242424',marginBottom:10}}>
                     <View style={{width:'80%',marginTop:5,flexDirection:'row'}}>
                         <Image style={{width:40,height:40,borderRadius:50}} source={{uri: item.artist_thumbnail}}/>
                         <View style={{alignItems:'flex-start',justifyContent:'flex-start',marginBottom:40}}>

@@ -2,22 +2,85 @@ import React, { useState,useEffect} from 'react';
 import { View, Text, StyleSheet, ScrollView ,Dimensions, FlatList, Image} from 'react-native';
 import SearchBar from '../components/SearchBar';
 import { Header } from 'react-native-elements';
-import useResults from '../Hooks/useResults';
+// import useResults from '../Hooks/useResults';
 import Searched from './Searched';
 import SearchComponent from './SearchComponent';
+import publicIP from 'react-native-public-ip';
+import AsyncStorage from '@react-native-community/async-storage';
 const WIDTH = Dimensions.get('window').width
 
 export const Search  = ({navigation}) => {
     const [term, setTerm] = useState('');
-    const [searchApi, results, errorMessage,isSearched] = useResults();
+    // const [searchApi, results, errorMessage,isSearched] = useResults();
+    const [count, setCount] = useState(0);
+    const [results, setResults] = useState([]);
+    const [isSearched, setSearched] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    // const [SearchResults,setSearchResults] = useState([]);
+
     _renderItem=()=>{
          if(!isSearched){
-           return <SearchComponent results={results}/>
+           return <SearchComponent results={results} play={Player}/>
          }
          else{
-           return  <Searched results={results}/>
+           return  <Searched results={results} play={Player} />
          }
     }
+
+    const updateLike = ()=>{
+      console.log('like');
+    } 
+
+    const Player = async (post)=>{
+      var user_id = await AsyncStorage.getItem('user_id');
+      publicIP().then(ip=>{
+        fetch('http://185.237.96.39:3000/users/users?type=getpostinfo&&user_ip='+ip+'&&user_id='+user_id+'&&post_id='+post.id)
+        .then(re=>re.json())
+        .then(video=>{
+          console.log(video);
+          navigation.navigate('Player',{data:video,updateLike:updateLike()});
+  
+        })
+      });
+  
+    }
+
+
+    // const getSearch = ()=>{
+    //   fetch('')
+    // }
+
+    const searchApi = async searchTerm => {
+      var user_id = await AsyncStorage.getItem('user_id');
+      publicIP().then(ip=>{
+        fetch('http://185.237.96.39:3000/users/users?type=searchmostviewed&&count='+count+'&&user_ip='+ip+'&&user_id='+user_id)
+        .then(response=>response.json())
+        .then(res=>{
+          if(searchTerm === ''){
+            setSearched(false)
+            setResults(res.Response)
+          }else{
+            // const res = res.Response;
+            console.log(res);
+            setSearched(true)
+            const filter = [];
+            res.Response.forEach(element => {
+               if(element.description.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1){
+                   filter.push(element);
+               }
+            });
+            setResults(filter);
+            // setCount(count+10);
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      });
+    };
+
+    useEffect(() => {
+      searchApi('');
+    }, []);
 
   return (
     <View style={{width:'100%',height:'100%',backgroundColor:'#131313'}}>  

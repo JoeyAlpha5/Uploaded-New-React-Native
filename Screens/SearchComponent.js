@@ -4,14 +4,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Player from './Player';
 import { useScrollToTop } from '@react-navigation/native';
 // import Player from './Player';
+
 const numColumns = 3;
 const WIDTH = Dimensions.get('window').width
 
-const SearchComponent  = ({results}) => {
-
-  const Player =(post)=>{
-    console.log(post);
-  }
+const SearchComponent  = ({results,play}) => {
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
@@ -28,7 +25,7 @@ const SearchComponent  = ({results}) => {
                 renderItem={({item})=>{
                  
                      return(
-                         <TouchableOpacity style={styles.itemStyle} onPress={() => Player(item)}>
+                         <TouchableOpacity style={styles.itemStyle} onPress={() => play(item)}>
                              <View style={styles.itemStyle}>
                                 <Image style={{width:'100%', height:'100%'}} source={{uri:item.cover_url}}/>
                              </View>

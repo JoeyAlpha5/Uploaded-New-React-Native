@@ -15,6 +15,7 @@ const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
         onChangeText={onTermChange}
         onEndEditing={onTermSubmit}
       />
+      {/* <Feather name="search" style={styles.iconStyle} /> */}
     </View>
   );
 };

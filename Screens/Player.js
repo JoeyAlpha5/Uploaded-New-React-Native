@@ -31,7 +31,9 @@ const Player = ({navigation, route}) =>{
     const [likesCount,setLikesCount] = useState(0);
     const [playlist,setPlaylist] = useState([]);
     const [showList,setShowlist] = useState(true);
+    const [paused,setPause] = useState(false);
     const [CurrentPostId,setCurrentPostId] = useState();
+    const [videoSecondsLeft,setVideoSecondsLeft] = useState();
     const updateLike = route.params.updateLike;
     const getComments = (int_post_id)=>{
         let comments_array = []
@@ -171,31 +173,56 @@ const Player = ({navigation, route}) =>{
         });
 
         getMorePlaylist(post.post_id);
+
+        // setPause(false);
    }
 
 
-    const videoFinished = (data) =>{
-        console.log(data);
-        // var currentTime = Math.floor(data.currentTime);
-        // var videoDuration = Math.floor(data.playableDuration);
-        // var SecondsLeft = videoDuration-currentTime
-        // // console.log("current time  and duration ", currentTime, " ", videoDuration);
-        // if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
-        // // if(CurrentPostId != undefined && currentTime == videoDuration){
-        //     //check what the next post is 
+    const videoFinished = (progressData) =>{
+        // console.log("progress data ",progressData);
+        var currentTime = progressData.currentTime;
+        var videoDuration = progressData.playableDuration;
+        var seekable_duration =  progressData.seekableDuration;
+        // var video
+        var SecondsLeft = videoDuration-currentTime
+        var SecondsLeftRounded = Math.floor(SecondsLeft);
+        // if(videoSecondsLeft != undefined && videoSecondsLeft == SecondsLeft && SecondsLeft > 0){
+        //     console.log("current time  and duration ", currentTime, " video duration ",videoDuration, " seconds left ", SecondsLeft);
+
+        // }   
+        // setVideoSecondsLeft(SecondsLeft);
+        // console.log("current time  and duration ", currentTime, " video duration ",videoDuration, " seconds left ", SecondsLeft);
+        // if(SecondsLeftRounded == 0 && SecondsLeft > 0 && videoDuration == seekable_duration && paused == false){
+        //     setPause(true);
+        //     console.log("video paused");
+        //     // AutoPlayNext();
         //     for(let count = 0; count < playlist.length; count++){
         //         if(playlist[count].post_id==CurrentPostId){
-        //             console.log("current time  and duration ", currentTime, " ", videoDuration);
         //             console.log("next post is ", playlist[count+1]);
         //             playNext(playlist[count+1]);
         //             break;
         //         }
         //     }
+        // }
+        // if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
+        // // if(CurrentPostId != undefined && currentTime == videoDuration){
+        //     //check what the next post is 
+            // for(let count = 0; count < playlist.length; count++){
+            //     if(playlist[count].post_id==CurrentPostId){
+            //         console.log("current time  and duration ", currentTime, " ", videoDuration);
+            //         console.log("next post is ", playlist[count+1]);
+            //         playNext(playlist[count+1]);
+            //         break;
+            //     }
+            // }
         // }  
     }
 
     const videoPlaying = () =>{
-        console.log("playlist ", playlist);
+        // console.log("playlist ", playlist);
+        console.log("current post data ", data);
+        
+
     }
   
     return (
@@ -211,6 +238,7 @@ const Player = ({navigation, route}) =>{
                         ignoreSilentSwitch={"obey"}                          
                         resizeMode={"contain"}
                         // muted={true}
+                        paused={paused}
                         seekColor={"#eb8d35"}
                         disableVolume={true}
                         controlTimeout={5000}
@@ -270,7 +298,7 @@ const Player = ({navigation, route}) =>{
                 </View>
 
                 <View style={styles.VideoDropDown}>
-                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>Next</Text>
+                    <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>View next</Text>
                     {showList == true?
                         (
                             <Icons name="chevron-up" onPress={()=>setShowlist(false)} color="#717171" size={20} style={{marginRight:12}}/>

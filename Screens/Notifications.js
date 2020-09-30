@@ -4,6 +4,7 @@ import {View, Text, FlatList,RefreshControl,Image} from 'react-native';
 import { FirebaseNotifications } from '../firebase/firebase';
 import { Header } from 'react-native-elements';
 import { useScrollToTop } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export const Notifications = () =>{
@@ -120,7 +121,15 @@ export const Notifications = () =>{
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
                     <View style={{flexDirection:'row',width:'100%',justifyContent:"space-evenly",backgroundColor:'#181818',flex:1,padding:15,borderBottomWidth: 0.5,}}>
-                        <Image  style={{width:40,height:40,borderRadius:50}} source={{uri:item.profile}}/>
+                      {item.profile?
+                        (<Image  style={{width:40,height:40,borderRadius:50}} source={{uri:item.profile}}/>):
+                        (
+                          <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
+                            <Ionicons name="person-outline" size={25} color={'#717171'}/>
+                        </View>
+                        )
+                      }
+                        
                         <View style={{marginLeft:15,width:'70%'}}>
                             <Text style={{color:'#717171',fontSize:11}}>{getDate(item.notification_date)}</Text>
                             <Text style={{color:'white'}}>{item.msg}</Text>

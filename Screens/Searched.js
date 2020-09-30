@@ -6,10 +6,7 @@ import { useScrollToTop } from '@react-navigation/native';
 const numColumns = 1;
 const WIDTH = Dimensions.get('window').width
 
-const Searched  = ({results}) => {
-  const Player = (post)=>{
-    console.log(post);
-  }
+const Searched  = ({results,play}) => {
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
@@ -24,7 +21,7 @@ const Searched  = ({results}) => {
             renderItem={({item})=>{
                  return(
                      <TouchableOpacity
-                     onPress={() => Player(item)}
+                     onPress={() => play(item)}
                    >
                      <View style={styles.itemstyle}>
                         <View style={{ flexDirection: 'row' }}>
@@ -45,7 +42,8 @@ const Searched  = ({results}) => {
                      </View>
                    </TouchableOpacity>
                  )
-            }}/>
+            }}
+            />
     </>
   );
 };
