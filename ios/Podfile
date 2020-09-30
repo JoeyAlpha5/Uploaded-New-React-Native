@@ -8,28 +8,36 @@ target 'uploaded' do
 
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'react-native-jw-media-player', :path => '../node_modules/react-native-jw-media-player'
+  # pod 'react-native-jw-media-player', :path => '../node_modules/react-native-jw-media-player'
 
   target 'uploadedTests' do
     inherit! :complete
     # Pods for testing
   end
 
+  target 'OneSignalNotificationServiceExtension' do
+    pod 'OneSignal', '>= 2.9.3', '< 3.0'
+  end
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
   use_flipper!
   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+      end
+    end
     flipper_post_install(installer)
   end
 end
 
-target 'uploaded-tvOS' do
-  # Pods for uploaded-tvOS
+# target 'uploaded-tvOS' do
+#   # Pods for uploaded-tvOS
 
-  target 'uploaded-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end
+#   target 'uploaded-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+# end
