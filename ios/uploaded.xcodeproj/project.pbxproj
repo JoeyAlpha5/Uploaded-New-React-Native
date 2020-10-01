@@ -889,7 +889,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0DA1556DEC7560B41F6270B3 /* Pods-uploaded-OneSignalNotificationServiceExtension.debug.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -920,7 +920,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0EBD9E3FA030F9F008C3AD3F /* Pods-uploaded-OneSignalNotificationServiceExtension.release.xcconfig */;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

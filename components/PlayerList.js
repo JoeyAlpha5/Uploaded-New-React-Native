@@ -37,7 +37,7 @@ const PlayerList = (props)=>{
         onEndReached={()=>{
             getMore();
         }}
-        onEndReachedThreshold={10}
+        onEndReachedThreshold={1}
         />
     )
 }

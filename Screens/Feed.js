@@ -312,7 +312,8 @@ styles = StyleSheet.create({
     },
     Post:{
         height:400,
-        width:'100%',
+        width:'98%',
+        alignSelf: 'center',
         // resizeMode:'cover',
         // alignItems:'center',
         // justifyContent:'center',

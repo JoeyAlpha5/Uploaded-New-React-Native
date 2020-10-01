@@ -1,16 +1,17 @@
 import React from 'react';
-import {View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl} from 'react-native';
+import {View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl,Dimensions} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
 import Icono from 'react-native-vector-icons/Ionicons';
 import { useScrollToTop } from '@react-navigation/native';
+const WIDTH = Dimensions.get('window').width;
 const Post = (props) =>{
     const ref = React.useRef(null);
     useScrollToTop(ref);
     return(
         <View style={{flex:1}}>
-            <FlatList style={{flexDirection:'column',width:'99%'}}  
+            <FlatList
                 ref={ref}                              
                 data={props.feed}
                 refreshControl={<RefreshControl refreshing={props.Refreshing} onRefresh={props.onRefresh}/>} 
