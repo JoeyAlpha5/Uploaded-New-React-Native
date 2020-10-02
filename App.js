@@ -62,8 +62,9 @@ const App = ()=>{
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Splash" component={Splash} options={{headerShown:false}}/>
+          
           <Stack.Screen name="Login" component={Login}   initialParams={{ login: updateLogin }}
-          options={{headerTintColor: '#ffffff', headerTitle:()=>(            
+          options={{headerTintColor: '#ffffff',headerBackTitleVisible: false,  headerTitle:()=>(            
                 <Image
                 style={{ width: 30, height: 30 }}
                 source={require('./assets/logo.png')}
@@ -75,10 +76,10 @@ const App = ()=>{
             backgroundColor: '#000000',
           }}}/>
           <Stack.Screen name="PasswordReset" component={PasswordReset}
-          options={{headerTintColor: '#ffffff',headerStyle: {
+          options={{headerTintColor: '#ffffff',headerBackTitleVisible: false, headerStyle: {
             backgroundColor: '#000000',
           }}}/>
-          <Stack.Screen name="Register"  component={Register} initialParams={{ login: updateLogin }} options={{headerTintColor: '#ffffff',
+          <Stack.Screen name="Register"  component={Register} initialParams={{ login: updateLogin }} options={{headerTintColor: '#ffffff',headerBackTitleVisible: false, 
             headerTitle:()=>(            
               <Image
               style={{ width: 30, height: 30 }}
