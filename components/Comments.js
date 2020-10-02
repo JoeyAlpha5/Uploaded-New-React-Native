@@ -14,7 +14,7 @@ const CommentsComponent = (props) =>{
                 style={{width:'100%'}}
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
-                <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:0.2,marginTop:20,   height:'auto',padding: 10,paddingTop:20,paddingBottom:20,borderColor:'#242424',width:'100%'}}>
+                <View style={{flexDirection:'row',justifyContent:'flex-start',borderBottomWidth:1,marginTop:20,   height:'auto',padding: 10,paddingTop:20,paddingBottom:20,borderColor:'#242424',width:'100%'}}>
                     <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
                         <Ionicons name="person-outline" size={25} color={'#717171'}/>
                     </View>

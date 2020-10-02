@@ -80,7 +80,7 @@ const Player = ({navigation: { setParams }, route}) =>{
             .then(json=>{
                 // console.log("set params");
                 // console.log(json.Response);
-                setPlaylist([...route.params.playlist,...json.Response]);
+                setPlaylist([...playlist,...json.Response]);
                 // setPlaylist(json.Response);
                 // AsyncStorage.setItem("playlist",JSON.stringify(playlist));
                 // setParams({playlist:json.Response});
