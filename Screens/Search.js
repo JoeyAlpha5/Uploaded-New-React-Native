@@ -20,10 +20,10 @@ export const Search  = ({navigation}) => {
 
     _renderItem=()=>{
          if(!isSearched){
-           return <SearchComponent results={results} play={Player}/>
+           return <SearchComponent results={results} play={Player} endReached={endReached}/>
          }
          else{
-           return  <Searched results={results} play={Player} />
+           return  <Searched results={results} play={Player}/>
          }
     }
 
@@ -45,10 +45,11 @@ export const Search  = ({navigation}) => {
   
     }
 
-
-    // const getSearch = ()=>{
-    //   fetch('')
-    // }
+    const endReached = ()=>{
+      console.log("reached end");
+      // console.log(count);
+      searchApi('');
+    }
 
     const searchApi = async searchTerm => {
       var user_id = await AsyncStorage.getItem('user_id');
@@ -58,7 +59,8 @@ export const Search  = ({navigation}) => {
         .then(res=>{
           if(searchTerm === ''){
             setSearched(false)
-            setResults(res.Response)
+            setCount(count+31);
+            setResults([...results,...res.Response]);
           }else{
             // const res = res.Response;
             console.log(res);
@@ -69,7 +71,7 @@ export const Search  = ({navigation}) => {
                    filter.push(element);
                }
             });
-            setResults(filter);
+            setResults(res.Response)
             // setCount(count+10);
           }
         }).catch(err=>{
@@ -79,8 +81,8 @@ export const Search  = ({navigation}) => {
     };
 
     useEffect(() => {
-      searchApi('');
-    }, []);
+      searchApi(term);
+    }, [term]);
 
   return (
     <View style={{width:'100%',height:'100%',backgroundColor:'#131313'}}>  
@@ -88,6 +90,7 @@ export const Search  = ({navigation}) => {
             term={term}
             onTermChange={setTerm}
             onTermSubmit={() => searchApi(term)}
+            // textChanged={() => doLiveSearch()}
           />
       <View style={styles.container}>
             {_renderItem()}

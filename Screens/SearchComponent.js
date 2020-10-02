@@ -8,7 +8,7 @@ import { useScrollToTop } from '@react-navigation/native';
 const numColumns = 3;
 const WIDTH = Dimensions.get('window').width
 
-const SearchComponent  = ({results,play}) => {
+const SearchComponent  = ({results,play,endReached}) => {
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
@@ -33,7 +33,8 @@ const SearchComponent  = ({results,play}) => {
                      )  
                     
                 }}
-             />
+          onEndReached={endReached}
+          onEndReachedThreshold={10}/>
     </>
   );
 };

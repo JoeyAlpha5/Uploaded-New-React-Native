@@ -6,7 +6,7 @@ import { useScrollToTop } from '@react-navigation/native';
 const numColumns = 1;
 const WIDTH = Dimensions.get('window').width
 
-const Searched  = ({results,play}) => {
+const Searched  = ({results,play,endReached}) => {
 
   const ref = React.useRef(null);
   useScrollToTop(ref);
@@ -43,7 +43,7 @@ const Searched  = ({results,play}) => {
                    </TouchableOpacity>
                  )
             }}
-            />
+        />
     </>
   );
 };
