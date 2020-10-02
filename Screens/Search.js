@@ -14,6 +14,7 @@ export const Search  = ({navigation}) => {
     // const [searchApi, results, errorMessage,isSearched] = useResults();
     const [count, setCount] = useState(0);
     const [results, setResults] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
     const [isSearched, setSearched] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     // const [SearchResults,setSearchResults] = useState([]);
@@ -23,7 +24,7 @@ export const Search  = ({navigation}) => {
            return <SearchComponent results={results} play={Player} endReached={endReached}/>
          }
          else{
-           return  <Searched results={results} play={Player}/>
+           return  <Searched results={searchResults} play={Player}/>
          }
     }
 
@@ -59,11 +60,12 @@ export const Search  = ({navigation}) => {
         .then(res=>{
           if(searchTerm === ''){
             setSearched(false)
-            setCount(count+31);
+            // setCount(count+31);
             setResults([...results,...res.Response]);
           }else{
             // const res = res.Response;
             console.log(res);
+            // setCount(0);
             setSearched(true)
             const filter = [];
             res.Response.forEach(element => {
@@ -71,7 +73,7 @@ export const Search  = ({navigation}) => {
                    filter.push(element);
                }
             });
-            setResults(res.Response)
+            setSearchResults(filter)
             // setCount(count+10);
           }
         }).catch(err=>{
@@ -81,6 +83,8 @@ export const Search  = ({navigation}) => {
     };
 
     useEffect(() => {
+      // setCount(0);
+      // console.log(count);
       searchApi(term);
     }, [term]);
 

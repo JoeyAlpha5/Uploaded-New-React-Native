@@ -1,13 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList,RefreshControl,Image} from 'react-native';
+import {View, Text, FlatList,RefreshControl,Image,TouchableOpacity} from 'react-native';
 // import notifications from '../firebase/firebase';
 import { FirebaseNotifications } from '../firebase/firebase';
 import { Header } from 'react-native-elements';
 import { useScrollToTop } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import publicIP from 'react-native-public-ip';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
-export const Notifications = () =>{
+
+export const Notifications = ({navigation}) =>{
     const [notificationsArray, setNotificationsArray] = useState([]);
     const [serverTime,setServerTime] = useState();
     const [Refreshing,setRefreshing] =useState(false);
@@ -99,6 +102,24 @@ export const Notifications = () =>{
         getNotifications()
     }
 
+    const updateLike = ()=>{
+      console.log('like');
+    } 
+
+
+    const viewPost = async (post_id,userid)=>{
+      // console.log("post id is ", post_id," user id ", userid);
+      var user_id = await AsyncStorage.getItem('user_id');
+      publicIP().then(ip=>{
+        fetch('http://185.237.96.39:3000/users/users?type=getpostinfo&&user_ip='+ip+'&&user_id='+user_id+'&&post_id='+post_id)
+        .then(re=>re.json())
+        .then(video=>{
+          console.log(video);
+          navigation.navigate('Player',{data:video,updateLike:updateLike(),showPlaylist:false});
+  
+        })
+      });
+    }
 
 
     return (
@@ -131,10 +152,12 @@ export const Notifications = () =>{
                       }
                         
                         <View style={{marginLeft:15,width:'70%'}}>
-                            <Text style={{color:'#717171',fontSize:11}}>{getDate(item.notification_date)}</Text>
+                            {/* <Text style={{color:'#717171',fontSize:11}}>{getDate(item.notification_date)}</Text> */}
                             <Text style={{color:'white'}}>{item.msg}</Text>
                         </View>
-                        <Image  style={{width:40,height:40,borderRadius:5}} source={{uri:item.post_image}}/>
+                        <TouchableOpacity onPress={()=>viewPost(item.post,item.userid)}>
+                          <Image  style={{width:40,height:40,borderRadius:5}} source={{uri:item.post_image}}/>
+                        </TouchableOpacity>
                     </View>
                 )}
 

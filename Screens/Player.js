@@ -109,6 +109,10 @@ const Player = ({navigation: { setParams }, route}) =>{
             getComments(data.post_id);
         });
 
+        // if(){
+
+        // }
+        console.log("show playlist ", route.params.showPlaylist);
         getMorePlaylist(data.post_id);
 
     }, [data]);
@@ -325,7 +329,9 @@ const Player = ({navigation: { setParams }, route}) =>{
                     </View>
                 </View>
 
-                <View style={styles.VideoDropDown}>
+
+            {route.params.showPlaylist != false?
+                (<View style={styles.VideoDropDown}>
                     <Text style={{color:'#717171',fontSize:13,marginLeft:5}}>View next</Text>
                     {showList == true?
                         (
@@ -335,10 +341,11 @@ const Player = ({navigation: { setParams }, route}) =>{
                             <Icons name="chevron-down" onPress={()=>setShowlist(true)} color="#717171" size={20} style={{marginRight:12}}/>
                         )
                     }
-                </View>
+                </View>):
+                null
+            }       
 
-
-                {showList == true?
+                {showList == true && route.params.showPlaylist != false?
                     <PlayerList listArray={playlist} next={playNext} loadMore={getMorePlaylist}/>:null
                 }
 
