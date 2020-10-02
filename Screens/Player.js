@@ -12,13 +12,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { firebase, comments } from '../firebase/firebase';
 import publicIP from 'react-native-public-ip';
 import { Header } from 'react-native-elements';
-
+import { CommonActions, useNavigation } from '@react-navigation/native'
 
 //components
 import PlayerList from '../components/PlayerList';
 import CommentsComponent from '../components/Comments';
 //
-const Player = ({navigation, route}) =>{
+const Player = ({navigation: { setParams }, route}) =>{
     const [Comments,setComments] = useState([]);
     const [commentsSpinner,setcommentsSpinner] = useState(true);
     const [commentsError,setcommentsError] = useState(false);
@@ -30,11 +30,14 @@ const Player = ({navigation, route}) =>{
     const [liked,setLiked] =useState(0);
     const [likesCount,setLikesCount] = useState(0);
     const [playlist,setPlaylist] = useState([]);
+    // const [playlistCount,setPlaylistCount] = useState(0);
     const [showList,setShowlist] = useState(true);
     const [paused,setPause] = useState(false);
-    const [CurrentPostId,setCurrentPostId] = useState();
+    // const [CurrentPostId,setCurrentPostId] = useState();
     const [videoSecondsLeft,setVideoSecondsLeft] = useState();
     const updateLike = route.params.updateLike;
+    const navigation = useNavigation();
+
     const getComments = (int_post_id)=>{
         let comments_array = []
         comments.orderByChild('post_id').equalTo(int_post_id).once('value',data=>{
@@ -75,8 +78,14 @@ const Player = ({navigation, route}) =>{
             fetch('http://185.237.96.39:3000/users/users?type=getPostPlayList&&post_id='+post_id+'&&user_id='+user_id+"&&user_ip="+ip+"&&count=5")
             .then(response=>response.json())
             .then(json=>{
-                // console.log(json);
-                setPlaylist([...playlist,...json.Response]);
+                // console.log("set params");
+                // console.log(json.Response);
+                setPlaylist([...route.params.playlist,...json.Response]);
+                // setPlaylist(json.Response);
+                // AsyncStorage.setItem("playlist",JSON.stringify(playlist));
+                // setParams({playlist:json.Response});
+                // console.log(route.params.playlist);
+                // setPlaylist([...playlist,...json.Response]);
                 // setCount(count+11);
             })
         })
@@ -102,7 +111,7 @@ const Player = ({navigation, route}) =>{
 
         getMorePlaylist(data.post_id);
 
-    }, []);
+    }, [data]);
 
     const {width, height} = Dimensions.get("screen");
     //
@@ -158,21 +167,22 @@ const Player = ({navigation, route}) =>{
    }
 
 
-   const playNext =(post)=>{
-       setCurrentPostId(post.post_id);
-       console.log("current post id ",CurrentPostId);
+   const playNext =async (post)=>{
+    //    setCurrentPostId(post.post_id);
+    //    console.log("current post id ",CurrentPostId);
        setData(post);
-       setLikesCount(post.post_num_likes);
-       setLiked(post.user_num_likes_post);
-       getComments(post.post_id);
-       getPostView(post.post_id);
-       comments.off();
-        //listen for comments, remember to come back to close this subscription
-        comments.on('value',()=>{
-            getComments(post.post_id);
-        });
+    //    AsyncStorage.setItem("current_post_id",JSON.stringify(post.post_id));
+    //    setLikesCount(post.post_num_likes);
+    //    setLiked(post.user_num_likes_post);
+    //    getComments(post.post_id);
+    //    getPostView(post.post_id);
+    //    comments.off();
+    //     //listen for comments, remember to come back to close this subscription
+    //     comments.on('value',()=>{
+    //         getComments(post.post_id);
+    //     });
 
-        getMorePlaylist(post.post_id);
+        // getMorePlaylist(post.post_id);
 
         // setPause(false);
    }
@@ -180,12 +190,12 @@ const Player = ({navigation, route}) =>{
 
     const videoFinished = (progressData) =>{
         // console.log("progress data ",progressData);
-        var currentTime = progressData.currentTime;
-        var videoDuration = progressData.playableDuration;
-        var seekable_duration =  progressData.seekableDuration;
-        // var video
-        var SecondsLeft = videoDuration-currentTime
-        var SecondsLeftRounded = Math.floor(SecondsLeft);
+        // var currentTime = progressData.currentTime;
+        // var videoDuration = progressData.playableDuration;
+        // var seekable_duration =  progressData.seekableDuration;
+        // // var video
+        // var SecondsLeft = videoDuration-currentTime
+        // var SecondsLeftRounded = Math.floor(SecondsLeft);
         // if(videoSecondsLeft != undefined && videoSecondsLeft == SecondsLeft && SecondsLeft > 0){
         //     console.log("current time  and duration ", currentTime, " video duration ",videoDuration, " seconds left ", SecondsLeft);
 
@@ -196,13 +206,13 @@ const Player = ({navigation, route}) =>{
         //     setPause(true);
         //     console.log("video paused");
         //     // AutoPlayNext();
-        //     for(let count = 0; count < playlist.length; count++){
-        //         if(playlist[count].post_id==CurrentPostId){
-        //             console.log("next post is ", playlist[count+1]);
-        //             playNext(playlist[count+1]);
-        //             break;
-        //         }
+        // for(let count = 0; count < route.params.playlist.length; count++){
+        //     if(route.params.playlist[count].post_id==CurrentPostId){
+        //         console.log("next post is ", playlist[count+1]);
+        //         playNext(playlist[count+1]);
+        //         break;
         //     }
+        // }
         // }
         // if(CurrentPostId != undefined && SecondsLeft == 0 && currentTime != 0 && videoDuration != 0){
         // // if(CurrentPostId != undefined && currentTime == videoDuration){
@@ -218,9 +228,27 @@ const Player = ({navigation, route}) =>{
         // }  
     }
 
-    const videoPlaying = () =>{
-        // console.log("playlist ", playlist);
-        console.log("current post data ", data);
+    const videoPlaying = async () =>{
+        // console.log("current post liked ", liked);
+        // setPlaylistCount(playlistCount+1);
+        // var current_post_id = await AsyncStorage.getItem("current_post_id");
+        // var playlist = await JSON.parse(AsyncStorage.getItem("playlist"));
+        // console.log("current post id is ",current_post_id," and current playlist is ", playlist);
+
+        // for(let count = 0; count < playlist ; count++){
+        //     if(playlist[count].post_id==current_post_id){
+        //         console.log("next post is ", playlist[count+1]);
+        //         playNext(playlist[count+1]);
+        //         break;
+        //     }
+        // }
+        // playNext(route.params.playlist[playlistCount]);
+        // if(playlistCount == 4){
+        //     // setPlaylistCount(0);
+        // }else{
+        // }
+        // console.log("current video is  ", data.post_id);
+        // console.log("current playlis t", route.params.playlist);
         
 
     }
@@ -237,13 +265,13 @@ const Player = ({navigation, route}) =>{
                         navigator={navigation}    
                         ignoreSilentSwitch={"obey"}                          
                         resizeMode={"contain"}
-                        // muted={true}
+                        muted={true}
                         paused={paused}
                         seekColor={"#eb8d35"}
                         disableVolume={true}
                         controlTimeout={5000}
                         disableFullscreen={true} 
-                        // onEnd={videoPlaying}
+                        onEnd={videoPlaying}
                         style={{width:width,height:height/3, backgroundColor:'#000000'}} />
                 </View>               
                 
