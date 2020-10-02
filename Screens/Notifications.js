@@ -143,7 +143,7 @@ export const Notifications = ({navigation}) =>{
                 renderItem={({ item }) => (
                     <View style={{flexDirection:'row',width:'100%',justifyContent:"space-evenly",backgroundColor:'#181818',flex:1,padding:15,borderBottomWidth: 0.5,}}>
                       {item.profile?
-                        (<Image  style={{width:40,height:40,borderRadius:50}} source={{uri:item.profile}}/>):
+                        (<Image  style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}} source={{uri:item.profile}}/>):
                         (
                           <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
                             <Ionicons name="person-outline" size={25} color={'#717171'}/>
@@ -156,7 +156,7 @@ export const Notifications = ({navigation}) =>{
                             <Text style={{color:'white'}}>{item.msg}</Text>
                         </View>
                         <TouchableOpacity onPress={()=>viewPost(item.post,item.userid)}>
-                          <Image  style={{width:40,height:40,borderRadius:5}} source={{uri:item.post_image}}/>
+                          <Image  style={{width:40,height:40,borderRadius:5,backgroundColor:'#242424'}} source={{uri:item.post_image}}/>
                         </TouchableOpacity>
                     </View>
                 )}

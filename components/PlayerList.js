@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import {View, Text, Image,FlatList,TouchableOpacity} from 'react-native';
+import {View, Text, Image,FlatList,TouchableOpacity,ActivityIndicator} from 'react-native';
 const PlayerList = (props)=>{
     const viewPost = (item) =>{
         // console.log(item);
@@ -18,6 +18,7 @@ const PlayerList = (props)=>{
     return (
         <FlatList
         // style={{marginTop:20,backgroundColor: '#fff'}}
+        ListFooterComponent={<ActivityIndicator size="small" color="#eb8d35"/>}
         data={props.listArray} 
         keyExtractor={({ id }, index) => index.toFixed()}
         renderItem={({ item }) => (
@@ -25,7 +26,7 @@ const PlayerList = (props)=>{
                 {/* #242424 */}
                 <View style={{width:'100%',borderBottomWidth: 1,borderBottomColor:'#242424',marginBottom:10}}>
                     <View style={{width:'80%',marginTop:5,flexDirection:'row'}}>
-                        <Image style={{width:40,height:40,borderRadius:50}} source={{uri: item.artist_thumbnail}}/>
+                        <Image style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}} source={{uri: item.artist_thumbnail}}/>
                         <View style={{alignItems:'flex-start',justifyContent:'flex-start',marginBottom:40}}>
                             <Text style={{color:'white',fontSize:9,color:'#717171',marginLeft:10}}>{item.artist_name}</Text>
                             <Text style={{color:'white',fontSize:11,marginLeft:10}}>{item.post_name}</Text>

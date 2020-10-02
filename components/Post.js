@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,TouchableOpacity, RefreshControl,Dimensions} from 'react-native';
+import {View, Text, Image,StyleSheet, ImageBackground, FlatList,StatusBar ,ActivityIndicator,TouchableOpacity, RefreshControl,Dimensions} from 'react-native';
 import Ant from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icons from 'react-native-vector-icons/Feather';
@@ -15,6 +15,7 @@ const Post = (props) =>{
                 ref={ref}                              
                 data={props.feed}
                 refreshControl={<RefreshControl refreshing={props.Refreshing} onRefresh={props.onRefresh}/>} 
+                ListFooterComponent={<ActivityIndicator size="small" color="#eb8d35"/>}
                 keyExtractor={({ id }, index) => index.toFixed()}
                 renderItem={({ item }) => (
                     <View style={styles.Post}>                        
@@ -22,7 +23,7 @@ const Post = (props) =>{
                             <View style={styles.ProfileImageSec}>
                                 {item.artist_thumbnail?
 
-                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
+                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}}/>
                                     :
                                     (
                                         <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
@@ -74,12 +75,14 @@ const Post = (props) =>{
                                 <Icons name='repeat' size={20} color={'#717171'}  style={{marginRight:10}}/><Text style={{color:'#717171'}}></Text>
                             </View>
                         </View>
-
+                        
                 </View>
 
-            )} onEndReached={()=>{
+            )}
+             onEndReached={()=>{
                 props.Feed(false,"threshold");
-            }} onEndReachedThreshold={2}/>
+            }} onEndReachedThreshold={2}
+            />
         </View>
     )
 }

@@ -282,7 +282,7 @@ const Player = ({navigation: { setParams }, route}) =>{
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
                         {data.artist_thumbnail?
-                            <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50}}/>
+                            <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}}/>
                         :
                         (
                             <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
