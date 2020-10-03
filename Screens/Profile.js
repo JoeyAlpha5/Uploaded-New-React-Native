@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View,Text, StyleSheet,  FlatList,ActivityIndicator, Dimensions,Image} from 'react-native';
+import {View,Text, StyleSheet,  FlatList,ActivityIndicator, Dimensions,Image,TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -66,6 +66,10 @@ export const Profile = ({navigation,route}) =>{
 
         <View style={{height:'100%',width:'100%' ,  backgroundColor:'#000000'}}>
                 <View style={style.itemStyle}>
+                    <TouchableOpacity onPress={signOut}>
+                        <View style={{width:100,height:40,background:'#000',margingLeft:15}}><Text style={{color:'white'}}>Sign out</Text></View>
+                    </TouchableOpacity>
+                    {/* <Button onPress={signOut} title="Sign out"  color='#000'/> */}
                     <Image source={{uri:userData.image}} style={style.avatarStyle} />
                 </View>
                 <View style={style.statContainer}>
@@ -93,12 +97,12 @@ export const Profile = ({navigation,route}) =>{
                         <MaterialIcons name="email" size={30} style={{paddingLeft:15}} color="#ffff" />
                     </View> */}
                 </View>
-                <View style={{flexDirection: 'row', marginTop:15,width:'90%',height:50, backgroundColor: '#181818',marginLeft:'5%',borderRadius:10}}>
-                    <Text style={{fontSize:16,color:'#fff',fontWeight:'bold', marginRight:20, marginLeft:55, marginTop:10}}>Playlisted</Text>
-                    <Text style={{fontSize:16,color:'#fff',fontWeight:'bold',marginLeft:40,marginTop:10}}>|</Text>
-                    <Text  style={{fontSize:16,color:'#fff',fontWeight:'bold',marginLeft:70,marginTop:10}}>Reposts</Text>
+                <View style={{flexDirection: 'row', marginTop:15,width:'90%',alignItems:'center',height:50, backgroundColor: '#181818',marginLeft:'5%',borderRadius:10,justifyContent:'center'}}>
+                    <Text style={{fontSize:16,color:'#fff',alignSelf:'center',fontWeight:'bold', marginRight:20,marginTop:10}}>Videos</Text>
+                    {/* <Text style={{fontSize:16,color:'#fff',fontWeight:'bold',marginLeft:40,marginTop:10}}>|</Text> */}
+                    {/* <Text  style={{fontSize:16,color:'#fff',fontWeight:'bold',marginLeft:70,marginTop:10}}>Reposts</Text> */}
               </View>
-            </View>
+
 
             <FlatList
                 keyExtractor={(result) => result.id}
@@ -107,13 +111,32 @@ export const Profile = ({navigation,route}) =>{
                 renderItem={({item})=>{
                  
                      return(
-                             <View style={style.itemstyle}>
-                                
-                             </View>
+                        <View style={{height:'auto',width:'100%',flexDirection:'row',flexWrap: 'wrap'}}>
+                        <Image style={{width:'32%',height:120,marginLeft:2,resizeMode:'cover',marginTop:2}} source={{uri:item.post_file}}/>
+                        {/* <Image style={{width:'32%',height:120,marginLeft:2,resizeMode:'cover',marginTop:2}} source={{uri:'https://cdn.jwplayer.com/v2/media/KgabHVkY/poster.jpg'}}/>
+                        <Image style={{width:'32%',height:120,marginLeft:2,resizeMode:'cover',marginTop:2}} source={{uri:'https://cdn.jwplayer.com/v2/media/KgabHVkY/poster.jpg'}}/>
+                        <Image style={{width:'32%',height:120,marginLeft:2,resizeMode:'cover',marginTop:2}} source={{uri:'https://cdn.jwplayer.com/v2/media/KgabHVkY/poster.jpg'}}/> */}
+                    </View>
                      )  
                     
                 }}
              />
+            </View>
+
+            {/* <FlatList
+                keyExtractor={(result) => result.id}
+                data = {userVid}
+                numColumns={numColumns}
+                renderItem={({item})=>{
+                 
+                     return(
+                        <View style={style.itemstyle,{flexDirection: 'column',height:100}}>
+                            <Image style={{width:120,height:120}} source={{uri:'https://cdn.jwplayer.com/v2/media/bkwJXMfz/poster.jpg'}}/>
+                        </View>
+                     )  
+                    
+                }}
+             /> */}
         </>
     )
 }
@@ -124,7 +147,7 @@ const style = StyleSheet.create({
         height:100, 
         borderRadius:50,
         marginLeft:20,
-        marginTop:60,
+        marginTop:20,
         borderWidth:4,
         borderColor:'#fff',
     },
@@ -132,7 +155,7 @@ const style = StyleSheet.create({
         backgroundColor: '#181818',
         borderBottomWidth: 0.5,
         borderBottomColor: '#000',
-        height:120  
+        height:120,
     },
     statContainer:{
         flexDirection: 'column',

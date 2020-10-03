@@ -23,7 +23,7 @@ const Post = (props) =>{
                             <View style={styles.ProfileImageSec}>
                                 {item.artist_thumbnail?
 
-                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}}/>
+                                    <Image source={{uri: item.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171',borderWidth:2.2,borderColor:'#eb8d35'}}/>
                                     :
                                     (
                                         <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
@@ -57,22 +57,22 @@ const Post = (props) =>{
                                 {item.user_num_likes_post == 1?
                                     (
                                         <View style={{flexDirection:'row'}}>
-                                            <Ant name='heart' size={25} onPress={()=>props.likePost(item.post_id)} color={'#eb8d35'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                            <Ant name='heart' size={25} onPress={()=>props.likePost(item.post_id)} color={'#eb8d35'}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_likes}</Text>
                                         </View>
                                     ):
                                     (
                                         <View style={{flexDirection:'row'}}>
-                                            <Ant name='hearto' size={25} onPress={()=>props.likePost(item.post_id)} color={'#717171'}/><Text style={{color:'#717171'}}>{item.post_num_likes}</Text>
+                                            <Ant name='hearto' size={25} onPress={()=>props.likePost(item.post_id)} color={'#717171'}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_likes}</Text>
                                         </View>
                                     )
 
                                 }
 
-                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{props.CommentsCount(item.post_id)}</Text>
-                                <Icono name='ios-eye-outline' size={28} color={'#717171'} style={{marginLeft:28}}/><Text style={{color:'#717171'}}>{item.post_num_views}</Text>
+                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{props.CommentsCount(item.post_id)}</Text>
+                                <Icono name='ios-eye-outline' size={28} color={'#717171'} style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_views}</Text>
                             </View>
                             <View>
-                                <Icons name='repeat' size={20} color={'#717171'}  style={{marginRight:10}}/><Text style={{color:'#717171'}}></Text>
+                                <Icons name='repeat' size={20} color={'#717171'}  style={{marginRight:10}}/><Text style={{color:'#717171',marginLeft:7}}></Text>
                             </View>
                         </View>
                         

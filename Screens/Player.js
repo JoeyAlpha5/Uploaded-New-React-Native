@@ -282,7 +282,7 @@ const Player = ({navigation: { setParams }, route}) =>{
                 <View style={styles.postDetails}>
                     <View style={styles.topPostDetails}>
                         {data.artist_thumbnail?
-                            <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171'}}/>
+                            <Image source={{uri:data.artist_thumbnail}} style={{width:40,height:40,borderRadius:50,backgroundColor:'#717171',borderWidth:2.2,borderColor:'#eb8d35'}}/>
                         :
                         (
                             <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
@@ -302,12 +302,12 @@ const Player = ({navigation: { setParams }, route}) =>{
                         {liked == 1?
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Ant name='heart' size={18} onPress={()=>PostLike()} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
+                                    <Ant name='heart' size={18} onPress={()=>PostLike()} color={'#eb8d35'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5,marginTop:7}}>{likesCount}</Text>
                                 </View>
                             ):
                             (
                                 <View style={{marginTop:2,marginRight:15}}>
-                                    <Ant name='hearto' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5}}>{likesCount}</Text>
+                                    <Ant name='hearto' size={18} onPress={()=>PostLike()} color={'#717171'}/><Text style={{fontSize:12,color:'#717171',marginLeft:5,marginTop:7}}>{likesCount}</Text>
                                 </View>
                             )
                         }
@@ -315,7 +315,7 @@ const Player = ({navigation: { setParams }, route}) =>{
 
 
                         <View style={{marginRight:10}}>
-                            <Ionicons name='ios-eye-outline' size={22} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15}}>{views}</Text>
+                            <Ionicons name='ios-eye-outline' size={22} color={'#717171'} style={{marginLeft:10}}/><Text style={{fontSize:12,color:'#717171',marginLeft:15,marginTop:5}}>{views}</Text>
                         </View>
                         <View style={{marginTop:2}}>
                             <Icono  name='share' size={15} color={'#717171'} style={{marginLeft:10,marginTop:2}}/>
