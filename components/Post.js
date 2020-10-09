@@ -42,7 +42,7 @@ const Post = (props) =>{
                             </View>
                         </View>
                         <TouchableOpacity onPress={()=>props.play('Player',item)} style={{width:'100%'}}>
-                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'space-between',alignItems:'flex-end',flexDirection: 'row',}} source={{uri:item.post_cover_url}}>
+                            <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'space-between',alignItems:'flex-end',flexDirection: 'row',backgroundColor:'#717171'}} source={{uri:item.post_cover_url}}>
                                 <Text style={styles.postdesc}>{item.post_name}</Text>
                                 <Text style={{color:'#717171',marginRight:10,marginBottom: 5,color:'white',backgroundColor: '#000000',padding: 3,fontSize:12,borderRadius:6}}>
                                     {props.PostDuration(item.post_duration)}
@@ -62,17 +62,17 @@ const Post = (props) =>{
                                     ):
                                     (
                                         <View style={{flexDirection:'row'}}>
-                                            <Ant name='hearto' size={25} onPress={()=>props.likePost(item.post_id)} color={'#717171'}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_likes}</Text>
+                                            <Ant name='heart' size={25} onPress={()=>props.likePost(item.post_id)} color={'#fff'}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_likes}</Text>
                                         </View>
                                     )
 
                                 }
 
-                                <Icon name='comment-o' size={25} color={'#717171'}  style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{props.CommentsCount(item.post_id)}</Text>
-                                <Icono name='ios-eye-outline' size={28} color={'#717171'} style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_views}</Text>
+                                <Icon name='comment-o' size={25} color={'#fff'}  style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{props.CommentsCount(item.post_id)}</Text>
+                                <Icono name='ios-eye-outline' size={28} color={'#fff'} style={{marginLeft:28}}/><Text style={{color:'#717171',marginLeft:7}}>{item.post_num_views}</Text>
                             </View>
                             <View>
-                                <Icons name='repeat' size={20} color={'#717171'}  style={{marginRight:10}}/><Text style={{color:'#717171',marginLeft:7}}></Text>
+                                <Icons name='repeat' size={20} color={'#fff'}  style={{marginRight:10}}/><Text style={{color:'#717171',marginLeft:7}}></Text>
                             </View>
                         </View>
                         

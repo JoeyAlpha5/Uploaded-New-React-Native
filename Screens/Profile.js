@@ -70,7 +70,19 @@ export const Profile = ({navigation,route}) =>{
                         <View style={{width:100,height:40,background:'#000',margingLeft:15}}><Text style={{color:'white'}}>Sign out</Text></View>
                     </TouchableOpacity>
                     {/* <Button onPress={signOut} title="Sign out"  color='#000'/> */}
-                    <Image source={{uri:userData.image}} style={style.avatarStyle} />
+
+                    {userData.image?
+                            (
+                                <Image source={{uri:userData.image}} style={style.avatarStyle} />                   
+                            ):
+                            (
+                                <View style={{width:40,height:40,borderRadius:50,justifyContent: 'center',alignItems: 'center',backgroundColor:'#242424'}}>
+                                    <Ionicons name="person-outline" size={25} color={'#717171'}/>
+                                </View>
+                            )
+                        }
+
+                    
                 </View>
                 <View style={style.statContainer}>
                     <View>
@@ -150,6 +162,7 @@ const style = StyleSheet.create({
         marginTop:20,
         borderWidth:4,
         borderColor:'#fff',
+        backgroundColor:'#717171'
     },
     itemStyle:{
         backgroundColor: '#181818',

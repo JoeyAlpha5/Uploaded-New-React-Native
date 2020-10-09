@@ -32,7 +32,7 @@ const PlayerList = (props)=>{
                             <Text style={{color:'white',fontSize:11,marginLeft:10}}>{item.post_name}</Text>
                         </View>
                     </View>
-                    <Image source={{uri:item.post_cover_url}} style={{width:'100%',height:150,borderRadius:10,marginTop:2,marginLeft:0,marginBottom:20}}/>
+                    <Image source={{uri:item.post_cover_url}} style={{width:'100%',height:150,borderRadius:10,marginTop:2,marginLeft:0,marginBottom:20,backgroundColor:'#717171'}}/>
                 </View>
             </TouchableOpacity>
         )} 
