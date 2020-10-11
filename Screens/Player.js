@@ -295,6 +295,7 @@ const Player = ({navigation: { setParams }, route}) =>{
                         <View style={{marginLeft:15,width:'73%'}}>
                             <Text style={{fontWeight:'bold',fontSize:12,color:'white'}}>{data.artist_name}</Text>
                             <Text style={{width:'100%',color:'white'}}>{data.post_name}</Text>
+                            <Text style={{color:'#717171',fontSize:12}}>posted {data.post_age}</Text>
                         </View>
                     </View>
                     <View style={{flexDirection:'row',paddingTop:10}}>

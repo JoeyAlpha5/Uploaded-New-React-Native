@@ -61,6 +61,7 @@ export const Profile = ({navigation,route}) =>{
                 borderBottomColor: '#000',
             }}
             centerComponent={{ text: 'Profile', style: { color: '#fff',fontSize:20,borderBottomWidth:0 } }}
+            rightComponent={{ text: 'Edit', style: { color: '#fff',fontSize:12,marginRight:15 } }}
         />
 
 

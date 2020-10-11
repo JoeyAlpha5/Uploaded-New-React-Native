@@ -40,6 +40,9 @@ const Post = (props) =>{
                                     </Text>
                                 </View>
                             </View>
+                            <View style={{marginRight:30}}>
+                                <Ant name="ellipsis1" size={25} color={'#fff'}/>
+                            </View>
                         </View>
                         <TouchableOpacity onPress={()=>props.play('Player',item)} style={{width:'100%'}}>
                             <ImageBackground style={{borderRadius:5,width:'100%',height:280,resizeMode:'cover',justifyContent:'space-between',alignItems:'flex-end',flexDirection: 'row',backgroundColor:'#717171'}} source={{uri:item.post_cover_url}}>
